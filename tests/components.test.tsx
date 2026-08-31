@@ -53,4 +53,27 @@ describe("Shared UI Components", () => {
       expect(clicked).toBe(true);
     });
   });
+
+  describe("Sidebar", () => {
+    it("should display JANPRAMAAN and Identity Intelligence branding", async () => {
+      const { Sidebar } = await import("@/components/layout/sidebar");
+      const { AuthContext } = await import("@/features/auth/context/auth-context");
+      const mockAuth = {
+        status: "AUTHENTICATED" as const,
+        user: null,
+        session: null,
+        error: null,
+        login: () => Promise.resolve(),
+        logout: () => Promise.resolve(),
+        refreshUser: () => Promise.resolve(),
+      };
+      render(
+        <AuthContext.Provider value={mockAuth}>
+          <Sidebar isOpen={true} />
+        </AuthContext.Provider>
+      );
+      expect(screen.getByText("JANPRAMAAN")).toBeInTheDocument();
+      expect(screen.getByText("Identity Intelligence")).toBeInTheDocument();
+    });
+  });
 });

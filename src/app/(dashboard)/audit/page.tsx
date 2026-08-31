@@ -2,7 +2,7 @@ import * as React from "react";
 import { AuditCenter } from "@/features/audit/components/audit-center";
 
 export const metadata = {
-  title: "Audit Trail & Governance | SIH26188",
+  title: "Audit Trail & Governance | JANPRAMAAN",
   description: "Immutable operational audit journal and regulatory governance records for identity screenings and determinations.",
 };
 

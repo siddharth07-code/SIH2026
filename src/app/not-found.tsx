@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 export const metadata = {
-  title: "404 Not Found | SIH26188",
+  title: "404 Not Found | JANPRAMAAN",
   description: "The requested operational resource or route does not exist within the command center.",
 };
 
@@ -30,7 +30,7 @@ export default function NotFound() {
             Route Not Found
           </h1>
           <p className="text-xs text-muted-foreground leading-relaxed">
-            The requested path or screening resource does not exist in the SIH26188 Web Command Center workspace.
+            The requested path or screening resource does not exist in the JANPRAMAAN Web Command Center workspace.
           </p>
         </div>
 

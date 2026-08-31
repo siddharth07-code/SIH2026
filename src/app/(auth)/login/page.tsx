@@ -1,7 +1,7 @@
 import { LoginForm } from "@/features/auth/components/login-form";
 
 export const metadata = {
-  title: "Officer Authentication | SIH26188 Command Center",
+  title: "Officer Authentication | JANPRAMAAN",
 };
 
 export default function LoginPage() {

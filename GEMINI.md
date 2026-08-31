@@ -1,9 +1,10 @@
 # GEMINI.md
 
-# SIH26188 — AI-Based Fake Identity & Document Screening Platform
+# JANPRAMAAN — Identity Intelligence
 
-> **Project:** SIH26188  
-> **Problem:** AI-Based Fake Identity & Document Screening  
+> **Product Name:** JANPRAMAAN  
+> **Descriptor:** Identity Intelligence  
+> **Challenge / Problem ID:** SIH26188 (AI-Based Fake Identity & Document Screening)  
 > **Current Repository:** SIH2026  
 > **Current Application:** Web Command Center  
 > **Development Approach:** Production-oriented working system, not a static demo

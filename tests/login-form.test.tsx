@@ -36,6 +36,12 @@ describe("LoginForm Component", () => {
     vi.restoreAllMocks();
   });
 
+  it("should display JANPRAMAAN branding and descriptor", () => {
+    renderLoginForm();
+    expect(screen.getByText("JANPRAMAAN")).toBeInTheDocument();
+    expect(screen.getByText("Identity Intelligence Command Center")).toBeInTheDocument();
+  });
+
   it("should show Zod validation errors on empty submission and prevent API call", async () => {
     const mockLogin = vi.fn();
     renderLoginForm({ login: mockLogin });

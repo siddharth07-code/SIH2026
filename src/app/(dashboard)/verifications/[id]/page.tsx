@@ -1,7 +1,7 @@
 import { VerificationDetailShell } from "@/features/verifications/components/verification-detail-shell";
 
 export const metadata = {
-  title: "Case Detail | SIH26188",
+  title: "Case Detail | JANPRAMAAN",
 };
 
 interface PageProps {

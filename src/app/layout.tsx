@@ -4,7 +4,7 @@ import { AuthProvider } from "@/features/auth/context/auth-context";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SIH26188 — Identity & Document Screening Command Center",
+  title: "JANPRAMAAN — Identity Intelligence",
   description:
     "AI-Based Fake Identity & Document Screening Platform. Evidence-based, explainable multi-signal risk assessment for authorized officers.",
   robots: {

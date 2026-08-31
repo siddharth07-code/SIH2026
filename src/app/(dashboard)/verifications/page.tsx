@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { VerificationsListShell } from "@/features/verifications/components/verifications-list-shell";
 
 export const metadata = {
-  title: "Verification Queue | SIH26188",
+  title: "Verification Queue | JANPRAMAAN",
   description: "Operational document screening triage queue and case investigation.",
 };
 

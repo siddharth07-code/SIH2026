@@ -78,14 +78,14 @@ export function LoginForm() {
         <div className="space-y-1">
           <div className="flex items-center justify-center gap-2">
             <CardTitle className="text-xl font-bold tracking-tight text-foreground">
-              Officer Portal
+              JANPRAMAAN
             </CardTitle>
             <Badge variant="glass" className="text-[9px] px-1.5 py-0 font-mono text-primary">
               SECURE
             </Badge>
           </div>
           <CardDescription className="text-xs text-muted-foreground">
-            SIH26188 AI-Based Document & Identity Screening Command Center
+            Identity Intelligence Command Center
           </CardDescription>
         </div>
       </CardHeader>

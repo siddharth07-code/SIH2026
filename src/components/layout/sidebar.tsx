@@ -77,13 +77,13 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-bold text-sm tracking-wider text-foreground">SIH26188</span>
+                <span className="font-bold text-sm tracking-wider text-foreground">JANPRAMAAN</span>
                 <Badge variant="glass" className="text-[9px] px-1.5 py-0 font-mono text-primary">
                   SOC
                 </Badge>
               </div>
               <span className="text-[11px] text-muted-foreground block font-medium">
-                Screening Command
+                Identity Intelligence
               </span>
             </div>
           </div>
@@ -112,7 +112,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                   const Icon = iconMap[item.icon] || LayoutDashboard;
                   const isActive =
                     pathname === item.href ||
-                    (item.href !== "/dashboard" && pathname.startsWith(item.href));
+                    (item.href !== "/dashboard" && pathname?.startsWith(item.href));
 
                   return (
                     <li key={item.href}>

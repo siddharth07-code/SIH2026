@@ -1,7 +1,7 @@
 import { EvidenceDetailShell } from "@/features/evidence/components/evidence-detail-shell";
 
 export const metadata = {
-  title: "Evidence Inspector | SIH26188",
+  title: "Evidence Inspector | JANPRAMAAN",
 };
 
 interface PageProps {
