@@ -14,22 +14,22 @@ export function UnauthorizedState({
   currentRole,
 }: UnauthorizedStateProps) {
   return (
-    <div className="flex items-center justify-center p-8 min-h-[360px]">
-      <Card className="max-w-md w-full border-border bg-card text-center p-6 space-y-4">
-        <div className="mx-auto w-12 h-12 rounded-full bg-status-warning-bg border border-status-warning-border flex items-center justify-center text-status-warning-text">
+    <div className="flex items-center justify-center p-6 min-h-[340px]">
+      <Card className="max-w-md w-full p-6 text-center space-y-4">
+        <div className="mx-auto jp-state-icon jp-state-icon-warning">
           <ShieldAlert className="w-6 h-6" />
         </div>
         <CardHeader className="p-0 space-y-1">
-          <CardTitle className="text-lg font-bold text-foreground">
+          <CardTitle className="text-base font-bold text-foreground">
             Clearance Level Required
           </CardTitle>
           <CardDescription className="text-xs text-muted-foreground">
-            Your current account role does not have authorization to access this command center section.
+            Your current account role does not have access to this section.
           </CardDescription>
         </CardHeader>
 
         <CardContent className="p-0 space-y-3 text-xs">
-          <div className="rounded-md border border-border bg-muted/40 p-2.5 text-left space-y-1">
+          <div className="rounded-md border border-border bg-root p-2.5 text-left space-y-1.5" style={{ backgroundColor: "var(--jp-bg-root)" }}>
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground">Your Role:</span>
               <span className="font-mono font-semibold text-foreground uppercase">
@@ -39,7 +39,7 @@ export function UnauthorizedState({
             {requiredRoles && (
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Required Role:</span>
-                <span className="font-mono text-primary font-semibold uppercase">
+                <span className="font-mono font-semibold uppercase" style={{ color: "var(--jp-primary)" }}>
                   {requiredRoles.join(" / ")}
                 </span>
               </div>
@@ -50,7 +50,7 @@ export function UnauthorizedState({
             <Link href="/dashboard">
               <Button variant="outline" size="sm" className="gap-1.5 w-full text-xs">
                 <ArrowLeft className="w-3.5 h-3.5" />
-                <span>Return to Command Center</span>
+                <span>Return to Dashboard</span>
               </Button>
             </Link>
           </div>

@@ -17,28 +17,23 @@ export function PageHeader({
   className,
 }: PageHeaderProps) {
   return (
-    <div
-      className={cn(
-        "flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-5 border-b border-white/[0.08]",
-        className
-      )}
-    >
-      <div className="space-y-1.5">
-        <div className="flex flex-wrap items-center gap-2.5">
-          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+    <div className={cn("jp-page-header", className)}>
+      <div className="jp-page-header-info">
+        <div className="jp-page-header-title-row">
+          <h1 className="jp-page-header-title">
             {title}
           </h1>
           {badge && <div className="shrink-0">{badge}</div>}
         </div>
         {description && (
-          <p className="text-xs text-muted-foreground max-w-3xl leading-relaxed">
+          <p className="jp-page-header-desc">
             {description}
           </p>
         )}
       </div>
 
       {children && (
-        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+        <div className="jp-page-header-actions">
           {children}
         </div>
       )}

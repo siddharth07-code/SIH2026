@@ -22,84 +22,122 @@ export type SystemStatusType =
   | "INACTIVE"
   | "SUSPENDED"
   | "PASS"
-  | "FAIL";
+  | "FAIL"
+  | "REVIEW_REQUIRED"
+  | "ESCALATED"
+  | "CLEARED"
+  | "SUBMITTED"
+  | "PROCESSING"
+  | "MISMATCH"
+  | "MATCH"
+  | "UNAVAILABLE";
 
 interface StatusConfig {
   icon: LucideIcon;
   label: string;
-  className: string;
+  variantClass: string;
 }
 
 const statusMap: Record<string, StatusConfig> = {
   LOW: {
     icon: ShieldCheck,
     label: "LOW RISK",
-    className:
-      "border-emerald-500/30 bg-emerald-500/10 text-emerald-300 shadow-[0_0_12px_-2px_rgba(16,185,129,0.25)]",
+    variantClass: "jp-status-low",
   },
   PASS: {
     icon: CheckCircle2,
     label: "PASS",
-    className:
-      "border-emerald-500/30 bg-emerald-500/10 text-emerald-300 shadow-[0_0_12px_-2px_rgba(16,185,129,0.25)]",
+    variantClass: "jp-status-pass",
+  },
+  MATCH: {
+    icon: CheckCircle2,
+    label: "MATCH",
+    variantClass: "jp-status-pass",
+  },
+  CLEARED: {
+    icon: CheckCircle2,
+    label: "CLEARED",
+    variantClass: "jp-status-pass",
   },
   MEDIUM: {
     icon: AlertTriangle,
     label: "MEDIUM RISK",
-    className:
-      "border-amber-500/30 bg-amber-500/10 text-amber-300 shadow-[0_0_12px_-2px_rgba(245,158,11,0.25)]",
+    variantClass: "jp-status-medium",
   },
   WARNING: {
     icon: AlertTriangle,
     label: "WARNING",
-    className:
-      "border-amber-500/30 bg-amber-500/10 text-amber-300 shadow-[0_0_12px_-2px_rgba(245,158,11,0.25)]",
+    variantClass: "jp-status-warning",
+  },
+  REVIEW_REQUIRED: {
+    icon: AlertTriangle,
+    label: "REVIEW REQUIRED",
+    variantClass: "jp-status-warning",
   },
   HIGH: {
     icon: OctagonAlert,
     label: "HIGH RISK",
-    className:
-      "border-rose-500/35 bg-rose-500/10 text-rose-300 shadow-[0_0_12px_-2px_rgba(244,63,94,0.25)]",
+    variantClass: "jp-status-high",
   },
   FAIL: {
     icon: OctagonAlert,
     label: "FAIL",
-    className:
-      "border-rose-500/35 bg-rose-500/10 text-rose-300 shadow-[0_0_12px_-2px_rgba(244,63,94,0.25)]",
+    variantClass: "jp-status-fail",
+  },
+  MISMATCH: {
+    icon: OctagonAlert,
+    label: "MISMATCH",
+    variantClass: "jp-status-fail",
   },
   ERROR: {
     icon: OctagonAlert,
     label: "ERROR",
-    className:
-      "border-rose-500/35 bg-rose-500/10 text-rose-300 shadow-[0_0_12px_-2px_rgba(244,63,94,0.25)]",
+    variantClass: "jp-status-error",
+  },
+  ESCALATED: {
+    icon: OctagonAlert,
+    label: "ESCALATED",
+    variantClass: "jp-status-error",
   },
   SUCCESS: {
     icon: CheckCircle2,
     label: "SUCCESS",
-    className:
-      "border-emerald-500/30 bg-emerald-500/10 text-emerald-300 shadow-[0_0_12px_-2px_rgba(16,185,129,0.25)]",
+    variantClass: "jp-status-success",
   },
   INFO: {
     icon: Info,
     label: "INFO",
-    className:
-      "border-sky-500/30 bg-sky-500/10 text-sky-300 shadow-[0_0_12px_-2px_rgba(14,165,233,0.25)]",
+    variantClass: "jp-status-info",
+  },
+  SUBMITTED: {
+    icon: Info,
+    label: "SUBMITTED",
+    variantClass: "jp-status-info",
+  },
+  PROCESSING: {
+    icon: Info,
+    label: "PROCESSING",
+    variantClass: "jp-status-info",
   },
   ACTIVE: {
     icon: CheckCircle2,
     label: "ACTIVE",
-    className:
-      "border-emerald-500/30 bg-emerald-500/10 text-emerald-300 shadow-[0_0_12px_-2px_rgba(16,185,129,0.25)]",
+    variantClass: "jp-status-active",
   },
   INACTIVE: {
     icon: Info,
     label: "INACTIVE",
-    className: "border-white/15 bg-white/5 text-muted-foreground",
+    variantClass: "jp-status-inactive",
   },
   SUSPENDED: {
     icon: OctagonAlert,
     label: "SUSPENDED",
-    className: "border-rose-500/35 bg-rose-500/10 text-rose-300",
+    variantClass: "jp-status-suspended",
+  },
+  UNAVAILABLE: {
+    icon: Info,
+    label: "UNAVAILABLE",
+    variantClass: "jp-status-inactive",
   },
 };
 
@@ -121,19 +159,14 @@ export function StatusIndicator({
   const normalizedKey = status.toUpperCase();
   const config = statusMap[normalizedKey] || {
     icon: Info,
-    label: status,
-    className: "border-white/15 bg-white/5 text-muted-foreground",
+    label: status.replace(/_/g, " "),
+    variantClass: "jp-status-inactive",
   };
 
   const Icon = config.icon;
   const displayLabel = label || config.label;
 
-  const sizeClasses = {
-    sm: "px-2 py-0.5 text-[11px] gap-1.5",
-    md: "px-2.5 py-0.5 text-xs gap-1.5",
-    lg: "px-3 py-1 text-sm gap-2",
-  };
-
+  const sizeClass = `jp-status-${size}`;
   const iconSizes = {
     sm: "w-3 h-3",
     md: "w-3.5 h-3.5",
@@ -145,9 +178,9 @@ export function StatusIndicator({
       role="status"
       aria-label={`Status: ${displayLabel}`}
       className={cn(
-        "rounded-md border font-medium tracking-wide transition-all duration-200 select-none inline-flex items-center backdrop-blur-sm",
-        config.className,
-        sizeClasses[size],
+        "jp-status-indicator",
+        config.variantClass,
+        sizeClass,
         className
       )}
     >

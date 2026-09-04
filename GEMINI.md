@@ -213,59 +213,60 @@ The high-level architecture is:
        ┌────────────────────┴────────────────────┐
        │                                         │
        ▼                                         ▼
- Flutter Officer App                     Next.js Web App
-       │                                         │
-       └──────────────────┬──────────────────────┘
-                          │
-                     HTTPS / API
-                          │
-                          ▼
-                ┌────────────────────┐
-                │    FastAPI API     │
-                └─────────┬──────────┘
-                          │
-                 Verification Service
-                          │
-                          ▼
-                Verification Orchestrator
-                          │
-          ┌───────────────┼────────────────┐
-          │               │                │
-          ▼               ▼                ▼
-         OCR              MRZ          Forensics
-          │               │                │
-          │               │                ▼
-          │               │          Manipulation
-          │               │          Detection
-          │               │
-          │               ▼
-          │          Checksum /
-          │          Consistency
-          │
-          └───────────────┬────────────────┘
-                          │
-                          ▼
-                   Face Verification
-                          │
-                          ▼
-                     Liveness
-                          │
-                          ▼
-                    Evidence Layer
-                          │
-                          ▼
-                    Risk Engine
-                          │
-                          ▼
-                   LLM Explanation
-                          │
-                          ▼
-                Structured Verification
-                       Result
-                          │
-                 ┌────────┴────────┐
-                 ▼                 ▼
-             Mobile App       Web Dashboard
+
+Flutter Officer App Next.js Web App
+│ │
+└──────────────────┬──────────────────────┘
+│
+HTTPS / API
+│
+▼
+┌────────────────────┐
+│ FastAPI API │
+└─────────┬──────────┘
+│
+Verification Service
+│
+▼
+Verification Orchestrator
+│
+┌───────────────┼────────────────┐
+│ │ │
+▼ ▼ ▼
+OCR MRZ Forensics
+│ │ │
+│ │ ▼
+│ │ Manipulation
+│ │ Detection
+│ │
+│ ▼
+│ Checksum /
+│ Consistency
+│
+└───────────────┬────────────────┘
+│
+▼
+Face Verification
+│
+▼
+Liveness
+│
+▼
+Evidence Layer
+│
+▼
+Risk Engine
+│
+▼
+LLM Explanation
+│
+▼
+Structured Verification
+Result
+│
+┌────────┴────────┐
+▼ ▼
+Mobile App Web Dashboard
 
 The web and mobile applications MUST NOT directly communicate with each
 other.
@@ -784,8 +785,9 @@ Conceptually:
           │
       ┌───┴────┐
       ▼        ▼
- Hugging     Local
- Face Model  Model
+
+Hugging Local
+Face Model Model
 
 This allows models to be replaced without rewriting application/domain
 logic.

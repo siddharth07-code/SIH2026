@@ -27,18 +27,15 @@ export function EmptyState({
   return (
     <div
       role="status"
-      className={cn(
-        "flex flex-col items-center justify-center p-8 sm:p-12 text-center rounded-lg border border-white/[0.08] bg-slate-900/40 backdrop-blur-xl shadow-lg shadow-black/20 min-h-[260px] glass-highlight",
-        className
-      )}
+      className={cn("jp-state-box", className)}
     >
-      <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/20 text-primary flex items-center justify-center mb-4 shadow-[0_0_15px_-3px_rgba(59,130,246,0.3)]">
-        <Icon className="w-6 h-6" aria-hidden="true" />
+      <div className="jp-state-icon jp-state-icon-primary">
+        <Icon className="w-5 h-5" aria-hidden="true" />
       </div>
-      <h3 className="text-base font-semibold text-foreground mb-1.5 tracking-tight">{title}</h3>
-      <p className="text-xs text-muted-foreground max-w-md mb-4 leading-relaxed">{description}</p>
+      <h3 className="jp-state-title">{title}</h3>
+      <p className="jp-state-desc">{description}</p>
       {notice && (
-        <div className="rounded-md border border-white/[0.08] bg-slate-950/40 px-3 py-1.5 text-[11px] text-muted-foreground/80 max-w-md font-mono mb-4">
+        <div className="jp-state-notice">
           {notice}
         </div>
       )}

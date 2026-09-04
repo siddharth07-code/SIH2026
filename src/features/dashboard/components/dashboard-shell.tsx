@@ -1,49 +1,126 @@
 "use client";
 
 import * as React from "react";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck, ShieldAlert, Radio, Activity, BarChart3 } from "lucide-react";
 import { DashboardHeader } from "./dashboard-header";
 import { ScreeningOverview } from "./screening-overview";
+import { PipelineVisualizer } from "./pipeline-visualizer";
 import { AttentionQueue } from "./attention-queue";
+import { CheckpointMatrix } from "./checkpoint-matrix";
 import { VerificationActivity } from "./verification-activity";
 import { RiskDistribution } from "./risk-distribution";
 import { OperationalEvents } from "./operational-events";
 import { QuickActions } from "./quick-actions";
 
+type DashboardTab = "queue" | "checkpoints" | "pipeline" | "telemetry";
+
 export function DashboardShell() {
+  const [activeTab, setActiveTab] = React.useState<DashboardTab>("queue");
+
   return (
-    <div className="space-y-6 max-w-full overflow-x-hidden">
-      {/* 1. Command Context Header */}
+    <div className="jp-dashboard-shell space-y-6">
+      {/* 1. Command Context Header & Live UTC Clock */}
       <DashboardHeader />
 
-      {/* 2. Critical Screening Overview Metrics */}
+      {/* 2. Critical Screening Overview Metrics (High-Signal 4-KPI Grid) */}
       <ScreeningOverview />
 
-      {/* 3. Priority Attention Queue (Triage Table / Mobile Cards) */}
-      <AttentionQueue />
+      {/* 3. Uncluttered Operational Tab Switcher — Displays Minimum & Relevant Info */}
+      <div className="flex items-center gap-1.5 p-1 bg-subtle rounded-lg border border-border overflow-x-auto">
+        <button
+          type="button"
+          onClick={() => setActiveTab("queue")}
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
+            activeTab === "queue"
+              ? "bg-surface text-foreground shadow-xs border border-border"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <ShieldAlert className="w-4 h-4 text-rose-500" />
+          <span>Priority Review Queue</span>
+        </button>
 
-      {/* 4. Telemetry & Calibration Section (Responsive 2-Col Grid) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <VerificationActivity />
-        <RiskDistribution />
+        <button
+          type="button"
+          onClick={() => setActiveTab("checkpoints")}
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
+            activeTab === "checkpoints"
+              ? "bg-surface text-foreground shadow-xs border border-border"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <Radio className="w-4 h-4 text-sky-500" />
+          <span>Port Ingest Nodes</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveTab("pipeline")}
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
+            activeTab === "pipeline"
+              ? "bg-surface text-foreground shadow-xs border border-border"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <Activity className="w-4 h-4 text-emerald-500" />
+          <span>Pipeline Architecture</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveTab("telemetry")}
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
+            activeTab === "telemetry"
+              ? "bg-surface text-foreground shadow-xs border border-border"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <BarChart3 className="w-4 h-4 text-amber-500" />
+          <span>Activity & Telemetry</span>
+        </button>
       </div>
 
-      {/* 5. Live Operational Event Stream */}
-      <OperationalEvents />
+      {/* 4. Tab Content Area — Keeps Primary Screen Focused and Clean */}
+      <div className="space-y-6">
+        {activeTab === "queue" && (
+          <>
+            <AttentionQueue />
+            <QuickActions />
+          </>
+        )}
 
-      {/* 6. Quick Action Shortcuts */}
-      <QuickActions />
+        {activeTab === "checkpoints" && (
+          <CheckpointMatrix />
+        )}
 
-      {/* 7. Human-in-the-Loop Governance Notice */}
-      <div className="rounded-lg border border-white/[0.08] bg-slate-900/40 backdrop-blur-md p-3.5 sm:p-4 text-xs text-muted-foreground flex flex-col xs:flex-row items-start xs:items-center justify-between gap-2.5">
+        {activeTab === "pipeline" && (
+          <PipelineVisualizer />
+        )}
+
+        {activeTab === "telemetry" && (
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <VerificationActivity />
+              <RiskDistribution />
+            </div>
+            <OperationalEvents />
+          </div>
+        )}
+      </div>
+
+      {/* 5. Human-in-the-Loop Governance Notice */}
+      <div
+        className="rounded-md border border-border p-3.5 text-xs text-muted-foreground flex flex-col xs:flex-row items-start xs:items-center justify-between gap-2.5"
+        style={{ backgroundColor: "var(--jp-bg-surface)" }}
+      >
         <div className="flex items-center gap-2.5 min-w-0">
           <ShieldCheck className="w-4 h-4 text-primary shrink-0" />
-          <span className="leading-tight text-[11px] sm:text-xs">
-            <strong className="text-foreground font-semibold">ISO/IEC 23894 Human-in-the-Loop Architecture:</strong> AI models generate risk signals; deterministic algorithms validate check digits; authorized human officers execute all operational decisions.
+          <span className="leading-tight text-xs">
+            <strong className="text-foreground font-semibold">Ministry of Home Affairs (SSB) — SIH26188:</strong> AI models generate risk signals; deterministic algorithms validate check digits; authorized human officers execute all operational decisions.
           </span>
         </div>
-        <span className="font-mono text-[10px] text-muted-foreground/80 shrink-0 self-end xs:self-auto">
-          BUILD: 2026.08-PROD
+        <span className="font-mono text-xs text-muted-foreground shrink-0 self-end xs:self-auto">
+          BUILD: 2026.09-PROD
         </span>
       </div>
     </div>

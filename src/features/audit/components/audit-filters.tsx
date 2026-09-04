@@ -35,8 +35,8 @@ export function AuditFilters({
   isFiltered,
 }: AuditFiltersProps) {
   return (
-    <div className="rounded-lg border border-white/[0.08] bg-slate-900/60 backdrop-blur-xl p-3 sm:p-3.5 space-y-3 shadow-lg shadow-black/20 glass-highlight">
-      <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+    <div className="jp-filter-bar space-y-3">
+      <div className="flex flex-col md:flex-row gap-2.5 items-stretch md:items-center justify-between">
         {/* Search Input */}
         <div className="relative flex-1">
           <Search className="w-4 h-4 absolute left-3 top-2.5 sm:top-3 text-primary" />
@@ -44,7 +44,7 @@ export function AuditFilters({
             placeholder="Search by event ID, actor badge, tracking number, or action..."
             value={filters.q}
             onChange={(e) => onFilterChange({ q: e.target.value })}
-            className="pl-9 text-xs h-9 sm:h-10 bg-slate-950/60 border-white/10 w-full"
+            className="pl-9 text-xs h-9 sm:h-10 w-full"
             aria-label="Search audit events"
           />
         </div>
@@ -59,7 +59,7 @@ export function AuditFilters({
               onChange={(e) =>
                 onFilterChange({ category: e.target.value as AuditEventCategory | "ALL" })
               }
-              className="h-9 rounded-md border border-white/10 bg-slate-950/70 px-2.5 py-1 text-xs text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary backdrop-blur-sm w-full"
+              className="jp-select text-xs w-full"
               aria-label="Filter by event category"
             >
               <option value="ALL">All Categories</option>
@@ -82,7 +82,7 @@ export function AuditFilters({
               onChange={(e) =>
                 onFilterChange({ action: e.target.value as AuditActionType | "ALL" })
               }
-              className="h-9 rounded-md border border-white/10 bg-slate-950/70 px-2.5 py-1 text-xs text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary backdrop-blur-sm w-full"
+              className="jp-select text-xs w-full"
               aria-label="Filter by audit action"
             >
               <option value="ALL">All Actions</option>
@@ -108,7 +108,7 @@ export function AuditFilters({
               onChange={(e) =>
                 onFilterChange({ outcome: e.target.value as AuditOutcome | "ALL" })
               }
-              className="h-9 rounded-md border border-white/10 bg-slate-950/70 px-2.5 py-1 text-xs text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary backdrop-blur-sm w-full"
+              className="jp-select text-xs w-full"
               aria-label="Filter by audit outcome"
             >
               <option value="ALL">All Outcomes</option>
@@ -128,7 +128,7 @@ export function AuditFilters({
               onChange={(e) =>
                 onFilterChange({ integrityStatus: e.target.value as AuditIntegrityStatus | "ALL" })
               }
-              className="h-9 rounded-md border border-white/10 bg-slate-950/70 px-2.5 py-1 text-xs text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary backdrop-blur-sm w-full"
+              className="jp-select text-xs w-full"
               aria-label="Filter by integrity status"
             >
               <option value="ALL">All States</option>
@@ -145,7 +145,7 @@ export function AuditFilters({
               variant="outline"
               size="sm"
               onClick={onResetFilters}
-              className="gap-1 text-xs h-9 text-rose-300 border-rose-500/30 hover:bg-rose-500/10 shrink-0 w-full sm:w-auto justify-center"
+              className="gap-1 text-xs h-9 text-rose-400 border-rose-500/30 shrink-0 w-full sm:w-auto justify-center"
               aria-label="Clear all applied filters"
             >
               <X className="w-3.5 h-3.5" />

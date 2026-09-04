@@ -70,8 +70,15 @@ export class ApiClient {
       ...(customHeaders as Record<string, string>),
     };
 
-    if (token) {
-      headers["Authorization"] = `Bearer ${token}`;
+    const activeToken =
+      token !== undefined
+        ? token
+        : typeof window !== "undefined"
+        ? localStorage.getItem("janpramaan_token")
+        : null;
+
+    if (activeToken) {
+      headers["Authorization"] = `Bearer ${activeToken}`;
     }
 
     let response: Response;
@@ -80,6 +87,7 @@ export class ApiClient {
       response = await fetch(url, {
         method,
         headers,
+        credentials: "include",
         body: body !== undefined ? JSON.stringify(body) : undefined,
         signal: controller.signal,
         ...restOptions,

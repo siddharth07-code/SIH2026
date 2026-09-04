@@ -14,7 +14,7 @@ interface EvidenceProvenanceProps {
 export function EvidenceProvenanceCard({ provenance }: EvidenceProvenanceProps) {
   if (!provenance) {
     return (
-      <Card className="p-6 text-center text-xs font-mono text-muted-foreground bg-slate-900/40">
+      <Card className="p-6 text-center text-xs font-mono text-muted-foreground">
         Cryptographic provenance metadata not available for this artifact.
       </Card>
     );
@@ -23,22 +23,22 @@ export function EvidenceProvenanceCard({ provenance }: EvidenceProvenanceProps) 
   const { sourceService, modelIdentifier, modelVersion, integrityHash, generatedTimestamp, evidenceVersion } = provenance;
 
   return (
-    <Card className="border-border bg-card">
-      <CardHeader className="p-3.5 sm:p-4 pb-3 border-b border-white/[0.08] flex flex-row items-center justify-between space-y-0">
+    <Card className="jp-card">
+      <CardHeader className="p-3.5 pb-2.5 border-b border-border flex flex-row items-center justify-between">
         <div className="flex items-center gap-2 min-w-0">
           <Database className="w-4 h-4 text-primary shrink-0" />
           <CardTitle className="text-sm font-semibold text-foreground truncate">
             Cryptographic Artifact Provenance & Integrity
           </CardTitle>
         </div>
-        <Badge variant="glass" className="text-[10px] font-mono text-emerald-300 shrink-0">
+        <Badge variant="outline" className="text-[10px] font-mono text-emerald-300 shrink-0">
           SHA-256 VERIFIED
         </Badge>
       </CardHeader>
 
-      <CardContent className="p-3.5 sm:p-5 space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          <div className="rounded-lg border border-white/[0.08] bg-slate-950/60 p-3 space-y-1">
+      <CardContent className="p-3.5 space-y-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+          <div className="rounded-md border border-border p-2.5 space-y-1" style={{ backgroundColor: "var(--jp-bg-root)" }}>
             <span className="text-[10px] font-mono text-muted-foreground uppercase flex items-center gap-1.5">
               <Cpu className="w-3.5 h-3.5 text-primary" />
               Source Service
@@ -51,7 +51,7 @@ export function EvidenceProvenanceCard({ provenance }: EvidenceProvenanceProps) 
             </span>
           </div>
 
-          <div className="rounded-lg border border-white/[0.08] bg-slate-950/60 p-3 space-y-1">
+          <div className="rounded-md border border-border p-2.5 space-y-1" style={{ backgroundColor: "var(--jp-bg-root)" }}>
             <span className="text-[10px] font-mono text-muted-foreground uppercase flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
               AI Model ID
@@ -64,7 +64,7 @@ export function EvidenceProvenanceCard({ provenance }: EvidenceProvenanceProps) 
             </span>
           </div>
 
-          <div className="rounded-lg border border-white/[0.08] bg-slate-950/60 p-3 space-y-1">
+          <div className="rounded-md border border-border p-2.5 space-y-1" style={{ backgroundColor: "var(--jp-bg-root)" }}>
             <span className="text-[10px] font-mono text-muted-foreground uppercase flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5 text-sky-400" />
               Evaluation Time
@@ -77,7 +77,7 @@ export function EvidenceProvenanceCard({ provenance }: EvidenceProvenanceProps) 
             </span>
           </div>
 
-          <div className="rounded-lg border border-white/[0.08] bg-slate-950/60 p-3 space-y-1">
+          <div className="rounded-md border border-border p-2.5 space-y-1" style={{ backgroundColor: "var(--jp-bg-root)" }}>
             <span className="text-[10px] font-mono text-muted-foreground uppercase flex items-center gap-1.5">
               <Key className="w-3.5 h-3.5 text-amber-400" />
               Integrity Status
@@ -94,11 +94,11 @@ export function EvidenceProvenanceCard({ provenance }: EvidenceProvenanceProps) 
 
         {/* Full SHA-256 Hash Display */}
         {integrityHash && (
-          <div className="rounded-lg border border-white/[0.08] bg-slate-950/40 p-3 space-y-1">
+          <div className="rounded-md border border-border p-2.5 space-y-1" style={{ backgroundColor: "var(--jp-bg-root)" }}>
             <span className="text-[10px] font-mono text-muted-foreground uppercase block">
               Cryptographic Artifact Hash (SHA-256)
             </span>
-            <code className="text-[11px] font-mono text-primary break-all block selection:bg-primary/30">
+            <code className="text-[11px] font-mono break-all block" style={{ color: "var(--jp-primary)" }}>
               {integrityHash}
             </code>
           </div>

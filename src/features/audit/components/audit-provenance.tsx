@@ -11,8 +11,8 @@ interface AuditProvenanceProps {
 
 export function AuditProvenanceCard({ provenance }: AuditProvenanceProps) {
   return (
-    <Card className="border-border bg-card">
-      <CardHeader className="p-3.5 sm:p-4 pb-2 border-b border-white/[0.08] flex flex-row items-center justify-between space-y-0">
+    <Card className="jp-card">
+      <CardHeader className="p-3.5 pb-2.5 border-b border-border flex flex-row items-center justify-between">
         <div className="flex items-center gap-2 min-w-0">
           <Database className="w-4 h-4 text-primary shrink-0" />
           <CardTitle className="text-sm font-semibold text-foreground truncate">
@@ -24,9 +24,9 @@ export function AuditProvenanceCard({ provenance }: AuditProvenanceProps) {
         </span>
       </CardHeader>
 
-      <CardContent className="p-3.5 sm:p-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          <div className="rounded-lg border border-white/[0.06] bg-slate-950/40 p-3 space-y-1">
+      <CardContent className="p-3.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+          <div className="rounded-md border border-border p-2.5 space-y-1" style={{ backgroundColor: "var(--jp-bg-root)" }}>
             <span className="text-[10px] font-mono text-muted-foreground uppercase flex items-center gap-1.5">
               <Server className="w-3.5 h-3.5 text-primary" />
               Source Service
@@ -39,7 +39,7 @@ export function AuditProvenanceCard({ provenance }: AuditProvenanceProps) {
             </span>
           </div>
 
-          <div className="rounded-lg border border-white/[0.06] bg-slate-950/40 p-3 space-y-1">
+          <div className="rounded-md border border-border p-2.5 space-y-1" style={{ backgroundColor: "var(--jp-bg-root)" }}>
             <span className="text-[10px] font-mono text-muted-foreground uppercase flex items-center gap-1.5">
               <GitFork className="w-3.5 h-3.5 text-emerald-400" />
               Correlation ID
@@ -52,7 +52,7 @@ export function AuditProvenanceCard({ provenance }: AuditProvenanceProps) {
             </span>
           </div>
 
-          <div className="rounded-lg border border-white/[0.06] bg-slate-950/40 p-3 space-y-1">
+          <div className="rounded-md border border-border p-2.5 space-y-1" style={{ backgroundColor: "var(--jp-bg-root)" }}>
             <span className="text-[10px] font-mono text-muted-foreground uppercase flex items-center gap-1.5">
               <Hash className="w-3.5 h-3.5 text-sky-400" />
               Request ID
@@ -65,7 +65,7 @@ export function AuditProvenanceCard({ provenance }: AuditProvenanceProps) {
             </span>
           </div>
 
-          <div className="rounded-lg border border-white/[0.06] bg-slate-950/40 p-3 space-y-1">
+          <div className="rounded-md border border-border p-2.5 space-y-1" style={{ backgroundColor: "var(--jp-bg-root)" }}>
             <span className="text-[10px] font-mono text-muted-foreground uppercase block">
               Event Schema Version
             </span>

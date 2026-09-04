@@ -22,8 +22,8 @@ export function ForensicInspector({ signals = [], onSelectSignal }: ForensicInsp
   const hasSignals = signals.length > 0;
 
   return (
-    <Card className="border-border bg-card">
-      <CardHeader className="p-3.5 sm:p-4 pb-3 border-b border-white/[0.08] flex flex-col xs:flex-row xs:items-center xs:justify-between gap-2 space-y-0">
+    <Card className="jp-card">
+      <CardHeader className="p-3.5 pb-2.5 border-b border-border flex flex-col xs:flex-row xs:items-center xs:justify-between gap-2">
         <div className="flex items-center gap-2 min-w-0">
           <Sparkles className="w-4 h-4 text-primary shrink-0" />
           <CardTitle className="text-sm font-semibold text-foreground truncate">
@@ -35,10 +35,10 @@ export function ForensicInspector({ signals = [], onSelectSignal }: ForensicInsp
         </span>
       </CardHeader>
 
-      <CardContent className="p-3.5 sm:p-5 space-y-4">
+      <CardContent className="p-3.5 space-y-3">
         {/* Mode Selector & Controls */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 rounded-lg border border-white/[0.08] bg-slate-950/60 backdrop-blur-sm">
-          {/* Visualization Modes Pills - Touch Friendly */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 p-2.5 rounded-md border border-border" style={{ backgroundColor: "var(--jp-bg-root)" }}>
+          {/* Visualization Modes Pills */}
           <div className="flex flex-wrap items-center gap-1">
             {(
               [
@@ -54,7 +54,7 @@ export function ForensicInspector({ signals = [], onSelectSignal }: ForensicInsp
                 variant={mode === m ? "secondary" : "ghost"}
                 size="sm"
                 onClick={() => setMode(m)}
-                className="h-7 px-2 sm:px-2.5 text-[10px] sm:text-[11px] font-mono min-h-[28px]"
+                className="h-6 px-2 text-[10px] font-mono min-h-[24px]"
               >
                 {m.replace("_", " ")}
               </Button>
@@ -62,7 +62,7 @@ export function ForensicInspector({ signals = [], onSelectSignal }: ForensicInsp
           </div>
 
           {/* Opacity Slider Control */}
-          <div className="flex items-center gap-2 min-w-[130px] self-end sm:self-auto">
+          <div className="flex items-center gap-2 min-w-[120px] self-end sm:self-auto">
             <Sliders className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
             <span className="text-[10px] font-mono text-muted-foreground uppercase shrink-0">
               Opacity: {opacity}%
@@ -73,7 +73,8 @@ export function ForensicInspector({ signals = [], onSelectSignal }: ForensicInsp
               max="100"
               value={opacity}
               onChange={(e) => setOpacity(Number(e.target.value))}
-              className="w-20 h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary"
+              className="w-16 h-1.5 rounded-lg appearance-none cursor-pointer accent-primary"
+              style={{ backgroundColor: "var(--jp-border-default)" }}
               aria-label="Forensic overlay opacity"
             />
           </div>
@@ -81,8 +82,8 @@ export function ForensicInspector({ signals = [], onSelectSignal }: ForensicInsp
 
         {/* Forensic Signals Stream / Table */}
         {hasSignals ? (
-          <div className="space-y-2.5">
-            <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider block">
+          <div className="space-y-2">
+            <span className="text-[11px] font-semibold text-muted-foreground uppercase block">
               Logged Anomaly Telemetry
             </span>
             <div className="space-y-2">
@@ -90,9 +91,10 @@ export function ForensicInspector({ signals = [], onSelectSignal }: ForensicInsp
                 <div
                   key={sig.id}
                   onClick={() => onSelectSignal?.(sig)}
-                  className="rounded-lg border border-rose-500/30 bg-rose-950/20 p-3 space-y-1 cursor-pointer hover:border-rose-500/50 hover:bg-rose-950/30 transition-all shadow-[0_0_15px_-3px_rgba(244,63,94,0.15)]"
+                  className="rounded-md border border-rose-500/30 p-2.5 space-y-1 cursor-pointer transition-all"
+                  style={{ backgroundColor: "var(--jp-status-high-bg)" }}
                 >
-                  <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
                     <div className="flex items-center gap-2">
                       <ShieldAlert className="w-4 h-4 text-rose-400 shrink-0" />
                       <span className="font-mono text-xs font-bold text-rose-300">
@@ -103,7 +105,7 @@ export function ForensicInspector({ signals = [], onSelectSignal }: ForensicInsp
                       CONFIDENCE: {Math.round(sig.confidence * 100)}%
                     </Badge>
                   </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed pt-0.5">
+                  <p className="text-xs text-muted-foreground leading-relaxed pt-0.5 m-0">
                     {sig.description}
                   </p>
                 </div>
@@ -111,7 +113,7 @@ export function ForensicInspector({ signals = [], onSelectSignal }: ForensicInsp
             </div>
           </div>
         ) : (
-          <div className="p-6 text-center text-xs font-mono text-muted-foreground border border-dashed border-white/[0.08] rounded-lg">
+          <div className="p-5 text-center text-xs font-mono text-muted-foreground border border-dashed border-border rounded-md">
             No Digital Manipulation Signals Logged
           </div>
         )}

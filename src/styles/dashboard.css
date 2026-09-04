@@ -1,0 +1,236 @@
+/* ==========================================================================
+   JANPRAMAAN — Operational Dashboard Styles
+   ========================================================================== */
+
+.jp-dashboard-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   Metric Cards Grid (.jp-metric-grid)
+   -------------------------------------------------------------------------- */
+.jp-metric-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .jp-metric-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .jp-metric-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .jp-metric-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.jp-metric-card {
+  padding: 1.25rem;
+  background-color: var(--jp-bg-surface);
+  border: 1px solid var(--jp-border-subtle);
+  border-radius: var(--jp-radius-lg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.625rem;
+  transition: border-color var(--jp-transition-fast), background-color var(--jp-transition-fast), transform var(--jp-transition-fast), box-shadow var(--jp-transition-fast);
+}
+
+.jp-metric-card:hover {
+  border-color: var(--jp-border-strong);
+  background-color: var(--jp-bg-surface);
+  transform: translateY(-2px);
+  box-shadow: var(--jp-shadow-sm);
+}
+
+.jp-metric-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.jp-metric-card-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--jp-text-muted);
+}
+
+.jp-metric-card-icon-wrap {
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: var(--jp-radius-md);
+  background-color: var(--jp-bg-elevated);
+  border: 1px solid var(--jp-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.jp-metric-card-value {
+  font-family: var(--jp-font-mono);
+  font-size: 1.875rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--jp-text-primary);
+  line-height: 2.125rem;
+}
+
+.jp-metric-card-subtext {
+  font-size: 0.8125rem;
+  color: var(--jp-text-secondary);
+  line-height: 1.125rem;
+}
+
+.jp-metric-card-notice {
+  font-family: var(--jp-font-mono);
+  font-size: 0.75rem;
+  color: var(--jp-text-muted);
+  border-top: 1px solid var(--jp-border-subtle);
+  padding-top: 0.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   Risk Distribution Section
+   -------------------------------------------------------------------------- */
+.jp-risk-tier-row {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: var(--jp-radius-lg);
+  border: 1px solid transparent;
+}
+
+@media (min-width: 640px) {
+  .jp-risk-tier-row {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.jp-risk-tier-low {
+  background-color: var(--jp-status-low-bg);
+  border-color: var(--jp-status-low-border);
+}
+
+.jp-risk-tier-medium {
+  background-color: var(--jp-status-medium-bg);
+  border-color: var(--jp-status-medium-border);
+}
+
+.jp-risk-tier-high {
+  background-color: var(--jp-status-high-bg);
+  border-color: var(--jp-status-high-border);
+}
+
+.jp-risk-stat-value {
+  font-family: var(--jp-font-mono);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   Activity Telemetry & Interval Cards
+   -------------------------------------------------------------------------- */
+.jp-interval-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.625rem;
+}
+
+@media (min-width: 640px) {
+  .jp-interval-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.jp-interval-card {
+  padding: 0.625rem;
+  background-color: var(--jp-bg-elevated);
+  border: 1px solid var(--jp-border-subtle);
+  border-radius: var(--jp-radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* --------------------------------------------------------------------------
+   Event Stream Items
+   -------------------------------------------------------------------------- */
+.jp-event-item {
+  padding: 0.625rem 0;
+  border-bottom: 1px solid var(--jp-border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+@media (min-width: 640px) {
+  .jp-event-item {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+}
+
+.jp-event-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Quick Action Cards
+   -------------------------------------------------------------------------- */
+.jp-action-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .jp-action-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .jp-action-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.jp-action-card {
+  padding: 1.25rem;
+  border-radius: var(--jp-radius-lg);
+  border: 1px solid var(--jp-border-subtle);
+  background-color: var(--jp-bg-surface);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+  text-decoration: none;
+  transition: all var(--jp-transition-fast);
+}
+
+.jp-action-card:hover {
+  border-color: var(--jp-border-strong);
+  background-color: var(--jp-bg-surface);
+  transform: translateY(-2px);
+  box-shadow: var(--jp-shadow-sm);
+}

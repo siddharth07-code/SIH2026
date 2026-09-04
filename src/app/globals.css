@@ -1,64 +1,64 @@
+@import "../styles/tokens.css";
+@import "../styles/components.css";
+@import "../styles/layout.css";
+@import "../styles/dashboard.css";
+@import "../styles/verifications.css";
+@import "../styles/evidence.css";
+@import "../styles/audit.css";
+@import "../styles/auth.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    /* Glassmorphic Security Operations Center Dark Palette */
-    --background: 224 45% 4%;
-    --foreground: 210 40% 98%;
+    --background: 220 20% 98%;
+    --foreground: 221 39% 11%;
 
-    --card: 222 47% 7%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 221 39% 11%;
 
-    --popover: 222 47% 6%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 221 39% 11%;
 
-    --primary: 217 91% 60%;
-    --primary-foreground: 222 47% 6%;
+    --primary: 221 39% 11%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217 33% 14%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 221 39% 11%;
 
-    --muted: 217 33% 12%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
 
-    --accent: 217 33% 18%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 220 14% 94%;
+    --accent-foreground: 221 39% 11%;
 
-    --destructive: 350 89% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217 33% 16%;
-    --input: 217 33% 16%;
-    --ring: 224 76% 55%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 221 39% 11%;
 
-    --radius: 0.5rem;
+    --radius: 0.375rem;
 
-    /* Glass Surface Tokens */
-    --glass-base: rgba(13, 19, 33, 0.7);
-    --glass-surface: rgba(18, 26, 44, 0.65);
-    --glass-elevated: rgba(24, 34, 58, 0.75);
-    --glass-highlight: rgba(255, 255, 255, 0.08);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --glass-glow: rgba(59, 130, 246, 0.15);
+    /* Backward compatibility tokens */
+    --status-low-bg: 151 81% 96%;
+    --status-low-text: 158 64% 27%;
+    --status-low-border: 156 72% 82%;
 
-    /* Operational Risk and Status Tokens */
-    --status-low-bg: 152 69% 10%;
-    --status-low-text: 142 76% 48%;
-    --status-low-border: 152 69% 25%;
+    --status-medium-bg: 48 100% 96%;
+    --status-medium-text: 32 95% 30%;
+    --status-medium-border: 48 96% 76%;
 
-    --status-medium-bg: 38 92% 10%;
-    --status-medium-text: 38 92% 52%;
-    --status-medium-border: 38 92% 26%;
+    --status-high-bg: 0 86% 97%;
+    --status-high-text: 0 74% 42%;
+    --status-high-border: 0 93% 82%;
 
-    --status-high-bg: 350 89% 10%;
-    --status-high-text: 350 89% 65%;
-    --status-high-border: 350 89% 28%;
-
-    --status-info-bg: 217 91% 10%;
-    --status-info-text: 217 91% 68%;
-    --status-info-border: 217 91% 28%;
+    --status-info-bg: 204 100% 97%;
+    --status-info-text: 200 98% 29%;
+    --status-info-border: 199 95% 84%;
 
     --status-success-bg: 152 69% 10%;
     --status-success-text: 142 76% 48%;
@@ -72,105 +72,149 @@
     --status-error-text: 350 89% 65%;
     --status-error-border: 350 89% 28%;
   }
-}
 
-@layer base {
   * {
-    @apply border-border;
+    border-color: var(--jp-border-subtle);
+    box-sizing: border-box;
   }
+
   html {
-    @apply antialiased overflow-x-hidden;
+    overflow-x: hidden;
     -webkit-text-size-adjust: 100%;
+    background-color: var(--jp-bg-root);
+    color: var(--jp-text-primary);
+    font-size: 16px;
   }
+
+  @media (min-width: 1280px) {
+    html {
+      font-size: 16.5px;
+    }
+  }
+
+  @media (min-width: 1536px) {
+    html {
+      font-size: 17px;
+    }
+  }
+
   body {
-    @apply bg-background text-foreground antialiased selection:bg-primary/25 selection:text-primary-foreground min-h-screen w-full overflow-x-hidden;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    background-color: var(--jp-bg-root);
+    color: var(--jp-text-primary);
+    font-family: var(--jp-font-sans);
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum" 1;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
+    margin: 0;
   }
 }
 
-/* Glassmorphism System Utility Classes with Mobile-Optimized Blur */
-@layer utilities {
-  /* Level 1: Primary Glass Surface */
-  .glass-panel {
-    background-color: rgba(13, 20, 36, 0.75);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  }
-
-  /* Level 2: Elevated Glass Panel */
-  .glass-panel-elevated {
-    background-color: rgba(19, 29, 52, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.45);
-  }
-
-  /* Level 3: Active / Focused Glass Surface */
-  .glass-panel-active {
-    background-color: rgba(30, 48, 86, 0.88);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(59, 130, 246, 0.35);
-    box-shadow: 0 0 20px 0 rgba(59, 130, 246, 0.2);
-  }
-
-  /* Level 4: Modal & Deep Overlay */
-  .glass-modal {
-    background-color: rgba(8, 13, 26, 0.96);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.75);
-  }
-
-  /* Ambient Glass Highlight Line */
-  .glass-highlight {
-    position: relative;
-  }
-  .glass-highlight::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.15) 50%,
-      transparent 100%
-    );
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  /* Ambient Background Radial Glows */
-  .bg-ambient-mesh {
-    background-image:
-      radial-gradient(ellipse 60% 40% at 15% 0%, rgba(30, 64, 175, 0.16), transparent 70%),
-      radial-gradient(ellipse 50% 35% at 85% 10%, rgba(14, 165, 233, 0.12), transparent 65%),
-      radial-gradient(ellipse 60% 50% at 50% 100%, rgba(30, 58, 138, 0.12), transparent 70%);
-  }
-}
-
-/* Custom Scrollbar */
+/* Custom Minimalist Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(10, 15, 28, 0.5);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.14);
-  border-radius: 9999px;
+  background: var(--jp-border-strong);
+  border-radius: var(--jp-radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: var(--jp-text-dim);
+}
+
+@layer utilities {
+  .glass-highlight,
+  .backdrop-blur-xl,
+  .backdrop-blur-2xl {
+    backdrop-filter: none;
+  }
+}
+
+.text-emerald-300,
+.text-emerald-400 {
+  color: var(--jp-status-low-text) !important;
+}
+
+.text-amber-300,
+.text-amber-400 {
+  color: var(--jp-status-medium-text) !important;
+}
+
+.text-rose-300,
+.text-rose-400 {
+  color: var(--jp-status-high-text) !important;
+}
+
+.text-sky-300,
+.text-sky-400 {
+  color: var(--jp-status-info-text) !important;
+}
+
+.border-emerald-400,
+.border-emerald-500\/30 {
+  border-color: var(--jp-status-low-border) !important;
+}
+
+.border-amber-400,
+.border-amber-500\/30 {
+  border-color: var(--jp-status-medium-border) !important;
+}
+
+.border-rose-400,
+.border-rose-500\/30,
+.border-rose-500\/60 {
+  border-color: var(--jp-status-high-border) !important;
+}
+
+.border-sky-400,
+.border-sky-500\/30 {
+  border-color: var(--jp-status-info-border) !important;
+}
+
+.bg-emerald-400,
+.bg-emerald-500 {
+  background-color: var(--jp-status-low-text) !important;
+}
+
+.bg-amber-400,
+.bg-amber-500 {
+  background-color: var(--jp-status-medium-text) !important;
+}
+
+.bg-rose-400,
+.bg-rose-500,
+.bg-rose-600 {
+  background-color: var(--jp-status-high-text) !important;
+}
+
+.bg-sky-400,
+.bg-sky-500,
+.bg-sky-600 {
+  background-color: var(--jp-status-info-text) !important;
+}
+
+.bg-emerald-500\/15 {
+  background-color: var(--jp-status-low-bg) !important;
+}
+
+.bg-amber-500\/15 {
+  background-color: var(--jp-status-medium-bg) !important;
+}
+
+.bg-rose-500\/15,
+.hover\:bg-rose-500\/10:hover {
+  background-color: var(--jp-status-high-bg) !important;
+}
+
+.bg-sky-500\/15 {
+  background-color: var(--jp-status-info-bg) !important;
 }

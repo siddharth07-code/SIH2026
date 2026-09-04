@@ -1,0 +1,39 @@
+/* ==========================================================================
+   JANPRAMAAN — Immutable Audit Trail & Provenance Styles
+   ========================================================================== */
+
+.jp-audit-center {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.jp-integrity-banner {
+  padding: 0.875rem 1.25rem;
+  background-color: var(--jp-bg-surface);
+  border: 1px solid var(--jp-border-subtle);
+  border-radius: var(--jp-radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .jp-integrity-banner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.jp-hash-pill {
+  font-family: var(--jp-font-mono);
+  font-size: 0.6875rem;
+  background-color: var(--jp-bg-elevated);
+  border: 1px solid var(--jp-border-subtle);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--jp-radius-sm);
+  color: var(--jp-text-secondary);
+  word-break: break-all;
+}

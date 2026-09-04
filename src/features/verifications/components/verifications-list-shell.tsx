@@ -116,7 +116,7 @@ export function VerificationsListShell() {
         title="Verification Screening Management"
         description="Operational triage queue for identity verifications, MRZ checksum validations, and forensic inspection records."
         badge={
-          <Badge variant="glass" className="text-xs font-mono text-primary">
+          <Badge variant="outline" className="text-xs font-mono" style={{ color: "var(--jp-primary)", borderColor: "var(--jp-primary-border)" }}>
             {pagination?.total ? `${pagination.total} CASES IN QUEUE` : "REAL-TIME QUEUE"}
           </Badge>
         }
@@ -142,7 +142,7 @@ export function VerificationsListShell() {
         isFiltered={isFiltered}
       />
 
-      {/* Queue Table with Controlled Responsive Scrolling and Adaptive Columns */}
+      {/* Queue Table */}
       <div className="space-y-4 max-w-full overflow-x-hidden">
         <DataTableShell
           isLoading={isLoading}
@@ -168,29 +168,29 @@ export function VerificationsListShell() {
               : "Screening sessions submitted from authorized checkpoint mobile terminals will appear in real-time."
           }
         >
-          <thead className="border-b border-white/[0.08] bg-slate-950/60">
-            <tr className="text-xs font-semibold text-muted-foreground uppercase text-left">
-              <th className="p-3 pl-4">Risk Evaluation</th>
-              <th className="p-3">Tracking ID</th>
-              <th className="p-3">Document Info</th>
-              <th className="p-3 hidden md:table-cell">Checkpoint / Unit</th>
-              <th className="p-3 hidden lg:table-cell">Officer</th>
-              <th className="p-3">Operational Status</th>
-              <th className="p-3 hidden sm:table-cell">Submitted At</th>
-              <th className="p-3 pr-4 text-right">Action</th>
+          <thead className="jp-table-thead">
+            <tr>
+              <th className="jp-table-th">Risk Evaluation</th>
+              <th className="jp-table-th">Tracking ID</th>
+              <th className="jp-table-th">Document Info</th>
+              <th className="jp-table-th hidden md:table-cell">Checkpoint / Unit</th>
+              <th className="jp-table-th hidden lg:table-cell">Officer</th>
+              <th className="jp-table-th">Operational Status</th>
+              <th className="jp-table-th hidden sm:table-cell">Submitted At</th>
+              <th className="jp-table-th text-right">Action</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/[0.06] text-xs">
+          <tbody className="jp-table-tbody">
             {items?.map((item) => (
-              <tr key={item.id} className="hover:bg-white/[0.04] transition-colors">
-                <td className="p-3 pl-4">
+              <tr key={item.id} className="jp-table-tr">
+                <td className="jp-table-td">
                   {item.riskLevel ? (
                     <StatusIndicator status={item.riskLevel} size="sm" />
                   ) : (
                     <span className="text-muted-foreground font-mono">—</span>
                   )}
                 </td>
-                <td className="p-3 font-mono font-semibold text-foreground">
+                <td className="jp-table-td font-mono font-semibold text-foreground">
                   <div className="space-y-0.5">
                     <span>{item.trackingNumber}</span>
                     <span className="text-[10px] text-muted-foreground font-sans block md:hidden">
@@ -198,7 +198,7 @@ export function VerificationsListShell() {
                     </span>
                   </div>
                 </td>
-                <td className="p-3">
+                <td className="jp-table-td">
                   <div className="space-y-0.5">
                     <span className="font-medium text-foreground">{item.documentType}</span>
                     <span className="text-[11px] font-mono text-muted-foreground block">
@@ -206,10 +206,10 @@ export function VerificationsListShell() {
                     </span>
                   </div>
                 </td>
-                <td className="p-3 text-foreground hidden md:table-cell">
+                <td className="jp-table-td text-foreground hidden md:table-cell">
                   {item.checkpointName}
                 </td>
-                <td className="p-3 hidden lg:table-cell">
+                <td className="jp-table-td hidden lg:table-cell">
                   <div className="space-y-0.5">
                     <span className="text-foreground">{item.officerName}</span>
                     <span className="text-[11px] font-mono text-muted-foreground block">
@@ -217,15 +217,13 @@ export function VerificationsListShell() {
                     </span>
                   </div>
                 </td>
-                <td className="p-3">
-                  <Badge variant="outline" className="text-[10px] font-mono whitespace-nowrap">
-                    {item.status.replace("_", " ")}
-                  </Badge>
+                <td className="jp-table-td">
+                  <StatusIndicator status={item.status} size="sm" showIcon={false} />
                 </td>
-                <td className="p-3 text-muted-foreground font-mono hidden sm:table-cell">
+                <td className="jp-table-td text-muted-foreground font-mono hidden sm:table-cell">
                   {formatDateTime(item.submittedAt)}
                 </td>
-                <td className="p-3 pr-4 text-right">
+                <td className="jp-table-td text-right">
                   <Link href={`/verifications/${item.id}`}>
                     <Button variant="outline" size="sm" className="gap-1.5 text-xs h-7 px-2.5">
                       <Eye className="w-3.5 h-3.5" />

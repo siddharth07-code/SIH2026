@@ -1,0 +1,171 @@
+/* ==========================================================================
+   JANPRAMAAN — Verification Management & Dossier Styles
+   ========================================================================== */
+
+.jp-filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding: 0.75rem;
+  background-color: var(--jp-bg-surface);
+  border: 1px solid var(--jp-border-subtle);
+  border-radius: var(--jp-radius-md);
+}
+
+@media (min-width: 768px) {
+  .jp-filter-bar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.jp-select {
+  height: 2.25rem;
+  border-radius: var(--jp-radius-md);
+  border: 1px solid var(--jp-border-default);
+  background-color: var(--jp-bg-surface);
+  color: var(--jp-text-primary);
+  font-family: var(--jp-font-sans);
+  font-size: 0.75rem;
+  padding: 0 0.625rem;
+  outline: none;
+  cursor: pointer;
+  transition: border-color var(--jp-transition-fast);
+}
+
+.jp-select:focus {
+  border-color: var(--jp-primary);
+}
+
+/* --------------------------------------------------------------------------
+   Case Dossier Metadata (.jp-dossier-meta-grid)
+   -------------------------------------------------------------------------- */
+.jp-dossier-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .jp-dossier-meta-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .jp-dossier-meta-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.jp-dossier-meta-card {
+  padding: 0.75rem 0.875rem;
+  background-color: var(--jp-bg-surface);
+  border: 1px solid var(--jp-border-subtle);
+  border-radius: var(--jp-radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.jp-dossier-meta-label {
+  font-family: var(--jp-font-mono);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  color: var(--jp-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.jp-dossier-meta-val {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--jp-text-primary);
+}
+
+.jp-dossier-meta-sub {
+  font-family: var(--jp-font-mono);
+  font-size: 0.6875rem;
+  color: var(--jp-text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   Findings List & Signal Cards
+   -------------------------------------------------------------------------- */
+.jp-finding-card {
+  padding: 0.75rem;
+  background-color: var(--jp-bg-surface);
+  border: 1px solid var(--jp-border-subtle);
+  border-radius: var(--jp-radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  transition: border-color var(--jp-transition-fast);
+}
+
+.jp-finding-card:hover {
+  border-color: var(--jp-border-default);
+}
+
+.jp-evidence-signal-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .jp-evidence-signal-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .jp-evidence-signal-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.jp-evidence-signal-card {
+  padding: 0.875rem;
+  background-color: var(--jp-bg-surface);
+  border: 1px solid var(--jp-border-subtle);
+  border-radius: var(--jp-radius-lg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.625rem;
+}
+
+/* --------------------------------------------------------------------------
+   Timeline Nodes
+   -------------------------------------------------------------------------- */
+.jp-timeline-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  position: relative;
+  padding-left: 1.25rem;
+  border-left: 1px solid var(--jp-border-default);
+  margin-left: 0.5rem;
+}
+
+.jp-timeline-node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.jp-timeline-dot {
+  position: absolute;
+  left: -1.5625rem;
+  top: 0.25rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: var(--jp-radius-full);
+  background-color: var(--jp-primary);
+  border: 2px solid var(--jp-bg-surface);
+}

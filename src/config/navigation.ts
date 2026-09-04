@@ -19,23 +19,68 @@ export const navigationConfig: NavSection[] = [
     title: "Operations",
     items: [
       {
-        title: "Command Center",
+        title: "Dashboard",
         href: "/dashboard",
         icon: "LayoutDashboard",
-        description: "Live operational overview and risk alerts",
+        description: "Overview, queues, and risk alerts",
         roles: ["OFFICER", "SUPERVISOR", "ADMINISTRATOR"],
       },
       {
         title: "Verifications",
         href: "/verifications",
         icon: "FileCheck",
-        description: "Document screening queue and active cases",
+        description: "Document screening queue and active screening",
         roles: ["OFFICER", "SUPERVISOR", "ADMINISTRATOR"],
+      },
+      {
+        title: "Cases",
+        href: "/cases",
+        icon: "Briefcase",
+        badge: "Triage",
+        description: "Assigned investigation cases and resolution",
+        roles: ["OFFICER", "SUPERVISOR", "ADMINISTRATOR"],
+      },
+      {
+        title: "Checkpoints",
+        href: "/checkpoints",
+        icon: "Radio",
+        badge: "Live",
+        description: "Terminal gates and mobile ingest nodes",
+        roles: ["SUPERVISOR", "ADMINISTRATOR"],
       },
     ],
   },
   {
-    title: "Intelligence & Governance",
+    title: "Intelligence & Forensics",
+    items: [
+      {
+        title: "Analytics",
+        href: "/analytics",
+        icon: "BarChart3",
+        badge: "Trends",
+        description: "Screening throughput, fraud trends, and metrics",
+        roles: ["SUPERVISOR", "ADMINISTRATOR"],
+      },
+      {
+        title: "MRZ Engine",
+        href: "/mrz-validator",
+        icon: "Binary",
+        badge: "ICAO 9303",
+        description: "Algorithmic check digit & checksum inspector",
+        roles: ["OFFICER", "SUPERVISOR", "ADMINISTRATOR"],
+      },
+      {
+        title: "Forensic Studio",
+        href: "/forensics",
+        icon: "Layers",
+        badge: "Lab",
+        description: "Multi-spectral ELA and tampering analysis",
+        roles: ["SUPERVISOR", "ADMINISTRATOR"],
+      },
+    ],
+  },
+  {
+    title: "Governance",
     items: [
       {
         title: "Audit Trail",

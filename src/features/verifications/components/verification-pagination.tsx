@@ -30,8 +30,7 @@ export function VerificationPagination({
   const endRecord = totalRecords && totalRecords > 0 ? Math.min(currentPage * pageSize, totalRecords) : 0;
 
   return (
-    <div className="rounded-lg border border-white/[0.08] bg-slate-900/60 backdrop-blur-xl p-3 sm:p-3.5 flex flex-col xs:flex-row items-stretch xs:items-center justify-between gap-3 text-xs shadow-md">
-      {/* Records Count Info */}
+    <div className="rounded-lg border bg-card p-3 sm:p-3.5 flex flex-col xs:flex-row items-stretch xs:items-center justify-between gap-3 text-xs">
       <div className="text-muted-foreground text-center xs:text-left">
         {totalRecords !== undefined ? (
           <span>
@@ -44,15 +43,13 @@ export function VerificationPagination({
         )}
       </div>
 
-      {/* Pagination Controls & Page Size Selector */}
       <div className="flex items-center justify-between xs:justify-end gap-3 sm:gap-4">
-        {/* Page Size Selector */}
         <div className="flex items-center gap-1.5">
           <span className="text-muted-foreground text-[11px] uppercase">Per page:</span>
           <select
             value={pageSize}
             onChange={(e) => onPageSizeChange(Number(e.target.value))}
-            className="h-8 rounded-md border border-white/10 bg-slate-950/70 px-2 py-0.5 text-xs text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary backdrop-blur-sm"
+            className="h-8 rounded-md border bg-background px-2 py-0.5 text-xs text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             aria-label="Records per page"
           >
             <option value={10}>10</option>
@@ -61,7 +58,6 @@ export function VerificationPagination({
           </select>
         </div>
 
-        {/* Previous / Next Page Navigation */}
         <div className="flex items-center gap-1.5">
           <span className="text-muted-foreground font-mono text-[11px] mr-1 hidden sm:inline">
             Page {currentPage} of {totalPages}

@@ -18,16 +18,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const refreshUser = React.useCallback(async () => {
     setState((prev) => ({ ...prev, status: "LOADING", error: null }));
+    const storedToken = typeof window !== "undefined" ? localStorage.getItem("janpramaan_token") : null;
+    if (!storedToken) {
+      setState({
+        status: "UNAUTHENTICATED",
+        user: null,
+        session: null,
+        error: null,
+      });
+      return;
+    }
     try {
-      const user = await authApi.getCurrentUser();
+      const user = await authApi.getCurrentUser(storedToken);
       setState({
         status: "AUTHENTICATED",
         user,
-        session: { user, sessionType: "COOKIE" },
+        session: { user, token: storedToken, sessionType: "BEARER" },
         error: null,
       });
     } catch {
-      // If backend has no active session or is unavailable, state is UNAUTHENTICATED
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("janpramaan_token");
+      }
       setState({
         status: "UNAUTHENTICATED",
         user: null,
@@ -46,6 +58,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setState((prev) => ({ ...prev, status: "LOADING", error: null }));
       try {
         const response = await authApi.login(credentials);
+        if (response.token && typeof window !== "undefined") {
+          localStorage.setItem("janpramaan_token", response.token);
+        }
         setState({
           status: "AUTHENTICATED",
           user: response.user,
@@ -77,6 +92,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch {
       // Even if network request fails, clear local auth state unconditionally
     } finally {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("janpramaan_token");
+      }
       setState({
         status: "UNAUTHENTICATED",
         user: null,

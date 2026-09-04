@@ -19,18 +19,15 @@ export function ErrorState({
   return (
     <div
       role="alert"
-      className={cn(
-        "flex flex-col items-center justify-center p-8 sm:p-10 text-center rounded-lg border border-rose-500/25 bg-rose-950/15 backdrop-blur-xl shadow-lg shadow-black/20 min-h-[240px] glass-highlight",
-        className
-      )}
+      className={cn("jp-state-box", className)}
     >
-      <div className="w-12 h-12 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-400 flex items-center justify-center mb-4 shadow-[0_0_15px_-3px_rgba(244,63,94,0.3)]">
-        <OctagonAlert className="w-6 h-6" aria-hidden="true" />
+      <div className="jp-state-icon jp-state-icon-error">
+        <OctagonAlert className="w-5 h-5" aria-hidden="true" />
       </div>
-      <h3 className="text-base font-semibold text-foreground mb-1 tracking-tight">{title}</h3>
-      <p className="text-xs text-muted-foreground max-w-md mb-4 leading-relaxed">{message}</p>
+      <h3 className="jp-state-title">{title}</h3>
+      <p className="jp-state-desc">{message}</p>
       {onRetry && (
-        <Button variant="outline" size="sm" onClick={onRetry} className="gap-1.5 border-rose-500/30 hover:bg-rose-500/10">
+        <Button variant="outline" size="sm" onClick={onRetry} className="gap-1.5 mt-1">
           <RefreshCw className="w-3.5 h-3.5" />
           <span>Retry Operation</span>
         </Button>

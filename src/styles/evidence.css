@@ -1,0 +1,110 @@
+/* ==========================================================================
+   JANPRAMAAN — Evidence Investigation & Forensic Inspection Styles
+   ========================================================================== */
+
+.jp-evidence-center {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   Document Inspector Viewport & Canvas Overlay
+   -------------------------------------------------------------------------- */
+.jp-inspector-viewport {
+  position: relative;
+  width: 100%;
+  min-height: 20rem;
+  background-color: var(--jp-bg-elevated);
+  border: 1px solid var(--jp-border-default);
+  border-radius: var(--jp-radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.jp-inspector-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--jp-bg-surface);
+  border: 1px solid var(--jp-border-subtle);
+  border-radius: var(--jp-radius-lg);
+}
+
+/* --------------------------------------------------------------------------
+   Visual OCR ↔ MRZ Field Comparator Table
+   -------------------------------------------------------------------------- */
+.jp-comparator-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+.jp-comparator-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.75rem;
+  background-color: var(--jp-bg-surface);
+  border: 1px solid var(--jp-border-subtle);
+  border-radius: var(--jp-radius-lg);
+  font-size: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .jp-comparator-row {
+    grid-template-columns: 1fr;
+    gap: 0.375rem;
+  }
+}
+
+.jp-comparator-mismatch {
+  background-color: var(--jp-status-high-bg);
+  border-color: var(--jp-status-high-border);
+}
+
+/* --------------------------------------------------------------------------
+   Forensic Heatmaps & Biometric Signals
+   -------------------------------------------------------------------------- */
+.jp-forensic-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .jp-forensic-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .jp-forensic-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.jp-forensic-card {
+  padding: 0.875rem;
+  background-color: var(--jp-bg-surface);
+  border: 1px solid var(--jp-border-subtle);
+  border-radius: var(--jp-radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.jp-biometric-match-box {
+  padding: 1rem;
+  background-color: var(--jp-bg-elevated);
+  border: 1px solid var(--jp-border-subtle);
+  border-radius: var(--jp-radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}

@@ -58,13 +58,8 @@ export function DataTableShell({
   }
 
   return (
-    <div
-      className={cn(
-        "w-full overflow-x-auto rounded-lg border border-white/[0.08] bg-slate-900/60 backdrop-blur-xl shadow-xl shadow-black/30 glass-highlight",
-        className
-      )}
-    >
-      <table className="w-full text-left text-xs caption-bottom divide-y divide-white/[0.06]">
+    <div className={cn("jp-table-wrapper", className)}>
+      <table className="jp-table">
         {children}
       </table>
     </div>

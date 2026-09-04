@@ -28,8 +28,8 @@ export function VerificationActionsPanel({
   };
 
   return (
-    <Card className="h-full border-border bg-card">
-      <CardHeader className="p-3.5 sm:p-4 pb-2 border-b border-white/[0.08] flex flex-row items-center justify-between space-y-0">
+    <Card className="h-full jp-card">
+      <CardHeader className="p-3.5 pb-2.5 border-b border-border flex flex-row items-center justify-between">
         <CardTitle className="text-sm font-semibold text-foreground">
           Supervisory Actions
         </CardTitle>
@@ -38,15 +38,15 @@ export function VerificationActionsPanel({
         </Badge>
       </CardHeader>
 
-      <CardContent className="p-3.5 sm:p-4 space-y-3">
-        <p className="text-xs text-muted-foreground leading-tight">
+      <CardContent className="p-3.5 space-y-3">
+        <p className="text-xs text-muted-foreground leading-tight m-0">
           Authorize document clearance or escalate case for physical secondary inspection.
         </p>
 
         {feedbackNotice && (
-          <div className="rounded-md border border-primary/30 bg-primary/10 p-2.5 text-xs text-primary-foreground space-y-0.5">
+          <div className="rounded-md border border-primary/30 p-2.5 text-xs space-y-0.5" style={{ backgroundColor: "var(--jp-primary-subtle)", color: "var(--jp-text-primary)" }}>
             <span className="font-semibold block text-[11px]">Operational Notice</span>
-            <p className="text-[11px] leading-tight">{feedbackNotice}</p>
+            <p className="text-[11px] leading-tight m-0">{feedbackNotice}</p>
           </div>
         )}
 
@@ -75,7 +75,7 @@ export function VerificationActionsPanel({
         </div>
 
         {!isSupervisorOrAbove && (
-          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground pt-1 border-t border-white/[0.06]">
+          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground pt-1 border-t border-border">
             <Lock className="w-3.5 h-3.5 shrink-0" />
             <span>Supervisory clearance required to execute determinations.</span>
           </div>

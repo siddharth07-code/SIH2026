@@ -10,7 +10,7 @@ export default function AuditPage() {
   return (
     <React.Suspense
       fallback={
-        <div className="p-8 sm:p-12 text-center text-xs font-mono text-muted-foreground bg-slate-900/50 rounded-lg border border-white/[0.08] animate-pulse">
+        <div className="p-8 sm:p-12 text-center text-xs font-mono text-muted-foreground bg-card rounded-lg border animate-pulse">
           Loading audit trail and governance workspace...
         </div>
       }

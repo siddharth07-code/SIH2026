@@ -41,9 +41,9 @@ export function AuditEventTable({
 }: AuditEventTableProps) {
   if (isLoading) {
     return (
-      <Card className="border-border bg-card">
+      <Card className="jp-card">
         <div className="p-8 sm:p-12 text-center text-xs font-mono text-muted-foreground animate-pulse space-y-2">
-          <div className="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mx-auto mb-3 animate-spin">
+          <div className="w-8 h-8 rounded-full flex items-center justify-center mx-auto mb-3 animate-spin" style={{ backgroundColor: "var(--jp-primary-subtle)", color: "var(--jp-primary)", border: "1px solid var(--jp-primary-border)" }}>
             <Clock className="w-4 h-4" />
           </div>
           <div>Querying immutable append-only governance log...</div>
@@ -55,7 +55,7 @@ export function AuditEventTable({
   // Backend offline / unavailable state
   if (isError) {
     return (
-      <Card className="border-border bg-card">
+      <Card className="jp-card">
         <EmptyState
           icon={ShieldAlert}
           title="AUDIT SERVICE NOT CONNECTED"
@@ -75,7 +75,7 @@ export function AuditEventTable({
   // Filtered empty state
   if (events.length === 0 && isFiltered) {
     return (
-      <Card className="border-border bg-card">
+      <Card className="jp-card">
         <EmptyState
           icon={ShieldAlert}
           title="NO MATCHING AUDIT EVENTS"
@@ -94,7 +94,7 @@ export function AuditEventTable({
   // Genuine connected empty state
   if (events.length === 0) {
     return (
-      <Card className="border-border bg-card">
+      <Card className="jp-card">
         <EmptyState
           icon={ShieldCheck}
           title="NO AUDIT EVENTS"
@@ -172,8 +172,8 @@ export function AuditEventTable({
   };
 
   return (
-    <Card className="border-border bg-card overflow-hidden">
-      <CardHeader className="p-3.5 sm:p-4 pb-2 border-b border-white/[0.08] flex flex-row items-center justify-between space-y-0">
+    <Card className="jp-card overflow-hidden">
+      <CardHeader className="p-3.5 pb-2.5 border-b border-border flex flex-row items-center justify-between">
         <div className="flex items-center gap-2 min-w-0">
           <ShieldCheck className="w-4 h-4 text-primary shrink-0" />
           <CardTitle className="text-sm font-semibold text-foreground truncate">
@@ -187,19 +187,19 @@ export function AuditEventTable({
 
       <CardContent className="p-0">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs border-collapse">
-            <thead>
-              <tr className="border-b border-white/[0.08] bg-slate-950/40 text-[11px] uppercase tracking-wider text-muted-foreground font-mono">
-                <th className="p-3 pl-4">Timestamp</th>
-                <th className="p-3">Event / Operation</th>
-                <th className="p-3 hidden sm:table-cell">Actor</th>
-                <th className="p-3 hidden md:table-cell">Target Resource</th>
-                <th className="p-3">Outcome</th>
-                <th className="p-3 hidden lg:table-cell">Integrity</th>
-                <th className="p-3 pr-4 text-right">Inspect</th>
+          <table className="jp-table">
+            <thead className="jp-table-thead">
+              <tr>
+                <th className="jp-table-th">Timestamp</th>
+                <th className="jp-table-th">Event / Operation</th>
+                <th className="jp-table-th hidden sm:table-cell">Actor</th>
+                <th className="jp-table-th hidden md:table-cell">Target Resource</th>
+                <th className="jp-table-th">Outcome</th>
+                <th className="jp-table-th hidden lg:table-cell">Integrity</th>
+                <th className="jp-table-th text-right">Inspect</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/[0.06]">
+            <tbody className="jp-table-tbody">
               {events.map((evt) => {
                 const Icon = getCategoryIcon(evt.category);
                 const isSelected = selectedEventId === evt.id;
@@ -208,24 +208,21 @@ export function AuditEventTable({
                   <tr
                     key={evt.id}
                     onClick={() => onSelectEvent(evt)}
-                    className={`cursor-pointer transition-colors duration-150 group ${
-                      isSelected
-                        ? "bg-primary/10 hover:bg-primary/15"
-                        : "hover:bg-white/[0.03]"
-                    }`}
+                    className="jp-table-tr cursor-pointer group"
+                    style={isSelected ? { backgroundColor: "var(--jp-primary-subtle)" } : undefined}
                   >
                     {/* Timestamp */}
-                    <td className="p-3 pl-4 font-mono text-[11px] text-muted-foreground whitespace-nowrap">
+                    <td className="jp-table-td font-mono text-[11px] text-muted-foreground whitespace-nowrap">
                       <div className="text-foreground">{formatDateTime(evt.timestamp)}</div>
-                      <span className="text-[10px] text-muted-foreground/80 block sm:hidden">
+                      <span className="text-[10px] text-muted-foreground block sm:hidden">
                         {evt.actor.badgeNumber} • {evt.actor.role}
                       </span>
                     </td>
 
                     {/* Event & Category */}
-                    <td className="p-3">
+                    <td className="jp-table-td">
                       <div className="flex items-center gap-2">
-                        <div className="p-1 rounded bg-slate-900 border border-white/10 text-primary shrink-0 hidden xs:inline-flex">
+                        <div className="p-1 rounded border border-border text-primary shrink-0 hidden xs:inline-flex" style={{ backgroundColor: "var(--jp-bg-root)" }}>
                           <Icon className="w-3.5 h-3.5" />
                         </div>
                         <div className="space-y-0.5 min-w-0">
@@ -240,7 +237,7 @@ export function AuditEventTable({
                     </td>
 
                     {/* Actor */}
-                    <td className="p-3 hidden sm:table-cell">
+                    <td className="jp-table-td hidden sm:table-cell">
                       <div className="space-y-0.5">
                         <div className="font-medium text-foreground truncate flex items-center gap-1.5">
                           <User className="w-3 h-3 text-muted-foreground shrink-0" />
@@ -253,7 +250,7 @@ export function AuditEventTable({
                     </td>
 
                     {/* Target */}
-                    <td className="p-3 hidden md:table-cell">
+                    <td className="jp-table-td hidden md:table-cell">
                       <div className="space-y-0.5">
                         <span className="font-mono text-xs text-foreground font-medium block truncate">
                           {evt.target.type}: {evt.target.trackingNumber || evt.target.id}
@@ -267,17 +264,17 @@ export function AuditEventTable({
                     </td>
 
                     {/* Outcome */}
-                    <td className="p-3 whitespace-nowrap">
+                    <td className="jp-table-td whitespace-nowrap">
                       {getOutcomeBadge(evt.outcome)}
                     </td>
 
                     {/* Integrity */}
-                    <td className="p-3 hidden lg:table-cell whitespace-nowrap">
+                    <td className="jp-table-td hidden lg:table-cell whitespace-nowrap">
                       {getIntegrityBadge(evt.integrity?.status)}
                     </td>
 
                     {/* Action inspect */}
-                    <td className="p-3 pr-4 text-right">
+                    <td className="jp-table-td text-right">
                       <Button
                         variant={isSelected ? "secondary" : "ghost"}
                         size="sm"

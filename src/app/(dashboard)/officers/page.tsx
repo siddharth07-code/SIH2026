@@ -20,17 +20,21 @@ export default function OfficersPage() {
       {/* Top Header */}
       <PageHeader
         title="Authorized Officers & Checkpoint Units"
-        description="Roster of authorized personnel, mobile screening terminals, and active checkpoint post assignments."
+        description="Authorized personnel, mobile terminals, and checkpoint assignments."
         badge={
           <div className="flex items-center gap-2">
-            <Badge variant="outline" className="text-[10px] font-mono border-primary/30 text-primary bg-primary/5">
+            <Badge variant="outline" className="text-[10px] font-mono border-primary/30 text-primary">
               DIRECTORY SYNC
             </Badge>
-            {user?.role && (
+            {user?.role === "SUPERVISOR" ? (
               <Badge variant="outline" className="text-[10px] font-mono">
-                {user.role} CLEARANCE
+                SUPERVISOR CLEARANCE
               </Badge>
-            )}
+            ) : user?.role ? (
+              <Badge variant="outline" className="text-[10px] font-mono">
+                {user.role}
+              </Badge>
+            ) : null}
           </div>
         }
       >
@@ -38,7 +42,7 @@ export default function OfficersPage() {
           variant="outline"
           size="sm"
           disabled
-          className="text-xs h-9 opacity-60 cursor-not-allowed gap-1.5"
+          className="text-xs h-8 opacity-60 cursor-not-allowed gap-1.5"
           title="Directory service offline"
         >
           <RefreshCw className="w-3.5 h-3.5" />
@@ -47,40 +51,46 @@ export default function OfficersPage() {
       </PageHeader>
 
       {/* Directory Metrics Summary */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <Card variant="elevated" className="p-3.5 sm:p-4 space-y-1">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold text-muted-foreground uppercase">Active Personnel</span>
-            <Users className="w-3.5 h-3.5 text-primary" />
+      <div className="jp-metric-grid">
+        <div className="jp-metric-card">
+          <div className="jp-metric-card-header">
+            <span className="jp-metric-card-title truncate">Active Personnel</span>
+            <div className="jp-metric-card-icon-wrap">
+              <Users className="w-3.5 h-3.5 text-primary" />
+            </div>
           </div>
-          <div className="text-xl sm:text-2xl font-bold font-mono text-foreground">—</div>
-          <span className="text-[10px] text-muted-foreground font-mono">Central Directory Sync Pending</span>
-        </Card>
+          <div className="jp-metric-card-value">—</div>
+          <span className="jp-metric-card-subtext truncate">Central Directory Sync Pending</span>
+        </div>
 
-        <Card variant="elevated" className="p-3.5 sm:p-4 space-y-1">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold text-muted-foreground uppercase">Mobile Terminals</span>
-            <Smartphone className="w-3.5 h-3.5 text-emerald-400" />
+        <div className="jp-metric-card">
+          <div className="jp-metric-card-header">
+            <span className="jp-metric-card-title truncate">Mobile Terminals</span>
+            <div className="jp-metric-card-icon-wrap">
+              <Smartphone className="w-3.5 h-3.5" style={{ color: "var(--jp-status-low-text)" }} />
+            </div>
           </div>
-          <div className="text-xl sm:text-2xl font-bold font-mono text-foreground">—</div>
-          <span className="text-[10px] text-muted-foreground font-mono">Enrolled Flutter Ingest Units</span>
-        </Card>
+          <div className="jp-metric-card-value">—</div>
+          <span className="jp-metric-card-subtext truncate">Enrolled Flutter Ingest Units</span>
+        </div>
 
-        <Card variant="elevated" className="p-3.5 sm:p-4 space-y-1">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold text-muted-foreground uppercase">Checkpoint Posts</span>
-            <MapPin className="w-3.5 h-3.5 text-sky-400" />
+        <div className="jp-metric-card">
+          <div className="jp-metric-card-header">
+            <span className="jp-metric-card-title truncate">Checkpoint Posts</span>
+            <div className="jp-metric-card-icon-wrap">
+              <MapPin className="w-3.5 h-3.5" style={{ color: "var(--jp-status-info-text)" }} />
+            </div>
           </div>
-          <div className="text-xl sm:text-2xl font-bold font-mono text-foreground">—</div>
-          <span className="text-[10px] text-muted-foreground font-mono">Border & Terminal Gates</span>
-        </Card>
+          <div className="jp-metric-card-value">—</div>
+          <span className="jp-metric-card-subtext truncate">Border & Terminal Gates</span>
+        </div>
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="rounded-lg border border-white/[0.08] bg-slate-900/60 backdrop-blur-xl p-3 sm:p-3.5 space-y-3">
+      <div className="jp-filter-bar space-y-3">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           {/* Tabs */}
-          <div className="flex items-center gap-1 bg-slate-950/60 p-1 rounded-md border border-white/10 w-full sm:w-auto">
+          <div className="flex items-center gap-1 p-1 rounded-md border border-border w-full sm:w-auto" style={{ backgroundColor: "var(--jp-bg-root)" }}>
             <Button
               variant={activeTab === "PERSONNEL" ? "secondary" : "ghost"}
               size="sm"
@@ -114,7 +124,7 @@ export default function OfficersPage() {
               placeholder="Search officer badge or terminal ID..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-9 text-xs h-9 bg-slate-950/60 border-white/10 w-full"
+              className="pl-9 text-xs h-9 w-full"
               aria-label="Search officer directory"
             />
           </div>
@@ -122,7 +132,7 @@ export default function OfficersPage() {
       </div>
 
       {/* Honest Empty / Offline State */}
-      <Card variant="elevated" className="border-border bg-card">
+      <Card className="jp-card">
         <EmptyState
           title="OFFICER ROSTER & TERMINAL DIRECTORY OFFLINE"
           description="Authorized officer accounts, mobile terminal device certificates, and operational post assignments are synchronized with the central identity directory service."
@@ -132,7 +142,7 @@ export default function OfficersPage() {
       </Card>
 
       {/* Directory Governance Card */}
-      <Card variant="elevated" className="p-4 border-border bg-card">
+      <Card className="jp-card p-3.5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-primary shrink-0" />

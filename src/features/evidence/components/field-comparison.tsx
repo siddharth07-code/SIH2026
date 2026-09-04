@@ -15,8 +15,8 @@ export function FieldComparison({ comparisons = [] }: FieldComparisonProps) {
   const mismatchCount = comparisons.filter((c) => c.status === "MISMATCH").length;
 
   return (
-    <Card className="border-border bg-card">
-      <CardHeader className="p-3.5 sm:p-4 pb-3 border-b border-white/[0.08] flex flex-col xs:flex-row xs:items-center xs:justify-between gap-2 space-y-0">
+    <Card className="jp-card">
+      <CardHeader className="p-3.5 pb-2.5 border-b border-border flex flex-col xs:flex-row xs:items-center xs:justify-between gap-2">
         <div className="flex items-center gap-2 min-w-0">
           <FileCheck className="w-4 h-4 text-primary shrink-0" />
           <CardTitle className="text-sm font-semibold text-foreground truncate">
@@ -43,27 +43,26 @@ export function FieldComparison({ comparisons = [] }: FieldComparisonProps) {
       <CardContent className="p-0">
         {hasItems ? (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse min-w-[540px] sm:min-w-0">
-              <thead className="border-b border-white/[0.08] bg-slate-950/60 text-muted-foreground uppercase text-[11px] font-semibold">
+            <table className="jp-table min-w-[500px] sm:min-w-0">
+              <thead className="jp-table-thead">
                 <tr>
-                  <th className="p-3 pl-4">Document Field</th>
-                  <th className="p-3">Visual OCR Value</th>
-                  <th className="p-3">MRZ Extracted Value</th>
-                  <th className="p-3">Parity Status</th>
-                  <th className="p-3 pr-4 hidden sm:table-cell">Forensic Details</th>
+                  <th className="jp-table-th">Document Field</th>
+                  <th className="jp-table-th">Visual OCR Value</th>
+                  <th className="jp-table-th">MRZ Extracted Value</th>
+                  <th className="jp-table-th">Parity Status</th>
+                  <th className="jp-table-th hidden sm:table-cell">Forensic Details</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/[0.06]">
+              <tbody className="jp-table-tbody">
                 {comparisons.map((item) => {
                   const isMismatch = item.status === "MISMATCH";
                   return (
                     <tr
                       key={item.field}
-                      className={`transition-colors ${
-                        isMismatch ? "bg-rose-950/15 hover:bg-rose-950/25" : "hover:bg-white/[0.04]"
-                      }`}
+                      className="jp-table-tr"
+                      style={isMismatch ? { backgroundColor: "var(--jp-status-high-bg)" } : undefined}
                     >
-                      <td className="p-3 pl-4 font-semibold text-foreground">
+                      <td className="jp-table-td font-semibold text-foreground">
                         <div>
                           <span>{item.field}</span>
                           {item.details && (
@@ -73,13 +72,13 @@ export function FieldComparison({ comparisons = [] }: FieldComparisonProps) {
                           )}
                         </div>
                       </td>
-                      <td className="p-3 font-mono text-foreground font-medium">
+                      <td className="jp-table-td font-mono font-medium text-foreground">
                         {item.visualValue || <span className="text-muted-foreground">—</span>}
                       </td>
-                      <td className="p-3 font-mono text-foreground font-medium">
+                      <td className="jp-table-td font-mono font-medium text-foreground">
                         {item.mrzValue || <span className="text-muted-foreground">—</span>}
                       </td>
-                      <td className="p-3">
+                      <td className="jp-table-td">
                         {isMismatch ? (
                           <Badge variant="destructive" className="text-[10px] font-mono gap-1 whitespace-nowrap">
                             <X className="w-3 h-3" />
@@ -92,7 +91,7 @@ export function FieldComparison({ comparisons = [] }: FieldComparisonProps) {
                           </Badge>
                         )}
                       </td>
-                      <td className="p-3 pr-4 text-muted-foreground text-[11px] max-w-xs leading-tight hidden sm:table-cell">
+                      <td className="jp-table-td text-muted-foreground text-[11px] max-w-xs leading-tight hidden sm:table-cell">
                         {item.details || "Consistent check digit parity."}
                       </td>
                     </tr>
@@ -102,7 +101,7 @@ export function FieldComparison({ comparisons = [] }: FieldComparisonProps) {
             </table>
           </div>
         ) : (
-          <div className="p-6 sm:p-8 text-center text-xs font-mono text-muted-foreground">
+          <div className="p-6 text-center text-xs font-mono text-muted-foreground">
             No OCR ↔ MRZ field parity records loaded.
           </div>
         )}

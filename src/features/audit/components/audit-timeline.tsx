@@ -51,8 +51,8 @@ export function AuditTimeline({
   };
 
   return (
-    <Card className="border-border bg-card">
-      <CardHeader className="p-3.5 sm:p-4 pb-2 border-b border-white/[0.08] flex flex-row items-center justify-between space-y-0">
+    <Card className="jp-card">
+      <CardHeader className="p-3.5 pb-2.5 border-b border-border flex flex-row items-center justify-between">
         <div className="flex items-center gap-2 min-w-0">
           <Clock className="w-4 h-4 text-primary shrink-0" />
           <CardTitle className="text-sm font-semibold text-foreground truncate">
@@ -64,8 +64,8 @@ export function AuditTimeline({
         </span>
       </CardHeader>
 
-      <CardContent className="p-3.5 sm:p-5">
-        <div className="relative pl-6 space-y-5 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-white/10">
+      <CardContent className="p-3.5">
+        <div className="jp-timeline-container">
           {events.map((evt) => {
             const Icon = getActionIcon(evt.category);
             const isSelected = selectedEventId === evt.id;
@@ -74,28 +74,27 @@ export function AuditTimeline({
               <div
                 key={evt.id}
                 onClick={() => onSelectEvent?.(evt)}
-                className={`relative group cursor-pointer transition-all ${
-                  isSelected ? "opacity-100" : "hover:opacity-100"
-                }`}
+                className="jp-timeline-node group cursor-pointer"
               >
                 {/* Timeline node icon */}
                 <div
-                  className={`absolute -left-6 top-1 w-5 h-5 rounded-full border flex items-center justify-center transition-all duration-200 ${
+                  className={`jp-timeline-dot flex items-center justify-center ${
                     isSelected
-                      ? "bg-primary border-primary text-primary-foreground shadow-[0_0_12px_rgba(59,130,246,0.8)] scale-110"
-                      : "bg-slate-900 border-white/20 text-muted-foreground group-hover:border-primary/60 group-hover:text-primary"
+                      ? "bg-primary border-primary text-primary-foreground"
+                      : "bg-surface border-border text-muted-foreground"
                   }`}
+                  style={{ width: "18px", height: "18px", left: "-18px" }}
                 >
                   <Icon className="w-2.5 h-2.5" />
                 </div>
 
                 {/* Timeline entry body */}
                 <div
-                  className={`p-3 rounded-lg border transition-all ${
-                    isSelected
-                      ? "border-primary/50 bg-primary/10 shadow-[0_0_15px_-3px_rgba(59,130,246,0.2)]"
-                      : "border-white/[0.06] bg-slate-950/40 hover:border-white/20 hover:bg-slate-950/60"
-                  }`}
+                  className="p-3 rounded-md border border-border"
+                  style={{
+                    backgroundColor: isSelected ? "var(--jp-primary-subtle)" : "var(--jp-bg-root)",
+                    borderColor: isSelected ? "var(--jp-primary-border)" : "var(--jp-border-default)",
+                  }}
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
                     <div className="flex items-center gap-2">
@@ -120,7 +119,7 @@ export function AuditTimeline({
                   </div>
 
                   {evt.reason && (
-                    <p className="text-[11px] text-muted-foreground/90 mt-1.5 italic">
+                    <p className="text-[11px] text-muted-foreground mt-1.5 italic m-0">
                       &quot;{evt.reason}&quot;
                     </p>
                   )}

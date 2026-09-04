@@ -67,8 +67,8 @@ export function VerificationEvidenceGrid({
   };
 
   return (
-    <Card className="border-border bg-card">
-      <CardHeader className="p-4 pb-3 border-b border-white/[0.08] flex flex-row items-center justify-between space-y-0">
+    <Card className="jp-card">
+      <CardHeader className="p-3.5 pb-2.5 border-b border-border flex flex-row items-center justify-between">
         <div className="flex items-center gap-2">
           <Layers className="w-4 h-4 text-primary" />
           <CardTitle className="text-sm font-semibold text-foreground">
@@ -84,7 +84,7 @@ export function VerificationEvidenceGrid({
         </Link>
       </CardHeader>
 
-      <CardContent className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      <CardContent className="p-3.5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
         {CATEGORIES.map((catDef) => {
           const Icon = catDef.icon;
           const items = getEvidenceForCategory(catDef.category);
@@ -110,26 +110,27 @@ export function VerificationEvidenceGrid({
           return (
             <div
               key={catDef.category}
-              className="rounded-md border border-white/[0.08] bg-slate-900/60 p-3 space-y-2 flex flex-col justify-between backdrop-blur-sm"
+              className="rounded-md border border-border p-3 space-y-2 flex flex-col justify-between"
+              style={{ backgroundColor: "var(--jp-bg-root)" }}
             >
               <div className="space-y-1.5">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-md bg-white/5 border border-white/10 flex items-center justify-center text-muted-foreground">
+                    <div className="w-7 h-7 rounded-md border border-border flex items-center justify-center text-muted-foreground" style={{ backgroundColor: "var(--jp-bg-surface)" }}>
                       <Icon className="w-3.5 h-3.5 text-primary" />
                     </div>
-                    <h3 className="text-xs font-semibold text-foreground leading-tight">
+                    <h3 className="text-xs font-semibold text-foreground leading-tight m-0">
                       {catDef.name}
                     </h3>
                   </div>
                   <StatusIndicator status={statusType} size="sm" />
                 </div>
-                <p className="text-[11px] text-muted-foreground leading-tight">
+                <p className="text-[11px] text-muted-foreground leading-tight m-0">
                   {catDef.description}
                 </p>
               </div>
 
-              <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[10px] font-mono text-muted-foreground">
+              <div className="pt-2 border-t border-border flex items-center justify-between text-[10px] font-mono text-muted-foreground">
                 <span>{hasItems ? `${items.length} findings logged` : "No findings"}</span>
                 <span>{statusLabel}</span>
               </div>

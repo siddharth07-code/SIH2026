@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { FileText, CheckCircle2, ShieldAlert, User, ShieldCheck, Database } from "lucide-react";
-import { Card } from "@/components/ui/card";
 import { StatusIndicator } from "@/components/shared/status-indicator";
 import type { EvidenceDetail, EvidenceCategory, EvidenceStatus } from "@/types";
 
@@ -82,25 +81,24 @@ export function EvidenceSummary({ evidence }: EvidenceSummaryProps) {
   ];
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
       {categories.map((cat) => {
         const Icon = cat.icon;
         return (
-          <Card
+          <div
             key={cat.label}
-            variant="elevated"
-            className="p-3 flex flex-col justify-between space-y-2 hover:border-white/20 transition-colors"
+            className="jp-card p-2.5 flex flex-col justify-between space-y-1.5"
           >
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider truncate">
+              <span className="text-[10px] font-semibold text-muted-foreground uppercase truncate">
                 {cat.label}
               </span>
               <Icon className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
             </div>
-            <div className="pt-1">
+            <div className="pt-0.5">
               <StatusIndicator status={cat.status} size="sm" />
             </div>
-          </Card>
+          </div>
         );
       })}
     </div>

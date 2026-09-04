@@ -27,8 +27,10 @@ export function EvidenceDetailShell({ id }: EvidenceDetailShellProps) {
 
   if (isLoading) {
     return (
-      <div className="p-8 sm:p-12 text-center text-xs font-mono text-muted-foreground bg-slate-900/50 rounded-lg border border-white/[0.08] animate-pulse">
-        Retrieving multi-signal forensic evidence record...
+      <div className="jp-state-box">
+        <p className="jp-state-desc font-mono animate-pulse m-0">
+          Retrieving multi-signal forensic evidence record...
+        </p>
       </div>
     );
   }
@@ -70,15 +72,15 @@ export function EvidenceDetailShell({ id }: EvidenceDetailShellProps) {
   };
 
   return (
-    <div className="space-y-6 max-w-full overflow-x-hidden">
+    <div className="jp-evidence-center">
       {/* 1. Header & Quick Case Navigation */}
       <EvidenceHeader evidence={evidence} />
 
       {/* 2. 6-Category Evidence Status Matrix */}
       <EvidenceSummary evidence={evidence} />
 
-      {/* 3. Primary Document Inspection & Forensic Inspector Workspace (Responsive 2-Col Grid) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      {/* 3. Primary Document Inspection & Forensic Inspector Workspace */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <DocumentInspector
           assets={assets}
           regions={regions}

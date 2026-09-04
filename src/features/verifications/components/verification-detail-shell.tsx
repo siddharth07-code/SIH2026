@@ -8,7 +8,6 @@ import { StatusIndicator } from "@/components/shared/status-indicator";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { maskDocumentNumber, formatDateTime } from "@/lib/utils/formatters";
 import { useVerification } from "../hooks/use-verifications";
 import { VerificationRiskCard } from "./verification-risk-card";
@@ -26,8 +25,10 @@ export function VerificationDetailShell({ id }: VerificationDetailShellProps) {
 
   if (isLoading) {
     return (
-      <div className="p-8 sm:p-12 text-center text-xs font-mono text-muted-foreground bg-slate-900/50 rounded-lg border border-white/[0.08] animate-pulse">
-        Retrieving verification case record from backend...
+      <div className="jp-state-box">
+        <p className="jp-state-desc font-mono animate-pulse m-0">
+          Retrieving verification case record from backend...
+        </p>
       </div>
     );
   }
@@ -88,63 +89,63 @@ export function VerificationDetailShell({ id }: VerificationDetailShellProps) {
         </Link>
       </PageHeader>
 
-      {/* Case Metadata Banner - Responsive 1 to 4 columns */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        <Card variant="elevated" className="p-3.5 space-y-1">
-          <span className="text-[10px] font-mono text-muted-foreground uppercase flex items-center gap-1.5">
+      {/* Case Metadata Banner */}
+      <div className="jp-dossier-meta-grid">
+        <div className="jp-dossier-meta-card">
+          <span className="jp-dossier-meta-label">
             <FileText className="w-3.5 h-3.5 text-primary" />
             Document Entity
           </span>
-          <div className="text-xs font-semibold text-foreground">
+          <div className="jp-dossier-meta-val">
             {document.type}
           </div>
-          <span className="text-[11px] font-mono text-muted-foreground block">
+          <span className="jp-dossier-meta-sub">
             {maskDocumentNumber(document.documentNumber)} ({document.issuingCountry})
           </span>
-        </Card>
+        </div>
 
-        <Card variant="elevated" className="p-3.5 space-y-1">
-          <span className="text-[10px] font-mono text-muted-foreground uppercase flex items-center gap-1.5">
+        <div className="jp-dossier-meta-card">
+          <span className="jp-dossier-meta-label">
             <MapPin className="w-3.5 h-3.5 text-emerald-400" />
             Checkpoint Unit
           </span>
-          <div className="text-xs font-semibold text-foreground truncate">
+          <div className="jp-dossier-meta-val truncate">
             {checkpointName}
           </div>
-          <span className="text-[11px] font-mono text-muted-foreground block">
+          <span className="jp-dossier-meta-sub">
             Terminal {verification.terminalId || "01"}
           </span>
-        </Card>
+        </div>
 
-        <Card variant="elevated" className="p-3.5 space-y-1">
-          <span className="text-[10px] font-mono text-muted-foreground uppercase flex items-center gap-1.5">
+        <div className="jp-dossier-meta-card">
+          <span className="jp-dossier-meta-label">
             <User className="w-3.5 h-3.5 text-sky-400" />
             Submitting Officer
           </span>
-          <div className="text-xs font-semibold text-foreground truncate">
+          <div className="jp-dossier-meta-val truncate">
             {officerName}
           </div>
-          <span className="text-[11px] font-mono text-muted-foreground block">
+          <span className="jp-dossier-meta-sub">
             Badge: {officerBadge}
           </span>
-        </Card>
+        </div>
 
-        <Card variant="elevated" className="p-3.5 space-y-1">
-          <span className="text-[10px] font-mono text-muted-foreground uppercase flex items-center gap-1.5">
+        <div className="jp-dossier-meta-card">
+          <span className="jp-dossier-meta-label">
             <Clock className="w-3.5 h-3.5 text-amber-400" />
             Ingest Timestamp
           </span>
-          <div className="text-xs font-semibold text-foreground font-mono truncate">
+          <div className="jp-dossier-meta-val font-mono truncate">
             {formatDateTime(verification.createdAt)}
           </div>
-          <span className="text-[10px] text-muted-foreground font-mono block">
+          <span className="jp-dossier-meta-sub">
             Status: {status.replace("_", " ")}
           </span>
-        </Card>
+        </div>
       </div>
 
-      {/* Risk Engine & Supervisory Action Section (Responsive 2-Col Grid) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      {/* Risk Engine & Supervisory Action Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2">
           <VerificationRiskCard riskAssessment={riskAssessment} />
         </div>
@@ -154,9 +155,9 @@ export function VerificationDetailShell({ id }: VerificationDetailShellProps) {
       </div>
 
       {/* Multi-Signal Evidence Signals */}
-      <div className="space-y-3">
+      <div className="space-y-2.5">
         <div className="flex items-center justify-between">
-          <h2 className="text-xs font-semibold text-foreground tracking-wider uppercase">
+          <h2 className="text-xs font-semibold text-foreground uppercase m-0">
             Multi-Signal Verification Evidence
           </h2>
           <span className="text-[11px] font-mono text-muted-foreground">
@@ -167,16 +168,16 @@ export function VerificationDetailShell({ id }: VerificationDetailShellProps) {
       </div>
 
       {/* Structured Key Findings */}
-      <div className="space-y-3">
-        <h2 className="text-xs font-semibold text-foreground tracking-wider uppercase">
+      <div className="space-y-2.5">
+        <h2 className="text-xs font-semibold text-foreground uppercase m-0">
           Key Verification Findings & Checksum Results
         </h2>
         <VerificationFindingsList evidence={evidence || []} />
       </div>
 
       {/* Verification Lifecycle Audit Timeline */}
-      <div className="space-y-3">
-        <h2 className="text-xs font-semibold text-foreground tracking-wider uppercase">
+      <div className="space-y-2.5">
+        <h2 className="text-xs font-semibold text-foreground uppercase m-0">
           Verification Lifecycle & Operational Audit Trail
         </h2>
         <VerificationTimeline timeline={timeline || []} />

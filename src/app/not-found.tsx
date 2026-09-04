@@ -6,35 +6,30 @@ import { Badge } from "@/components/ui/badge";
 
 export const metadata = {
   title: "404 Not Found | JANPRAMAAN",
-  description: "The requested operational resource or route does not exist within the command center.",
+  description: "The requested page does not exist.",
 };
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4 relative overflow-hidden text-foreground">
-      {/* Background Glow */}
-      <div className="absolute w-[500px] h-[500px] bg-primary/10 rounded-full blur-3xl pointer-events-none -top-40 -left-40" />
-      <div className="absolute w-[400px] h-[400px] bg-rose-500/10 rounded-full blur-3xl pointer-events-none -bottom-20 -right-20" />
-
-      <div className="relative z-10 max-w-md w-full text-center space-y-6 p-6 sm:p-8 rounded-xl border border-white/[0.08] bg-slate-900/60 backdrop-blur-2xl shadow-2xl glass-highlight">
-        {/* Icon & 404 badge */}
-        <div className="w-16 h-16 rounded-full bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-rose-400 mx-auto shadow-[0_0_25px_-5px_rgba(244,63,94,0.3)]">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 text-foreground" style={{ backgroundColor: "var(--jp-bg-root)" }}>
+      <div className="max-w-md w-full text-center space-y-6 p-6 sm:p-8 rounded-lg border bg-card">
+        <div className="w-14 h-14 rounded-lg flex items-center justify-center mx-auto" style={{ backgroundColor: "var(--jp-status-high-bg)", color: "var(--jp-status-high-text)", border: "1px solid var(--jp-status-high-border)" }}>
           <ShieldAlert className="w-8 h-8" />
         </div>
 
         <div className="space-y-2">
-          <Badge variant="outline" className="text-[10px] font-mono border-rose-500/30 text-rose-300">
+          <Badge variant="outline" className="text-[10px] font-mono" style={{ color: "var(--jp-status-high-text)", borderColor: "var(--jp-status-high-border)" }}>
             HTTP 404 — RESOURCE NOT FOUND
           </Badge>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
             Route Not Found
           </h1>
           <p className="text-xs text-muted-foreground leading-relaxed">
-            The requested path or screening resource does not exist in the JANPRAMAAN Web Command Center workspace.
+            The requested path or screening resource does not exist in the JANPRAMAAN workspace.
           </p>
         </div>
 
-        <div className="rounded-lg border border-white/[0.06] bg-slate-950/60 p-3 text-[11px] font-mono text-muted-foreground text-left space-y-1">
+        <div className="rounded-lg border p-3 text-[11px] font-mono text-muted-foreground text-left space-y-1" style={{ backgroundColor: "var(--jp-bg-elevated)" }}>
           <span className="text-[10px] text-primary block uppercase font-semibold">Security Diagnostic</span>
           <div>Status: INVALID_RESOURCE_URI</div>
           <div>Boundary: FRONTEND_APP_ROUTER</div>

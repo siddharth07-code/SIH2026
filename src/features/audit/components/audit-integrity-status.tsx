@@ -19,8 +19,7 @@ export function AuditIntegrityStatus({ integrity }: AuditIntegrityStatusProps) {
       variant: "success" as const,
       icon: ShieldCheck,
       color: "text-emerald-400",
-      border: "border-emerald-500/30",
-      bg: "bg-emerald-950/20",
+      cardClass: "jp-risk-tier-low",
       desc: "Event hash signature and previous block chaining validated against append-only journal.",
     },
     UNVERIFIED: {
@@ -28,8 +27,7 @@ export function AuditIntegrityStatus({ integrity }: AuditIntegrityStatusProps) {
       variant: "warning" as const,
       icon: AlertTriangle,
       color: "text-amber-400",
-      border: "border-amber-500/30",
-      bg: "bg-amber-950/20",
+      cardClass: "jp-risk-tier-medium",
       desc: "Event logged in transit; pending block finalization by backend governance worker.",
     },
     INVALID: {
@@ -37,8 +35,7 @@ export function AuditIntegrityStatus({ integrity }: AuditIntegrityStatusProps) {
       variant: "destructive" as const,
       icon: ShieldAlert,
       color: "text-rose-400",
-      border: "border-rose-500/35",
-      bg: "bg-rose-950/25",
+      cardClass: "jp-risk-tier-high",
       desc: "Event hash or chaining sequence violates append-only consistency. Security alert triggered.",
     },
     UNAVAILABLE: {
@@ -46,8 +43,7 @@ export function AuditIntegrityStatus({ integrity }: AuditIntegrityStatusProps) {
       variant: "outline" as const,
       icon: HelpCircle,
       color: "text-muted-foreground",
-      border: "border-white/[0.08]",
-      bg: "bg-slate-900/40",
+      cardClass: "",
       desc: "Integrity verification telemetry will appear when the backend audit service is connected.",
     },
   }[status];
@@ -55,8 +51,8 @@ export function AuditIntegrityStatus({ integrity }: AuditIntegrityStatusProps) {
   const Icon = config.icon;
 
   return (
-    <Card className={`border ${config.border} ${config.bg} backdrop-blur-xl transition-all`}>
-      <CardHeader className="p-3.5 sm:p-4 pb-3 border-b border-white/[0.08] flex flex-row items-center justify-between space-y-0">
+    <Card className={`jp-card ${config.cardClass}`}>
+      <CardHeader className="p-3.5 pb-2.5 border-b border-border flex flex-row items-center justify-between">
         <div className="flex items-center gap-2 min-w-0">
           <Icon className={`w-4 h-4 ${config.color} shrink-0`} />
           <CardTitle className="text-sm font-semibold text-foreground truncate">
@@ -68,14 +64,14 @@ export function AuditIntegrityStatus({ integrity }: AuditIntegrityStatusProps) {
         </Badge>
       </CardHeader>
 
-      <CardContent className="p-3.5 sm:p-4 space-y-3">
-        <p className="text-xs text-muted-foreground leading-relaxed">
+      <CardContent className="p-3.5 space-y-2.5">
+        <p className="text-xs text-muted-foreground leading-relaxed m-0">
           {config.desc}
         </p>
 
         {/* Chaining Hashes & Sequence Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 pt-1">
-          <div className="rounded-md border border-white/[0.06] bg-slate-950/60 p-2.5 space-y-1">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 pt-1">
+          <div className="rounded-md border border-border p-2 space-y-1" style={{ backgroundColor: "var(--jp-bg-root)" }}>
             <span className="text-[10px] font-mono text-muted-foreground uppercase block">
               Event Sequence ID
             </span>
@@ -84,7 +80,7 @@ export function AuditIntegrityStatus({ integrity }: AuditIntegrityStatusProps) {
             </div>
           </div>
 
-          <div className="rounded-md border border-white/[0.06] bg-slate-950/60 p-2.5 space-y-1">
+          <div className="rounded-md border border-border p-2 space-y-1" style={{ backgroundColor: "var(--jp-bg-root)" }}>
             <span className="text-[10px] font-mono text-muted-foreground uppercase flex items-center gap-1">
               <LinkIcon className="w-3 h-3 text-primary" />
               Previous Block Hash
@@ -94,18 +90,18 @@ export function AuditIntegrityStatus({ integrity }: AuditIntegrityStatusProps) {
             </div>
           </div>
 
-          <div className="rounded-md border border-white/[0.06] bg-slate-950/60 p-2.5 space-y-1">
+          <div className="rounded-md border border-border p-2 space-y-1" style={{ backgroundColor: "var(--jp-bg-root)" }}>
             <span className="text-[10px] font-mono text-muted-foreground uppercase block">
               Current Event Hash (SHA-256)
             </span>
-            <div className="text-[10px] font-mono text-primary truncate" title={integrity?.hash}>
+            <div className="text-[10px] font-mono truncate" style={{ color: "var(--jp-primary)" }} title={integrity?.hash}>
               {integrity?.hash || "—"}
             </div>
           </div>
         </div>
 
         {/* Disclaimer */}
-        <div className="rounded border border-white/[0.06] bg-slate-950/40 p-2 text-[10px] text-muted-foreground/80 font-mono">
+        <div className="rounded border border-border p-2 text-[10px] text-muted-foreground font-mono" style={{ backgroundColor: "var(--jp-bg-root)" }}>
           Authoritative append-only validation and cryptographic hashing are computed and persisted by the backend governance service.
         </div>
       </CardContent>

@@ -33,8 +33,8 @@ export function DocumentInspector({
   const handleResetZoom = () => setZoom(1.0);
 
   return (
-    <Card className="border-border bg-card overflow-hidden flex flex-col">
-      <CardHeader className="p-3.5 sm:p-4 pb-2 border-b border-white/[0.08] flex flex-row items-center justify-between space-y-0">
+    <Card className="jp-card overflow-hidden flex flex-col">
+      <CardHeader className="p-3.5 pb-2.5 border-b border-border flex flex-row items-center justify-between">
         <div className="flex items-center gap-2 min-w-0">
           <FileText className="w-4 h-4 text-primary shrink-0" />
           <CardTitle className="text-sm font-semibold text-foreground truncate">
@@ -46,7 +46,7 @@ export function DocumentInspector({
         </span>
       </CardHeader>
 
-      <CardContent className="p-3 sm:p-4 space-y-3 flex-1 flex flex-col min-h-0">
+      <CardContent className="p-3.5 space-y-2.5 flex-1 flex flex-col min-h-0">
         {/* Floating Responsive Toolbar */}
         <EvidenceToolbar
           zoom={zoom}
@@ -58,7 +58,7 @@ export function DocumentInspector({
         />
 
         {/* Viewport Canvas */}
-        <div className="relative flex-1 min-h-[260px] sm:min-h-[360px] md:min-h-[440px] rounded-lg border border-white/[0.08] bg-slate-950 flex items-center justify-center overflow-auto p-2 sm:p-4 shadow-inner">
+        <div className="jp-inspector-viewport flex-1 min-h-[260px] sm:min-h-[340px] p-2 sm:p-4 overflow-auto">
           {documentAsset?.url ? (
             <div
               className="relative transition-transform duration-150 ease-out origin-center select-none"
@@ -67,7 +67,7 @@ export function DocumentInspector({
               }}
             >
               {/* Document Image Element */}
-              <div className="relative rounded shadow-2xl border border-white/10 max-w-[85vw] max-h-[60vh] sm:max-w-md md:max-w-lg">
+              <div className="relative rounded border border-border max-w-[85vw] max-h-[55vh] sm:max-w-md md:max-w-lg">
                 <img
                   src={documentAsset.url}
                   alt="Document capture for forensic analysis"
@@ -84,14 +84,14 @@ export function DocumentInspector({
               </div>
             </div>
           ) : (
-            <div className="text-center p-6 space-y-2 max-w-sm">
-              <div className="w-10 h-10 rounded-full bg-slate-900 border border-white/10 flex items-center justify-center text-muted-foreground mx-auto">
-                <ImageOff className="w-5 h-5" />
+            <div className="text-center p-5 space-y-1.5 max-w-sm">
+              <div className="jp-state-icon jp-state-icon-primary w-8 h-8 mb-2 mx-auto">
+                <ImageOff className="w-4 h-4" />
               </div>
-              <h4 className="text-xs font-semibold text-foreground">
+              <h4 className="text-xs font-semibold text-foreground m-0">
                 Document Capture Image Unavailable
               </h4>
-              <p className="text-[11px] text-muted-foreground leading-relaxed">
+              <p className="text-[11px] text-muted-foreground leading-relaxed m-0">
                 Raw capture asset storage key is recorded but image asset has not been synchronized from mobile ingest storage.
               </p>
             </div>

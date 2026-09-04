@@ -22,8 +22,7 @@ export function EvidenceToolbar({
   onToggleOverlays,
 }: EvidenceToolbarProps) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-2 p-2 sm:p-2.5 rounded-lg border border-white/[0.08] bg-slate-950/80 backdrop-blur-xl shadow-lg w-full">
-      {/* Zoom and Scale Controls */}
+    <div className="flex flex-wrap items-center justify-between gap-2 p-2 sm:p-2.5 rounded-lg border bg-card w-full">
       <div className="flex items-center gap-1">
         <Button
           variant="outline"
@@ -63,7 +62,6 @@ export function EvidenceToolbar({
         </Button>
       </div>
 
-      {/* Layer and Overlay Toggle Controls */}
       <div className="flex items-center gap-1.5">
         <Button
           variant={showOverlays ? "secondary" : "outline"}
