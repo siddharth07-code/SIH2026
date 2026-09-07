@@ -241,7 +241,10 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
         </div>
 
         {/* Results List */}
-        <div className="max-h-[60vh] overflow-y-auto p-2 divide-y divide-border/50">
+        <div
+          className="max-h-[60vh] overflow-y-auto overscroll-contain p-2 divide-y divide-border/50"
+          style={{ scrollbarWidth: "thin", scrollbarColor: "var(--jp-border-strong) transparent" }}
+        >
           {filteredItems.length === 0 ? (
             <div className="text-center py-8 text-xs text-muted-foreground">
               No matching command, case, or tool found for &quot;{search}&quot;.

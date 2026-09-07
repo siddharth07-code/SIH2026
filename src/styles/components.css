@@ -394,10 +394,14 @@
 .jp-table-wrapper {
   width: 100%;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--jp-border-strong) transparent;
   border-radius: var(--jp-radius-lg);
   border: 1px solid var(--jp-border-subtle);
   background-color: var(--jp-bg-surface);
   box-shadow: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 .jp-table {

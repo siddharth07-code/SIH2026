@@ -112,10 +112,15 @@
   }
 }
 
-/* Custom Minimalist Scrollbar */
+/* Standards-compliant Minimalist Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--jp-border-strong) transparent;
+}
+
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {

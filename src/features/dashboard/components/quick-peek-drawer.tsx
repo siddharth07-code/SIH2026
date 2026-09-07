@@ -75,7 +75,10 @@ export function QuickPeekDrawer({ item, onClose }: QuickPeekDrawerProps) {
         </div>
 
         {/* Body Content */}
-        <div className="flex-1 overflow-y-auto p-5 space-y-4 text-sm">
+        <div
+          className="flex-1 overflow-y-auto overscroll-contain p-5 space-y-4 text-sm"
+          style={{ scrollbarWidth: "thin", scrollbarColor: "var(--jp-border-strong) transparent" }}
+        >
           {/* Risk Summary Banner */}
           <div
             className="p-3 rounded-lg border flex items-start gap-3"

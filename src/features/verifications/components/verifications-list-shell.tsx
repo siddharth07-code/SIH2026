@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { RefreshCw, Eye, Upload, Plus } from "lucide-react";
+import { RefreshCw, Eye } from "lucide-react";
 import { PageHeader } from "@/components/shared/page-header";
 import { DataTableShell } from "@/components/shared/data-table-shell";
 import { StatusIndicator } from "@/components/shared/status-indicator";
@@ -13,7 +13,6 @@ import { maskDocumentNumber, formatDateTime } from "@/lib/utils/formatters";
 import { useVerifications, useRefreshVerifications } from "../hooks/use-verifications";
 import { VerificationFilters, type VerificationFilterValues } from "./verification-filters";
 import { VerificationPagination } from "./verification-pagination";
-import { DocumentUploadModal } from "./document-upload-modal";
 import type { RiskLevel, VerificationStatus } from "@/types";
 
 export function VerificationsListShell() {
@@ -57,27 +56,23 @@ export function VerificationsListShell() {
 
   const refreshVerifications = useRefreshVerifications();
   const [isRefreshing, setIsRefreshing] = React.useState(false);
-  const [isUploadOpen, setIsUploadOpen] = React.useState(false);
 
   // URL serialization handler
-  const updateUrlParams = React.useCallback(
-    (paramsToUpdate: Record<string, string | number | undefined>) => {
-      const current = new URLSearchParams(Array.from(searchParams.entries()));
+  const updateUrlParams = (paramsToUpdate: Record<string, string | number | undefined>) => {
+    const current = new URLSearchParams(Array.from(searchParams.entries()));
 
-      Object.entries(paramsToUpdate).forEach(([key, value]) => {
-        if (value === undefined || value === "" || value === "ALL") {
-          current.delete(key);
-        } else {
-          current.set(key, String(value));
-        }
-      });
+    Object.entries(paramsToUpdate).forEach(([key, value]) => {
+      if (value === undefined || value === "" || value === "ALL") {
+        current.delete(key);
+      } else {
+        current.set(key, String(value));
+      }
+    });
 
-      const search = current.toString();
-      const query = search ? `?${search}` : "";
-      router.push(`${pathname}${query}`);
-    },
-    [searchParams, router, pathname]
-  );
+    const search = current.toString();
+    const query = search ? `?${search}` : "";
+    router.push(`${pathname}${query}`);
+  };
 
   const handleFilterChange = (newFilters: Partial<VerificationFilterValues>) => {
     updateUrlParams({
@@ -134,17 +129,6 @@ export function VerificationsListShell() {
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? "animate-spin" : ""}`} />
             <span>{isRefreshing ? "Refreshing..." : "Refresh Queue"}</span>
-          </Button>
-
-          <Button
-            variant="default"
-            size="sm"
-            onClick={() => setIsUploadOpen(true)}
-            className="gap-1.5 text-xs h-8 sm:h-9 px-3 w-full sm:w-auto justify-center font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-xs"
-            aria-label="New document verification upload"
-          >
-            <Upload className="w-3.5 h-3.5" />
-            <span>Upload &amp; Screen Document</span>
           </Button>
         </div>
       </PageHeader>
@@ -261,13 +245,6 @@ export function VerificationsListShell() {
           onPageSizeChange={handlePageSizeChange}
         />
       </div>
-      {/* Document Upload & Live ML Risk Screening Modal */}
-      {isUploadOpen && (
-        <DocumentUploadModal
-          isOpen={isUploadOpen}
-          onClose={() => setIsUploadOpen(false)}
-        />
-      )}
     </div>
   );
 }

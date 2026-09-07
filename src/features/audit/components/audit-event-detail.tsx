@@ -77,7 +77,10 @@ export function AuditEventDetail({ event, onClose }: AuditEventDetailProps) {
         </Button>
       </CardHeader>
 
-      <CardContent className="p-3.5 space-y-3.5 overflow-y-auto max-h-[calc(100vh-220px)]">
+      <CardContent
+        className="p-3.5 space-y-3.5 overflow-y-auto overscroll-contain max-h-[calc(100vh-220px)]"
+        style={{ scrollbarWidth: "thin", scrollbarColor: "var(--jp-border-strong) transparent" }}
+      >
         {/* Core Event Badges & Timestamp */}
         <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 rounded-md border border-border" style={{ backgroundColor: "var(--jp-bg-root)" }}>
           <div className="flex flex-wrap items-center gap-1.5">

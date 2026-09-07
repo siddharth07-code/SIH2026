@@ -1,18 +1,16 @@
 "use client";
 
 import * as React from "react";
-import { RefreshCw, Clock, Shield, Upload } from "lucide-react";
+import { RefreshCw, Clock, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/features/auth/hooks/use-auth";
 import { useRefreshDashboard } from "../hooks/use-dashboard-queries";
-import { DocumentUploadModal } from "@/features/verifications/components/document-upload-modal";
 
 export function DashboardHeader() {
   const { user } = useAuth();
   const refreshDashboard = useRefreshDashboard();
   const [isRefreshing, setIsRefreshing] = React.useState(false);
-  const [isUploadOpen, setIsUploadOpen] = React.useState(false);
   const [timeStr, setTimeStr] = React.useState<string>("");
 
   React.useEffect(() => {
@@ -67,14 +65,6 @@ export function DashboardHeader() {
         )}
 
         <Button
-          onClick={() => setIsUploadOpen(true)}
-          className="gap-2 text-sm flex-1 sm:flex-initial justify-center font-semibold h-10 px-4 bg-primary text-primary-foreground hover:bg-primary/90 shadow-xs"
-        >
-          <Upload className="w-4 h-4" />
-          <span>Upload &amp; Screen</span>
-        </Button>
-
-        <Button
           variant="outline"
           onClick={handleRefresh}
           disabled={isRefreshing}
@@ -85,13 +75,6 @@ export function DashboardHeader() {
           <span>{isRefreshing ? "Refreshing..." : "Refresh"}</span>
         </Button>
       </div>
-
-      {isUploadOpen && (
-        <DocumentUploadModal
-          isOpen={isUploadOpen}
-          onClose={() => setIsUploadOpen(false)}
-        />
-      )}
     </div>
   );
 }

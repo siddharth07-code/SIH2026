@@ -45,8 +45,8 @@ export type LoginResponseDTO = z.infer<typeof loginResponseSchema>;
 export const officerSchema = userSchema;
 
 export const riskAssessmentSchema = z.object({
-  id: z.string().uuid(),
-  verificationId: z.string().uuid(),
+  id: z.string(),
+  verificationId: z.string(),
   level: z.enum(["LOW", "MEDIUM", "HIGH"]),
   score: z.number().min(0).max(100),
   recommendedAction: z.enum(["CLEAR", "REVIEW", "MANUAL_VERIFICATION", "ESCALATE"]),
@@ -58,7 +58,7 @@ export const riskAssessmentSchema = z.object({
 
 export const evidenceItemSchema = z.object({
   id: z.string(),
-  verificationId: z.string().uuid(),
+  verificationId: z.string(),
   category: z.enum(["OCR", "MRZ", "CONSISTENCY", "FORENSICS", "BIOMETRICS", "METADATA"]),
   source: z.string(),
   status: z.enum(["PASS", "FAIL", "WARNING", "UNAVAILABLE", "PROCESSING", "SUPERSEDED"]),
@@ -156,8 +156,8 @@ export const evidenceTimelineEventSchema = z.object({
 });
 
 export const evidenceDetailSchema = z.object({
-  id: z.string().uuid(),
-  verificationId: z.string().uuid(),
+  id: z.string(),
+  verificationId: z.string(),
   trackingNumber: z.string().optional(),
   status: z.enum(["PASS", "FAIL", "WARNING", "UNAVAILABLE", "PROCESSING", "SUPERSEDED"]),
   overallSeverity: z.enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"]),
@@ -175,7 +175,7 @@ export const evidenceDetailSchema = z.object({
 });
 
 export const documentInfoSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string(),
   type: z.enum(["PASSPORT", "VISA", "DRIVING_LICENCE", "NATIONAL_ID", "OTHER"]),
   issuingCountry: z.string().optional(),
   documentNumber: z.string().optional(),
@@ -187,7 +187,7 @@ export const documentInfoSchema = z.object({
 });
 
 export const verificationSummarySchema = z.object({
-  id: z.string().uuid(),
+  id: z.string(),
   trackingNumber: z.string(),
   checkpointId: z.string(),
   checkpointName: z.string(),
@@ -203,7 +203,7 @@ export const verificationSummarySchema = z.object({
     "CLEARED",
     "FAILED",
   ]),
-  documentType: z.enum(["PASSPORT", "VISA", "DRIVING_LICENCE", "NATIONAL_ID", "OTHER"]),
+  documentType: z.string(),
   maskedDocumentNumber: z.string(),
   riskLevel: z.enum(["LOW", "MEDIUM", "HIGH"]).optional(),
   riskScore: z.number().min(0).max(100).optional(),
@@ -251,7 +251,7 @@ export const verificationTimelineEventSchema = z.object({
 });
 
 export const verificationDetailSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string(),
   trackingNumber: z.string(),
   checkpointId: z.string(),
   checkpointName: z.string(),

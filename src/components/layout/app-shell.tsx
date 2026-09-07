@@ -28,9 +28,11 @@ export function AppShell({ children }: AppShellProps) {
           onMenuClick={() => setIsSidebarOpen(true)}
           onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
         />
-        <main className="jp-main-container">
-          {children}
-        </main>
+        <div className="jp-main-scroll-area">
+          <main className="jp-main-container">
+            {children}
+          </main>
+        </div>
       </div>
 
       {/* Global Command Palette Dialog (Cmd+K) */}
