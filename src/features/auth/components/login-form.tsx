@@ -14,9 +14,20 @@ import {
   ApiClientError,
 } from "@/lib/api/errors";
 
+function getSafeRedirectUrl(): string {
+  if (typeof window !== "undefined") {
+    const params = new URLSearchParams(window.location.search);
+    const redirectParam = params.get("redirect");
+    if (redirectParam && redirectParam.startsWith("/") && !redirectParam.startsWith("//")) {
+      return redirectParam;
+    }
+  }
+  return "/dashboard";
+}
+
 export function LoginForm() {
   const router = useRouter();
-  const { login } = useAuth();
+  const { login, status } = useAuth();
 
   const [formData, setFormData] = React.useState<LoginRequest>({
     badgeNumberOrEmail: "",
@@ -25,6 +36,13 @@ export function LoginForm() {
   const [fieldErrors, setFieldErrors] = React.useState<Record<string, string>>({});
   const [authError, setAuthError] = React.useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+
+  // If already authenticated, redirect to destination
+  React.useEffect(() => {
+    if (status === "AUTHENTICATED") {
+      router.replace(getSafeRedirectUrl());
+    }
+  }, [status, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,7 +65,7 @@ export function LoginForm() {
 
     try {
       await login(result.data);
-      router.push("/dashboard");
+      router.push(getSafeRedirectUrl());
     } catch (err: unknown) {
       if (err instanceof AuthenticationError) {
         setAuthError("Invalid officer badge ID, email, or security password.");
@@ -57,6 +75,8 @@ export function LoginForm() {
         setAuthError(
           "Backend Authentication Service Unavailable. Verification sessions will reconnect once backend services are online."
         );
+      } else if (err instanceof ApiClientError && err.status === 400) {
+        setAuthError(err.message || "Invalid authentication request data.");
       } else if (err instanceof Error) {
         setAuthError(err.message || "An unexpected error occurred during authentication.");
       } else {

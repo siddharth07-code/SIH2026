@@ -2,8 +2,13 @@ export type DocumentType =
   | "PASSPORT"
   | "VISA"
   | "DRIVING_LICENCE"
+  | "DRIVING_LICENSE"
   | "NATIONAL_ID"
-  | "OTHER";
+  | "AADHAAR"
+  | "PAN"
+  | "VOTER_ID"
+  | "OTHER"
+  | "UNKNOWN";
 
 export interface OCRFieldResult {
   field: string;
@@ -55,4 +60,7 @@ export interface DocumentInfo {
   captures?: DocumentCapture[];
   ocrResults?: Record<string, OCRFieldResult>;
   mrzResults?: MRZParsedResult;
+  captureQualityScore?: number;
+  heatmapAssetKey?: string;
+  frontAssetKey?: string;
 }

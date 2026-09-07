@@ -28,6 +28,7 @@ export interface EvidenceItem {
   verificationId: string;
   category: EvidenceCategory;
   source: string;
+  engine?: string;
   status: EvidenceStatus;
   severity: EvidenceSeverity;
   confidence?: number;
@@ -78,6 +79,7 @@ export interface FieldComparisonItem {
 
 export interface ForensicSignal {
   id: string;
+  engine?: string;
   anomalyType: string;
   severity: EvidenceSeverity;
   confidence: number;

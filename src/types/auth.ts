@@ -1,6 +1,6 @@
 import type { LoginRequest } from "@/lib/validation/schemas";
 
-export type UserRole = "OFFICER" | "SUPERVISOR" | "ADMINISTRATOR";
+export type UserRole = "OFFICER" | "SUPERVISOR" | "ADMINISTRATOR" | "PUBLIC_USER";
 export type UserAccountStatus = "ACTIVE" | "INACTIVE" | "SUSPENDED";
 
 export interface User {

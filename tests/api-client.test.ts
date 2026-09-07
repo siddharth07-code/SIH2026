@@ -6,6 +6,7 @@ import {
   AuthorizationError,
   NotFoundError,
   NetworkError,
+  TimeoutError,
   ValidationError,
 } from "@/lib/api/errors";
 import { z } from "zod";
@@ -42,7 +43,58 @@ describe("ApiClient", () => {
     expect(result).toEqual(mockData);
   });
 
-  it("should include Bearer token when provided in options", async () => {
+  it("should successfully execute a POST request with JSON body", async () => {
+    const mockPayload = { badgeNumberOrEmail: "OFFICER1", password: "secret" };
+    const mockResponse = { token: "jwt-xyz", expiresIn: 86400 };
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: vi.fn().mockResolvedValue(mockResponse),
+    });
+
+    const result = await client.post("/auth/login", mockPayload);
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "https://api.screening.sih.gov/api/v1/auth/login",
+      expect.objectContaining({
+        method: "POST",
+        headers: expect.objectContaining({
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        }),
+        body: JSON.stringify(mockPayload),
+      })
+    );
+    expect(result).toEqual(mockResponse);
+  });
+
+  it("should handle multipart/form-data POST without setting Content-Type header", async () => {
+    const formData = new FormData();
+    formData.append("checkpointId", "chk_101");
+    const mockResponse = { id: "ver_123", status: "PROCESSING" };
+
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 201,
+      json: vi.fn().mockResolvedValue(mockResponse),
+    });
+
+    const result = await client.post("/verifications", formData);
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "https://api.screening.sih.gov/api/v1/verifications",
+      expect.objectContaining({
+        method: "POST",
+        body: formData,
+      })
+    );
+
+    const callHeaders = (global.fetch as ReturnType<typeof vi.fn>).mock.calls[0][1].headers as Record<string, string>;
+    expect(callHeaders["Content-Type"]).toBeUndefined();
+    expect(result).toEqual(mockResponse);
+  });
+
+  it("should include Bearer token when provided in options or client instance", async () => {
     global.fetch = vi.fn().mockResolvedValue({
       ok: true,
       status: 200,
@@ -56,6 +108,18 @@ describe("ApiClient", () => {
       expect.objectContaining({
         headers: expect.objectContaining({
           Authorization: "Bearer secure-auth-token-xyz",
+        }),
+      })
+    );
+
+    client.setToken("session-token-abc");
+    await client.get("/profile");
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "https://api.screening.sih.gov/api/v1/profile",
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          Authorization: "Bearer session-token-abc",
         }),
       })
     );
@@ -78,7 +142,13 @@ describe("ApiClient", () => {
     );
   });
 
-  it("should throw AuthenticationError on 401 response", async () => {
+  it("should throw AuthenticationError on 401 response and trigger unauthorized listeners", async () => {
+    client.setToken("expired-token");
+    expect(client.getToken()).toBe("expired-token");
+
+    const unauthorizedHandler = vi.fn();
+    const unsubscribe = client.onUnauthorized(unauthorizedHandler);
+
     global.fetch = vi.fn().mockResolvedValue({
       ok: false,
       status: 401,
@@ -87,6 +157,10 @@ describe("ApiClient", () => {
     });
 
     await expect(client.get("/protected")).rejects.toThrow(AuthenticationError);
+    expect(unauthorizedHandler).toHaveBeenCalledTimes(1);
+    expect(client.getToken()).toBeNull();
+
+    unsubscribe();
   });
 
   it("should throw AuthorizationError on 403 response", async () => {
@@ -109,6 +183,25 @@ describe("ApiClient", () => {
     });
 
     await expect(client.get("/verifications/missing-id")).rejects.toThrow(NotFoundError);
+  });
+
+  it("should throw ApiClientError on generic HTTP error response (e.g. 500)", async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 500,
+      statusText: "Internal Server Error",
+      json: vi.fn().mockResolvedValue({ detail: "Database connection failed" }),
+    });
+
+    await expect(client.get("/server-error")).rejects.toThrow(ApiClientError);
+  });
+
+  it("should throw TimeoutError when request aborts due to timeout", async () => {
+    const abortError = new Error("The operation was aborted");
+    abortError.name = "AbortError";
+    global.fetch = vi.fn().mockRejectedValue(abortError);
+
+    await expect(client.get("/slow-endpoint")).rejects.toThrow(TimeoutError);
   });
 
   it("should throw NetworkError when fetch fails", async () => {
@@ -143,5 +236,17 @@ describe("ApiClient", () => {
     await expect(client.get("/test", { schema: testSchema })).rejects.toThrow(
       ValidationError
     );
+  });
+
+  it("should successfully retrieve a binary Blob via getBlob", async () => {
+    const mockBlob = new Blob(["fake-image-bytes"], { type: "image/png" });
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      blob: vi.fn().mockResolvedValue(mockBlob),
+    });
+
+    const result = await client.getBlob("/verifications/123/heatmap");
+    expect(result).toBe(mockBlob);
   });
 });

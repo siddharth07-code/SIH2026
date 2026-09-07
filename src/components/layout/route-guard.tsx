@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/features/auth/hooks/use-auth";
 import { navigationConfig } from "@/config/navigation";
 import { LoadingState } from "@/components/shared/loading-state";
@@ -15,6 +15,17 @@ interface RouteGuardProps {
 export function RouteGuard({ children }: RouteGuardProps) {
   const { status, user } = useAuth();
   const pathname = usePathname();
+  const router = useRouter();
+
+  React.useEffect(() => {
+    if (status === "UNAUTHENTICATED") {
+      const redirectParam =
+        pathname && pathname !== "/dashboard"
+          ? `?redirect=${encodeURIComponent(pathname)}`
+          : "";
+      router.replace(`/login${redirectParam}`);
+    }
+  }, [status, pathname, router]);
 
   // Determine if the current route has role constraints
   const matchedItem = React.useMemo(() => {
@@ -31,7 +42,7 @@ export function RouteGuard({ children }: RouteGuardProps) {
     return null;
   }, [pathname]);
 
-  if (status === "UNKNOWN" || status === "LOADING") {
+  if (status === "UNKNOWN" || status === "LOADING" || status === "UNAUTHENTICATED") {
     return (
       <div className="min-h-[50vh] flex items-center justify-center">
         <LoadingState message="Verifying officer clearance & active session..." />

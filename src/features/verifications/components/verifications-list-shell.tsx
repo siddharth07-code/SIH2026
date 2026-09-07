@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { RefreshCw, Eye } from "lucide-react";
+import { RefreshCw, Eye, Plus } from "lucide-react";
 import { PageHeader } from "@/components/shared/page-header";
 import { DataTableShell } from "@/components/shared/data-table-shell";
 import { StatusIndicator } from "@/components/shared/status-indicator";
@@ -13,6 +13,7 @@ import { maskDocumentNumber, formatDateTime } from "@/lib/utils/formatters";
 import { useVerifications, useRefreshVerifications } from "../hooks/use-verifications";
 import { VerificationFilters, type VerificationFilterValues } from "./verification-filters";
 import { VerificationPagination } from "./verification-pagination";
+import { UploadVerificationModal } from "./upload-verification-modal";
 import type { RiskLevel, VerificationStatus } from "@/types";
 
 export function VerificationsListShell() {
@@ -56,6 +57,7 @@ export function VerificationsListShell() {
 
   const refreshVerifications = useRefreshVerifications();
   const [isRefreshing, setIsRefreshing] = React.useState(false);
+  const [isUploadOpen, setIsUploadOpen] = React.useState(false);
 
   // URL serialization handler
   const updateUrlParams = React.useCallback(
@@ -131,6 +133,16 @@ export function VerificationsListShell() {
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? "animate-spin" : ""}`} />
           <span>{isRefreshing ? "Refreshing..." : "Refresh Queue"}</span>
+        </Button>
+        <Button
+          variant="default"
+          size="sm"
+          onClick={() => setIsUploadOpen(true)}
+          className="gap-1.5 text-xs h-8 sm:h-9 px-3 w-full sm:w-auto justify-center"
+          aria-label="New document verification upload"
+        >
+          <Plus className="w-3.5 h-3.5" />
+          <span>New Verification</span>
         </Button>
       </PageHeader>
 
@@ -246,6 +258,10 @@ export function VerificationsListShell() {
           onPageSizeChange={handlePageSizeChange}
         />
       </div>
+      <UploadVerificationModal
+        isOpen={isUploadOpen}
+        onClose={() => setIsUploadOpen(false)}
+      />
     </div>
   );
 }

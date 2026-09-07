@@ -1,7 +1,9 @@
 "use client";
 
 import * as React from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { authApi } from "@/lib/api/auth";
+import { apiClient } from "@/lib/api/client";
 import type { AuthState, LoginRequest, AuthContextValue } from "@/types";
 
 export type { AuthContextValue };
@@ -9,6 +11,8 @@ export type { AuthContextValue };
 const AuthContext = React.createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const queryClient = useQueryClient();
+
   const [state, setState] = React.useState<AuthState>({
     status: "UNKNOWN",
     user: null,
@@ -17,29 +21,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   });
 
   const refreshUser = React.useCallback(async () => {
+    const activeToken = apiClient.getToken();
     setState((prev) => ({ ...prev, status: "LOADING", error: null }));
-    const storedToken = typeof window !== "undefined" ? localStorage.getItem("janpramaan_token") : null;
-    if (!storedToken) {
-      setState({
-        status: "UNAUTHENTICATED",
-        user: null,
-        session: null,
-        error: null,
-      });
-      return;
-    }
     try {
-      const user = await authApi.getCurrentUser(storedToken);
+      const user = await authApi.getCurrentUser(activeToken || undefined);
       setState({
         status: "AUTHENTICATED",
         user,
-        session: { user, token: storedToken, sessionType: "BEARER" },
+        session: {
+          user,
+          token: activeToken || undefined,
+          sessionType: activeToken ? "BEARER" : "COOKIE",
+        },
         error: null,
       });
     } catch {
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("janpramaan_token");
-      }
+      apiClient.setToken(null);
+      queryClient.clear();
       setState({
         status: "UNAUTHENTICATED",
         user: null,
@@ -47,19 +45,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         error: null,
       });
     }
-  }, []);
+  }, [queryClient]);
 
   React.useEffect(() => {
     refreshUser();
   }, [refreshUser]);
+
+  // Handle centralized 401 token invalidation across all API requests
+  React.useEffect(() => {
+    const unsubscribe = apiClient.onUnauthorized(() => {
+      queryClient.clear();
+      setState({
+        status: "UNAUTHENTICATED",
+        user: null,
+        session: null,
+        error: "Session expired. Please authenticate again.",
+      });
+    });
+    return unsubscribe;
+  }, [queryClient]);
 
   const login = React.useCallback(
     async (credentials: LoginRequest) => {
       setState((prev) => ({ ...prev, status: "LOADING", error: null }));
       try {
         const response = await authApi.login(credentials);
-        if (response.token && typeof window !== "undefined") {
-          localStorage.setItem("janpramaan_token", response.token);
+        if (response.token) {
+          apiClient.setToken(response.token);
         }
         setState({
           status: "AUTHENTICATED",
@@ -90,11 +102,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await authApi.logout(state.session?.token);
     } catch {
-      // Even if network request fails, clear local auth state unconditionally
+      // Unconditionally clear state even if remote call fails
     } finally {
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("janpramaan_token");
-      }
+      apiClient.setToken(null);
+      queryClient.clear();
       setState({
         status: "UNAUTHENTICATED",
         user: null,
@@ -102,7 +113,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         error: null,
       });
     }
-  }, [state.session?.token]);
+  }, [state.session?.token, queryClient]);
 
   const value = React.useMemo<AuthContextValue>(
     () => ({

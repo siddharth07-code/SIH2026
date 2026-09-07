@@ -15,6 +15,7 @@ import { VerificationEvidenceGrid } from "./verification-evidence-grid";
 import { VerificationFindingsList } from "./verification-findings-list";
 import { VerificationTimeline } from "./verification-timeline";
 import { VerificationActionsPanel } from "./verification-actions-panel";
+import { VerificationHeatmapCard } from "./verification-heatmap-card";
 
 interface VerificationDetailShellProps {
   id: string;
@@ -153,6 +154,13 @@ export function VerificationDetailShell({ id }: VerificationDetailShellProps) {
           <VerificationActionsPanel verificationId={id} currentStatus={status} />
         </div>
       </div>
+
+      {/* Real Forensic Localization Heatmap & Optical Substrate */}
+      <VerificationHeatmapCard
+        verificationId={id}
+        document={document}
+        evidence={evidence}
+      />
 
       {/* Multi-Signal Evidence Signals */}
       <div className="space-y-2.5">
