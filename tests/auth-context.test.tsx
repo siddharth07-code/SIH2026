@@ -1,22 +1,24 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, act, waitFor } from "@testing-library/react";
 import * as React from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/features/auth/context/auth-context";
 import { useAuth } from "@/features/auth/hooks/use-auth";
 import { authApi } from "@/lib/api/auth";
+import { apiClient } from "@/lib/api/client";
 import type { User, LoginResponse } from "@/types";
 
 const mockUser: User = {
-  id: "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
-  badgeNumber: "SUP-1002",
-  fullName: "Supervisor John Smith",
-  email: "john.smith@screening.sih.gov",
+  id: "usr_supervisor_101",
+  badgeNumber: "SSB-SUP-101",
+  fullName: "Inspector Sunita Rawat",
+  email: "supervisor@ssb.gov.in",
   role: "SUPERVISOR",
   status: "ACTIVE",
-  checkpointId: "CP-01",
-  checkpointName: "Terminal 1 Operations",
-  createdAt: "2026-08-30T10:00:00.000Z",
-  updatedAt: "2026-08-30T10:00:00.000Z",
+  checkpointId: "chk_sonauli_01",
+  checkpointName: "Sonauli Integrated Check Post",
+  createdAt: "2026-01-10T09:00:00Z",
+  updatedAt: "2026-01-10T09:00:00Z",
 };
 
 function TestAuthConsumer() {
@@ -30,8 +32,8 @@ function TestAuthConsumer() {
       <button
         onClick={() =>
           login({
-            badgeNumberOrEmail: "SUP-1002",
-            password: "password123",
+            badgeNumberOrEmail: "SSB-SUP-101",
+            password: "Password@123",
           })
         }
       >
@@ -42,19 +44,26 @@ function TestAuthConsumer() {
   );
 }
 
+function renderWithProviders(queryClient = new QueryClient()) {
+  return render(
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <TestAuthConsumer />
+      </AuthProvider>
+    </QueryClientProvider>
+  );
+}
+
 describe("AuthContext & useAuth", () => {
   beforeEach(() => {
     vi.restoreAllMocks();
+    apiClient.setToken(null);
   });
 
   it("should initialize as UNAUTHENTICATED when getCurrentUser fails (no active session)", async () => {
     vi.spyOn(authApi, "getCurrentUser").mockRejectedValue(new Error("No session"));
 
-    render(
-      <AuthProvider>
-        <TestAuthConsumer />
-      </AuthProvider>
-    );
+    renderWithProviders();
 
     await waitFor(() => {
       expect(screen.getByTestId("status")).toHaveTextContent("UNAUTHENTICATED");
@@ -63,35 +72,28 @@ describe("AuthContext & useAuth", () => {
   });
 
   it("should initialize as AUTHENTICATED when valid backend session exists", async () => {
-    localStorage.setItem("janpramaan_token", "valid-jwt");
+    apiClient.setToken("valid-active-jwt");
     vi.spyOn(authApi, "getCurrentUser").mockResolvedValue(mockUser);
 
-    render(
-      <AuthProvider>
-        <TestAuthConsumer />
-      </AuthProvider>
-    );
+    renderWithProviders();
 
     await waitFor(() => {
       expect(screen.getByTestId("status")).toHaveTextContent("AUTHENTICATED");
     });
-    expect(screen.getByTestId("user")).toHaveTextContent("Supervisor John Smith");
+    expect(screen.getByTestId("user")).toHaveTextContent("Inspector Sunita Rawat");
     expect(screen.getByTestId("role")).toHaveTextContent("SUPERVISOR");
+    expect(apiClient.getToken()).toBe("valid-active-jwt");
   });
 
-  it("should update state to AUTHENTICATED on successful login", async () => {
+  it("should update state to AUTHENTICATED and store token on successful login", async () => {
     vi.spyOn(authApi, "getCurrentUser").mockRejectedValue(new Error("No session"));
     const loginResponse: LoginResponse = {
       user: mockUser,
-      token: "valid-jwt",
+      token: "newly-issued-jwt-token",
     };
-    vi.spyOn(authApi, "login").mockResolvedValue(loginResponse);
+    const loginSpy = vi.spyOn(authApi, "login").mockResolvedValue(loginResponse);
 
-    render(
-      <AuthProvider>
-        <TestAuthConsumer />
-      </AuthProvider>
-    );
+    renderWithProviders();
 
     await waitFor(() => {
       expect(screen.getByTestId("status")).toHaveTextContent("UNAUTHENTICATED");
@@ -105,18 +107,23 @@ describe("AuthContext & useAuth", () => {
     await waitFor(() => {
       expect(screen.getByTestId("status")).toHaveTextContent("AUTHENTICATED");
     });
-    expect(screen.getByTestId("user")).toHaveTextContent("Supervisor John Smith");
+    expect(loginSpy).toHaveBeenCalledWith({
+      badgeNumberOrEmail: "SSB-SUP-101",
+      password: "Password@123",
+    });
+    expect(screen.getByTestId("user")).toHaveTextContent("Inspector Sunita Rawat");
+    expect(apiClient.getToken()).toBe("newly-issued-jwt-token");
   });
 
-  it("should clear local state on logout", async () => {
+  it("should clear local state, token, and React Query cache on logout", async () => {
+    apiClient.setToken("session-token-to-clear");
     vi.spyOn(authApi, "getCurrentUser").mockResolvedValue(mockUser);
-    vi.spyOn(authApi, "logout").mockResolvedValue();
+    const logoutSpy = vi.spyOn(authApi, "logout").mockResolvedValue();
 
-    render(
-      <AuthProvider>
-        <TestAuthConsumer />
-      </AuthProvider>
-    );
+    const queryClient = new QueryClient();
+    const clearSpy = vi.spyOn(queryClient, "clear");
+
+    renderWithProviders(queryClient);
 
     await waitFor(() => {
       expect(screen.getByTestId("status")).toHaveTextContent("AUTHENTICATED");
@@ -130,6 +137,47 @@ describe("AuthContext & useAuth", () => {
     await waitFor(() => {
       expect(screen.getByTestId("status")).toHaveTextContent("UNAUTHENTICATED");
     });
+    expect(logoutSpy).toHaveBeenCalled();
+    expect(clearSpy).toHaveBeenCalled();
+    expect(apiClient.getToken()).toBeNull();
     expect(screen.getByTestId("user")).toHaveTextContent("none");
+  });
+
+  it("should handle 401 unauthorized listener by clearing state and cache", async () => {
+    apiClient.setToken("active-token");
+    vi.spyOn(authApi, "getCurrentUser").mockResolvedValue(mockUser);
+
+    const queryClient = new QueryClient();
+    const clearSpy = vi.spyOn(queryClient, "clear");
+
+    renderWithProviders(queryClient);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("status")).toHaveTextContent("AUTHENTICATED");
+    });
+
+    // Simulate 401 response from an API call
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 401,
+      statusText: "Unauthorized",
+      json: vi.fn().mockResolvedValue({ detail: "Session token expired" }),
+    });
+
+    await act(async () => {
+      try {
+        await apiClient.get("/verifications");
+      } catch {
+        // Expected 401 AuthenticationError
+      }
+    });
+
+    await waitFor(() => {
+      expect(screen.getByTestId("status")).toHaveTextContent("UNAUTHENTICATED");
+    });
+    expect(screen.getByTestId("user")).toHaveTextContent("none");
+    expect(screen.getByTestId("error")).toHaveTextContent(/Session expired/i);
+    expect(apiClient.getToken()).toBeNull();
+    expect(clearSpy).toHaveBeenCalled();
   });
 });

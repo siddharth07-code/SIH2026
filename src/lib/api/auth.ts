@@ -20,9 +20,13 @@ export class AuthApi {
    * Submit officer authentication credentials to the central backend.
    */
   async login(credentials: LoginRequest): Promise<LoginResponse> {
-    return this.client.post<LoginResponse>("/auth/login", credentials, {
+    const response = await this.client.post<LoginResponse>("/auth/login", credentials, {
       schema: loginResponseSchema,
     });
+    if (response.token) {
+      this.client.setToken(response.token);
+    }
+    return response;
   }
 
   /**
@@ -39,9 +43,13 @@ export class AuthApi {
    * Terminate the authenticated session on the backend.
    */
   async logout(token?: string): Promise<void> {
-    await this.client.post<void>("/auth/logout", undefined, {
-      token,
-    });
+    try {
+      await this.client.post<void>("/auth/logout", undefined, {
+        token,
+      });
+    } finally {
+      this.client.setToken(null);
+    }
   }
 
   /**
@@ -53,6 +61,9 @@ export class AuthApi {
         token,
         schema: loginResponseSchema,
       });
+      if (response.token) {
+        this.client.setToken(response.token);
+      }
       return {
         user: response.user,
         token: response.token,

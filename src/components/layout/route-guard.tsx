@@ -16,6 +16,15 @@ export function RouteGuard({ children }: RouteGuardProps) {
   const { status, user } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
+  React.useEffect(() => {
+    if (status === "UNAUTHENTICATED" || (!user && status !== "LOADING" && status !== "UNKNOWN")) {
+      const redirectParam =
+        pathname && pathname !== "/dashboard"
+          ? `?redirect=${encodeURIComponent(pathname)}`
+          : "";
+      router.replace(`/login${redirectParam}`);
+    }
+  }, [status, user, pathname, router]);
 
   // Determine if the current route has role constraints
   const matchedItem = React.useMemo(() => {
@@ -32,31 +41,11 @@ export function RouteGuard({ children }: RouteGuardProps) {
     return null;
   }, [pathname]);
 
-  const isUnauthenticated =
-    status === "UNAUTHENTICATED" ||
-    (!user && status !== "LOADING" && status !== "UNKNOWN");
-
-  React.useEffect(() => {
-    if (isUnauthenticated) {
-      router.replace?.(`/login?from=${encodeURIComponent(pathname)}`);
-    }
-  }, [isUnauthenticated, pathname, router]);
-
-  if (status === "UNKNOWN" || status === "LOADING") {
+  if (status === "UNKNOWN" || status === "LOADING" || status === "UNAUTHENTICATED") {
     return (
       <div className="min-h-[50vh] flex items-center justify-center">
         <LoadingState message="Verifying officer clearance & active session..." />
       </div>
-    );
-  }
-
-  // If user is unauthenticated, block and display unauthorized state while redirecting
-  if (isUnauthenticated) {
-    return (
-      <UnauthorizedState
-        requiredRoles={matchedItem?.roles || ["OFFICER", "SUPERVISOR", "ADMINISTRATOR"]}
-        currentRole={null}
-      />
     );
   }
 

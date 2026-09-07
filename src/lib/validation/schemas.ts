@@ -13,11 +13,11 @@ export const loginRequestSchema = z.object({
 
 export type LoginRequest = z.infer<typeof loginRequestSchema>;
 
-export const userRoleSchema = z.enum(["OFFICER", "SUPERVISOR", "ADMINISTRATOR", "CITIZEN"]);
+export const userRoleSchema = z.enum(["OFFICER", "SUPERVISOR", "ADMINISTRATOR", "CITIZEN", "PUBLIC_USER"]);
 export const userAccountStatusSchema = z.enum(["ACTIVE", "INACTIVE", "SUSPENDED"]);
 
 export const userSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string(),
   badgeNumber: z.string(),
   fullName: z.string(),
   email: z.string().email(),

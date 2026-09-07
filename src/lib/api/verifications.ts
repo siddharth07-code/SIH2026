@@ -37,7 +37,6 @@ export class VerificationsApi {
     const parsed = verificationListResponseSchema.safeParse(data);
 
     if (!parsed.success) {
-      // In development/strict mode, return parsed fallback or propagate
       return data as VerificationListResponse;
     }
 
@@ -56,6 +55,20 @@ export class VerificationsApi {
     }
 
     return parsed.data as unknown as VerificationDetail;
+  }
+
+  /**
+   * Submit an authentic document image and screening payload to the multi-signal AI verification pipeline.
+   */
+  async createVerification(formData: FormData): Promise<VerificationDetail> {
+    return this.client.post<VerificationDetail>("/verifications", formData);
+  }
+
+  /**
+   * Retrieve the real forensic localization heatmap PNG image artifact from the backend.
+   */
+  async getVerificationHeatmap(id: string): Promise<Blob> {
+    return this.client.getBlob(`/verifications/${encodeURIComponent(id)}/heatmap`);
   }
 
   /**

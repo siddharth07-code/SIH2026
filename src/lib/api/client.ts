@@ -21,10 +21,50 @@ export interface RequestOptions<TResponse = unknown> extends Omit<RequestInit, "
 export class ApiClient {
   private readonly baseUrl: string;
   private readonly defaultTimeoutMs: number;
+  private token: string | null = null;
+  private unauthorizedListeners: Array<() => void> = [];
 
   constructor(baseUrl: string = env.apiBaseUrl, defaultTimeoutMs = 15000) {
     this.baseUrl = baseUrl.replace(/\/$/, "");
     this.defaultTimeoutMs = defaultTimeoutMs;
+  }
+
+  setToken(token: string | null): void {
+    this.token = token;
+    if (typeof window !== "undefined") {
+      try {
+        if (token) {
+          window.sessionStorage.setItem("janpramaan_session_token", token);
+        } else {
+          window.sessionStorage.removeItem("janpramaan_session_token");
+        }
+      } catch {
+        // Ignore storage errors in restricted contexts
+      }
+    }
+  }
+
+  getToken(): string | null {
+    if (this.token) return this.token;
+    if (typeof window !== "undefined") {
+      try {
+        const stored = window.sessionStorage.getItem("janpramaan_session_token");
+        if (stored) {
+          this.token = stored;
+          return stored;
+        }
+      } catch {
+        // Ignore storage errors
+      }
+    }
+    return null;
+  }
+
+  onUnauthorized(callback: () => void): () => void {
+    this.unauthorizedListeners.push(callback);
+    return () => {
+      this.unauthorizedListeners = this.unauthorizedListeners.filter((cb) => cb !== callback);
+    };
   }
 
   private buildUrl(
@@ -64,19 +104,13 @@ export class ApiClient {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
 
+    const activeToken = token !== undefined ? token : this.getToken();
     const isFormData = typeof FormData !== "undefined" && body instanceof FormData;
     const headers: Record<string, string> = {
       Accept: "application/json",
       ...(isFormData ? {} : { "Content-Type": "application/json" }),
       ...(customHeaders as Record<string, string>),
     };
-
-    const activeToken =
-      token !== undefined
-        ? token
-        : typeof window !== "undefined"
-        ? localStorage.getItem("janpramaan_token")
-        : null;
 
     if (activeToken) {
       headers["Authorization"] = `Bearer ${activeToken}`;
@@ -89,7 +123,7 @@ export class ApiClient {
         method,
         headers,
         credentials: "include",
-        body: body !== undefined ? (isFormData ? (body as BodyInit) : JSON.stringify(body)) : undefined,
+        body: isFormData ? (body as BodyInit) : body !== undefined ? JSON.stringify(body) : undefined,
         signal: controller.signal,
         ...restOptions,
       });
@@ -122,6 +156,10 @@ export class ApiClient {
 
       switch (response.status) {
         case 401:
+          this.setToken(null);
+          this.unauthorizedListeners.forEach((cb) => {
+            try { cb(); } catch {}
+          });
           throw new AuthenticationError(errorMessage);
         case 403:
           throw new AuthorizationError(errorMessage);
@@ -161,6 +199,82 @@ export class ApiClient {
     }
 
     return rawData as TResponse;
+  }
+
+  async getBlob(
+    endpoint: string,
+    options: Omit<RequestOptions<Blob>, "method" | "body"> = {}
+  ): Promise<Blob> {
+    const {
+      headers: customHeaders = {},
+      params,
+      timeoutMs = this.defaultTimeoutMs,
+      token,
+      ...restOptions
+    } = options;
+
+    const url = this.buildUrl(endpoint, params);
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+    const activeToken = token !== undefined ? token : this.getToken();
+    const headers: Record<string, string> = {
+      ...(customHeaders as Record<string, string>),
+    };
+
+    if (activeToken) {
+      headers["Authorization"] = `Bearer ${activeToken}`;
+    }
+
+    let response: Response;
+
+    try {
+      response = await fetch(url, {
+        method: "GET",
+        headers,
+        signal: controller.signal,
+        ...restOptions,
+      });
+    } catch (err: unknown) {
+      clearTimeout(timer);
+      if (err instanceof Error) {
+        if (err.name === "AbortError") {
+          throw new TimeoutError(`Request to ${endpoint} timed out after ${timeoutMs}ms`);
+        }
+        throw new NetworkError(`Network request failed: ${err.message}`);
+      }
+      throw new NetworkError("An unknown network error occurred");
+    } finally {
+      clearTimeout(timer);
+    }
+
+    if (!response.ok) {
+      let errorBody: unknown;
+      try {
+        errorBody = await response.json();
+      } catch {
+        errorBody = await response.text();
+      }
+
+      const errorMessage =
+        typeof errorBody === "object" && errorBody !== null && "detail" in errorBody
+          ? String((errorBody as { detail: unknown }).detail)
+          : response.statusText || `HTTP ${response.status}`;
+
+      if (response.status === 401) {
+        this.setToken(null);
+        this.unauthorizedListeners.forEach((cb) => {
+          try { cb(); } catch {}
+        });
+        throw new AuthenticationError(errorMessage);
+      }
+      if (response.status === 404) {
+        throw new NotFoundError(errorMessage);
+      }
+      throw new ApiClientError(errorMessage, response.status, "API_HTTP_ERROR", errorBody);
+    }
+
+    return await response.blob();
   }
 
   get<TResponse>(endpoint: string, options?: Omit<RequestOptions<TResponse>, "method" | "body">) {

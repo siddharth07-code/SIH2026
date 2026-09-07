@@ -14,9 +14,20 @@ import {
   ApiClientError,
 } from "@/lib/api/errors";
 
+function getSafeRedirectUrl(): string {
+  if (typeof window !== "undefined") {
+    const params = new URLSearchParams(window.location.search);
+    const redirectParam = params.get("redirect");
+    if (redirectParam && redirectParam.startsWith("/") && !redirectParam.startsWith("//")) {
+      return redirectParam;
+    }
+  }
+  return "/dashboard";
+}
+
 export function LoginForm() {
   const router = useRouter();
-  const { login, logout } = useAuth();
+  const { login, logout, status } = useAuth();
 
   const [formData, setFormData] = React.useState<LoginRequest>({
     badgeNumberOrEmail: "",
@@ -34,6 +45,13 @@ export function LoginForm() {
     setAuthError(null);
     setFieldErrors({});
   };
+
+  // If already authenticated, redirect to destination
+  React.useEffect(() => {
+    if (status === "AUTHENTICATED") {
+      router.replace(getSafeRedirectUrl());
+    }
+  }, [status, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,7 +76,7 @@ export function LoginForm() {
       const authenticatedUser = await login(result.data);
       
       // STRICT RBAC CHECK: Only authorized security personnel may access Central Command
-      if (authenticatedUser && authenticatedUser.role === "CITIZEN") {
+      if (authenticatedUser && (authenticatedUser.role === "CITIZEN" || authenticatedUser.role === "PUBLIC_USER")) {
         await logout();
         setAuthError(
           "ACCESS RESTRICTED: Central Command is strictly reserved for Security Personnel (Border Police, Army, Supervisors)."
@@ -66,7 +84,7 @@ export function LoginForm() {
         return;
       }
 
-      router.push("/dashboard");
+      router.push(getSafeRedirectUrl());
     } catch (err: unknown) {
       if (err instanceof AuthenticationError) {
         setAuthError("Invalid officer badge ID, email, or security password.");
@@ -76,6 +94,8 @@ export function LoginForm() {
         setAuthError(
           "Backend authentication service is currently unreachable. Please verify your connection or try again."
         );
+      } else if (err instanceof ApiClientError && err.status === 400) {
+        setAuthError(err.message || "Invalid authentication request data.");
       } else if (err instanceof Error) {
         setAuthError(err.message || "An unexpected error occurred during authentication.");
       } else {

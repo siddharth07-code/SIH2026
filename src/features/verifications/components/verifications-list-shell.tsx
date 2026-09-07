@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { RefreshCw, Eye, Upload } from "lucide-react";
+import { RefreshCw, Eye, Upload, Plus } from "lucide-react";
 import { PageHeader } from "@/components/shared/page-header";
 import { DataTableShell } from "@/components/shared/data-table-shell";
 import { StatusIndicator } from "@/components/shared/status-indicator";
@@ -125,22 +125,26 @@ export function VerificationsListShell() {
       >
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
           <Button
-            onClick={() => setIsUploadOpen(true)}
-            className="gap-2 text-sm h-10 px-4 w-full sm:w-auto justify-center font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-xs"
+            variant="outline"
+            size="sm"
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className="gap-1.5 text-xs h-8 sm:h-9 px-3 w-full sm:w-auto justify-center font-medium"
+            aria-label="Refresh verification screening queue"
           >
-            <Upload className="w-4 h-4" />
-            <span>Upload &amp; Screen Document</span>
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? "animate-spin" : ""}`} />
+            <span>{isRefreshing ? "Refreshing..." : "Refresh Queue"}</span>
           </Button>
 
           <Button
-            variant="outline"
-            onClick={handleRefresh}
-            disabled={isRefreshing}
-            className="gap-2 text-sm h-10 px-4 w-full sm:w-auto justify-center font-semibold"
-            aria-label="Refresh verification screening queue"
+            variant="default"
+            size="sm"
+            onClick={() => setIsUploadOpen(true)}
+            className="gap-1.5 text-xs h-8 sm:h-9 px-3 w-full sm:w-auto justify-center font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-xs"
+            aria-label="New document verification upload"
           >
-            <RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin" : ""}`} />
-            <span>{isRefreshing ? "Refreshing..." : "Refresh Queue"}</span>
+            <Upload className="w-3.5 h-3.5" />
+            <span>Upload &amp; Screen Document</span>
           </Button>
         </div>
       </PageHeader>
@@ -257,12 +261,13 @@ export function VerificationsListShell() {
           onPageSizeChange={handlePageSizeChange}
         />
       </div>
-
       {/* Document Upload & Live ML Risk Screening Modal */}
-      <DocumentUploadModal
-        isOpen={isUploadOpen}
-        onClose={() => setIsUploadOpen(false)}
-      />
+      {isUploadOpen && (
+        <DocumentUploadModal
+          isOpen={isUploadOpen}
+          onClose={() => setIsUploadOpen(false)}
+        />
+      )}
     </div>
   );
 }

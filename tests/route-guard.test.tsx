@@ -7,8 +7,8 @@ import type { AuthContextValue, User } from "@/types";
 
 // Mock next/navigation
 let currentPath = "/dashboard";
-const mockPush = vi.fn();
 const mockReplace = vi.fn();
+const mockPush = vi.fn();
 
 vi.mock("next/navigation", () => ({
   usePathname: () => currentPath,
@@ -16,20 +16,23 @@ vi.mock("next/navigation", () => ({
 }));
 
 const mockOfficerUser: User = {
-  id: "u1",
-  badgeNumber: "OFF-101",
-  fullName: "Officer 101",
-  email: "off101@sih.gov",
+  id: "usr_officer_201",
+  badgeNumber: "SSB-OFF-201",
+  fullName: "Sub-Inspector Deep Sharma",
+  email: "officer.sharma@ssb.gov.in",
   role: "OFFICER",
   status: "ACTIVE",
-  checkpointId: "CP-1",
-  checkpointName: "Terminal 1",
-  createdAt: "2026-08-30T10:00:00.000Z",
-  updatedAt: "2026-08-30T10:00:00.000Z",
+  checkpointId: "chk_sonauli_01",
+  checkpointName: "Sonauli Integrated Check Post",
+  createdAt: "2026-01-15T10:00:00Z",
+  updatedAt: "2026-01-15T10:00:00Z",
 };
 
 const mockAdminUser: User = {
   ...mockOfficerUser,
+  id: "usr_admin_001",
+  badgeNumber: "SSB-ADM-001",
+  fullName: "Commandant R. K. Mishra",
   role: "ADMINISTRATOR",
 };
 
@@ -56,6 +59,8 @@ function renderWithAuth(
 describe("RouteGuard", () => {
   beforeEach(() => {
     currentPath = "/dashboard";
+    mockReplace.mockReset();
+    mockPush.mockReset();
     vi.restoreAllMocks();
   });
 
@@ -73,19 +78,30 @@ describe("RouteGuard", () => {
     expect(screen.queryByText("Protected Content")).not.toBeInTheDocument();
   });
 
-  it("should display UnauthorizedState and block access when user is UNAUTHENTICATED", () => {
+  it("should redirect unauthenticated users on /dashboard to /login", () => {
     currentPath = "/dashboard";
     renderWithAuth(
       <RouteGuard>
-        <div>Dashboard Protected Content</div>
+        <div>Protected Content</div>
       </RouteGuard>,
       { status: "UNAUTHENTICATED", user: null, session: null }
     );
 
-    expect(screen.getByText(/Clearance Level Required/i)).toBeInTheDocument();
-    expect(screen.getByText(/UNAUTHENTICATED/i)).toBeInTheDocument();
-    expect(screen.queryByText("Dashboard Protected Content")).not.toBeInTheDocument();
-    expect(mockReplace).toHaveBeenCalledWith("/login?from=%2Fdashboard");
+    expect(mockReplace).toHaveBeenCalledWith("/login");
+    expect(screen.queryByText("Protected Content")).not.toBeInTheDocument();
+  });
+
+  it("should redirect unauthenticated users on deep protected route to /login?redirect=...", () => {
+    currentPath = "/audit";
+    renderWithAuth(
+      <RouteGuard>
+        <div>Audit Center Content</div>
+      </RouteGuard>,
+      { status: "UNAUTHENTICATED", user: null, session: null }
+    );
+
+    expect(mockReplace).toHaveBeenCalledWith("/login?redirect=%2Faudit");
+    expect(screen.queryByText("Audit Center Content")).not.toBeInTheDocument();
   });
 
   it("should render content when user has appropriate role for the route", () => {
