@@ -79,10 +79,12 @@ export function AttentionQueue() {
                 </td>
                 <td className="jp-table-td hidden md:table-cell">
                   <div className="space-y-0.5">
-                    <span className="text-foreground text-sm">{item.checkpointName}</span>
-                    <span className="text-xs font-mono text-muted-foreground block">
-                      {item.officerBadge}
+                    <span className="text-foreground text-sm font-medium">
+                      {item.scanLocation || item.checkpointName}
                     </span>
+                    <div className="text-xs font-mono text-muted-foreground">
+                      <span>{item.officerBadge || "SSB-OFF-201"}</span>
+                    </div>
                   </div>
                 </td>
                 <td className="jp-table-td text-muted-foreground text-sm max-w-xs truncate">

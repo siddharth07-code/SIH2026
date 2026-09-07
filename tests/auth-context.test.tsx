@@ -63,6 +63,7 @@ describe("AuthContext & useAuth", () => {
   });
 
   it("should initialize as AUTHENTICATED when valid backend session exists", async () => {
+    localStorage.setItem("janpramaan_token", "valid-jwt");
     vi.spyOn(authApi, "getCurrentUser").mockResolvedValue(mockUser);
 
     render(

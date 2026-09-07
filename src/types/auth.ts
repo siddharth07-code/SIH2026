@@ -1,6 +1,6 @@
 import type { LoginRequest } from "@/lib/validation/schemas";
 
-export type UserRole = "OFFICER" | "SUPERVISOR" | "ADMINISTRATOR";
+export type UserRole = "OFFICER" | "SUPERVISOR" | "ADMINISTRATOR" | "CITIZEN";
 export type UserAccountStatus = "ACTIVE" | "INACTIVE" | "SUSPENDED";
 
 export interface User {
@@ -10,11 +10,23 @@ export interface User {
   email: string;
   role: UserRole;
   status: UserAccountStatus;
-  checkpointId: string;
-  checkpointName: string;
+  checkpointId?: string;
+  checkpointName?: string;
+  unit?: string;
   lastActiveAt?: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface RegisterRequest {
+  fullName: string;
+  email: string;
+  password: string;
+  role?: UserRole;
+  badgeNumber?: string;
+  checkpointId?: string;
+  checkpointName?: string;
+  unit?: string;
 }
 
 export interface AuthSession {
@@ -46,7 +58,8 @@ export interface LoginResponse {
 }
 
 export interface AuthContextValue extends AuthState {
-  login: (credentials: LoginRequest) => Promise<void>;
+  login: (credentials: LoginRequest) => Promise<User>;
+  register?: (data: RegisterRequest) => Promise<User>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
 }

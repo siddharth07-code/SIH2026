@@ -37,16 +37,16 @@ function renderPage(userRole: "OFFICER" | "SUPERVISOR" | "ADMINISTRATOR" = "SUPE
 }
 
 describe("Officers & Checkpoint Units Page", () => {
-  it("should render page header, directory metrics, and honest offline empty state", () => {
+  it("should render page header, directory metrics, and active officer roster", () => {
     renderPage("SUPERVISOR");
 
     expect(screen.getByText("Authorized Officers & Checkpoint Units")).toBeInTheDocument();
-    expect(screen.getByText("DIRECTORY SYNC")).toBeInTheDocument();
+    expect(screen.getByText("AUTHORIZED ROSTER")).toBeInTheDocument();
     expect(screen.getByText("SUPERVISOR CLEARANCE")).toBeInTheDocument();
     expect(screen.getByText("Active Personnel")).toBeInTheDocument();
-    expect(screen.getAllByText("Mobile Terminals").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText("Screening Terminals")).toBeInTheDocument();
     expect(screen.getAllByText("Checkpoints").length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByText("OFFICER ROSTER & TERMINAL DIRECTORY OFFLINE")).toBeInTheDocument();
-    expect(screen.getByText(/Backend directory service authorization is authoritative/i)).toBeInTheDocument();
+    expect(screen.getByText("Inspector Sunita Rawat")).toBeInTheDocument();
+    expect(screen.getByText("Sub-Inspector Deep Sharma")).toBeInTheDocument();
   });
 });

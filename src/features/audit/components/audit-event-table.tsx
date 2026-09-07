@@ -58,9 +58,9 @@ export function AuditEventTable({
       <Card className="jp-card">
         <EmptyState
           icon={ShieldAlert}
-          title="AUDIT SERVICE NOT CONNECTED"
-          description="The governance service is currently offline or unreachable. Audit events will appear when the governance service provides authoritative records."
-          notice="The frontend command center connects to the backend append-only audit gateway at /api/v1/audit/events."
+          title="AUDIT LOG UNAVAILABLE"
+          description="Unable to reach the audit governance gateway. Please verify network connectivity or retry."
+          notice="Audit logs are cryptographically verified and recorded upon document screening and operator determinations."
           action={
             <Button variant="outline" size="sm" onClick={() => window.location.reload()} className="gap-1 text-xs">
               <RotateCcw className="w-3.5 h-3.5" />

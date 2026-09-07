@@ -7,9 +7,12 @@ import type { AuthContextValue, User } from "@/types";
 
 // Mock next/navigation
 let currentPath = "/dashboard";
+const mockPush = vi.fn();
+const mockReplace = vi.fn();
+
 vi.mock("next/navigation", () => ({
   usePathname: () => currentPath,
-  useRouter: () => ({ push: vi.fn() }),
+  useRouter: () => ({ push: mockPush, replace: mockReplace }),
 }));
 
 const mockOfficerUser: User = {
@@ -68,6 +71,21 @@ describe("RouteGuard", () => {
       screen.getByText(/Verifying officer clearance & active session.../i)
     ).toBeInTheDocument();
     expect(screen.queryByText("Protected Content")).not.toBeInTheDocument();
+  });
+
+  it("should display UnauthorizedState and block access when user is UNAUTHENTICATED", () => {
+    currentPath = "/dashboard";
+    renderWithAuth(
+      <RouteGuard>
+        <div>Dashboard Protected Content</div>
+      </RouteGuard>,
+      { status: "UNAUTHENTICATED", user: null, session: null }
+    );
+
+    expect(screen.getByText(/Clearance Level Required/i)).toBeInTheDocument();
+    expect(screen.getByText(/UNAUTHENTICATED/i)).toBeInTheDocument();
+    expect(screen.queryByText("Dashboard Protected Content")).not.toBeInTheDocument();
+    expect(mockReplace).toHaveBeenCalledWith("/login?from=%2Fdashboard");
   });
 
   it("should render content when user has appropriate role for the route", () => {

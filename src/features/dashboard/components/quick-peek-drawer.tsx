@@ -119,21 +119,26 @@ export function QuickPeekDrawer({ item, onClose }: QuickPeekDrawerProps) {
             <div className="p-2.5 rounded border border-border bg-elevated space-y-0.5">
               <span className="text-[10px] text-muted-foreground uppercase font-mono flex items-center gap-1">
                 <MapPin className="w-3 h-3 text-primary" />
-                Ingest Checkpoint
+                Physical Scan Location
               </span>
-              <span className="font-semibold text-foreground block">
-                {item.checkpointName}
+              <span className="font-semibold text-foreground block truncate">
+                {item.scanLocation || item.checkpointName}
               </span>
             </div>
 
             <div className="p-2.5 rounded border border-border bg-elevated space-y-0.5">
               <span className="text-[10px] text-muted-foreground uppercase font-mono flex items-center gap-1">
                 <User className="w-3 h-3 text-primary" />
-                Submitting Officer
+                Submitting Profile
               </span>
-              <span className="font-mono font-semibold text-foreground block">
-                {item.officerBadge}
+              <span className="font-mono font-semibold text-foreground block truncate">
+                {item.officerBadge || "SSB-OFF-201"}
               </span>
+              {item.userRole && (
+                <span className="text-[10px] font-sans font-medium text-muted-foreground block">
+                  Role: {item.userRole !== "CITIZEN" ? item.userRole : "OFFICER"}
+                </span>
+              )}
             </div>
 
             <div className="p-2.5 rounded border border-border bg-elevated space-y-0.5">

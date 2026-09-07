@@ -160,7 +160,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
     const query = search.toLowerCase().trim();
     return commandItems.filter((item) => {
       // Role check
-      if (item.roles && user?.role && !item.roles.includes(user.role)) {
+      if (item.roles && user?.role && !(item.roles as readonly string[]).includes(user.role)) {
         return false;
       }
       if (!query) return true;

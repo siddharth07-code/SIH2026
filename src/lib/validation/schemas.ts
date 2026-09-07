@@ -13,7 +13,7 @@ export const loginRequestSchema = z.object({
 
 export type LoginRequest = z.infer<typeof loginRequestSchema>;
 
-export const userRoleSchema = z.enum(["OFFICER", "SUPERVISOR", "ADMINISTRATOR"]);
+export const userRoleSchema = z.enum(["OFFICER", "SUPERVISOR", "ADMINISTRATOR", "CITIZEN"]);
 export const userAccountStatusSchema = z.enum(["ACTIVE", "INACTIVE", "SUSPENDED"]);
 
 export const userSchema = z.object({
@@ -23,8 +23,9 @@ export const userSchema = z.object({
   email: z.string().email(),
   role: userRoleSchema,
   status: userAccountStatusSchema,
-  checkpointId: z.string(),
-  checkpointName: z.string(),
+  checkpointId: z.string().optional(),
+  checkpointName: z.string().optional(),
+  unit: z.string().optional(),
   lastActiveAt: z.string().datetime().optional(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),

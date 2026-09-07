@@ -30,7 +30,7 @@ function MetricCard({
           {title}
         </span>
         <div className="jp-metric-card-icon-wrap">
-          <Icon className="w-3.5 h-3.5" style={{ color: iconColorStyle }} aria-hidden="true" />
+          <Icon className="w-4.5 h-4.5" style={{ color: iconColorStyle }} aria-hidden="true" />
         </div>
       </div>
       <div className="space-y-1">
@@ -52,13 +52,13 @@ export function ScreeningOverview() {
   const { data: summary } = useDashboardSummary();
 
   return (
-    <div className="space-y-2.5">
+    <div className="space-y-3">
       <div className="flex flex-col xs:flex-row xs:items-center justify-between gap-1">
-        <h2 className="text-xs font-semibold text-foreground uppercase flex items-center gap-2 m-0">
-          <Activity className="w-4 h-4 text-primary" />
+        <h2 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2 m-0">
+          <Activity className="w-4.5 h-4.5 text-primary" />
           <span>Screening Metrics</span>
         </h2>
-        <span className="text-[11px] text-muted-foreground font-mono">
+        <span className="text-xs text-muted-foreground font-mono font-medium">
           {summary ? `Updated: ${summary.lastUpdated}` : "Live data"}
         </span>
       </div>
@@ -96,8 +96,8 @@ export function ScreeningOverview() {
           value={summary?.activeCheckpointsCount}
           icon={MapPin}
           iconColorStyle="var(--jp-status-low-text)"
-          subtext="Mobile officer ingest nodes"
-          trendNotice="Field terminals online"
+          subtext="Operational checkpoint posts"
+          trendNotice="Active Checkpoints"
         />
 
         <MetricCard

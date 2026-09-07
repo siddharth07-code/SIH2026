@@ -84,6 +84,20 @@ export class VerificationsApi {
       { decision, notes }
     );
   }
+
+  /**
+   * Submit a new document image capture & metadata for ML screening and risk evaluation.
+   */
+  async uploadVerification(formData: FormData): Promise<VerificationDetail> {
+    const data = await this.client.post<unknown>("/verifications", formData);
+    const parsed = verificationDetailSchema.safeParse(data);
+
+    if (!parsed.success) {
+      return data as VerificationDetail;
+    }
+
+    return parsed.data as unknown as VerificationDetail;
+  }
 }
 
 export const verificationsApi = new VerificationsApi();

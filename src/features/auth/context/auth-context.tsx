@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { authApi } from "@/lib/api/auth";
-import type { AuthState, LoginRequest, AuthContextValue } from "@/types";
+import type { AuthState, LoginRequest, AuthContextValue, User, RegisterRequest } from "@/types";
 
 export type { AuthContextValue };
 
@@ -54,7 +54,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [refreshUser]);
 
   const login = React.useCallback(
-    async (credentials: LoginRequest) => {
+    async (credentials: LoginRequest): Promise<User> => {
       setState((prev) => ({ ...prev, status: "LOADING", error: null }));
       try {
         const response = await authApi.login(credentials);
@@ -71,9 +71,44 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           },
           error: null,
         });
+        return response.user;
       } catch (err: unknown) {
         const errorMessage =
           err instanceof Error ? err.message : "Authentication request failed";
+        setState({
+          status: "UNAUTHENTICATED",
+          user: null,
+          session: null,
+          error: errorMessage,
+        });
+        throw err;
+      }
+    },
+    []
+  );
+
+  const register = React.useCallback(
+    async (data: RegisterRequest): Promise<User> => {
+      setState((prev) => ({ ...prev, status: "LOADING", error: null }));
+      try {
+        const response = await authApi.register(data);
+        if (response.token && typeof window !== "undefined") {
+          localStorage.setItem("janpramaan_token", response.token);
+        }
+        setState({
+          status: "AUTHENTICATED",
+          user: response.user,
+          session: {
+            user: response.user,
+            token: response.token,
+            sessionType: response.token ? "BEARER" : "COOKIE",
+          },
+          error: null,
+        });
+        return response.user;
+      } catch (err: unknown) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Registration request failed";
         setState({
           status: "UNAUTHENTICATED",
           user: null,
@@ -108,10 +143,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     () => ({
       ...state,
       login,
+      register,
       logout,
       refreshUser,
     }),
-    [state, login, logout, refreshUser]
+    [state, login, register, logout, refreshUser]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

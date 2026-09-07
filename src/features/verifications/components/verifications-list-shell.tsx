@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { RefreshCw, Eye } from "lucide-react";
+import { RefreshCw, Eye, Upload } from "lucide-react";
 import { PageHeader } from "@/components/shared/page-header";
 import { DataTableShell } from "@/components/shared/data-table-shell";
 import { StatusIndicator } from "@/components/shared/status-indicator";
@@ -13,6 +13,7 @@ import { maskDocumentNumber, formatDateTime } from "@/lib/utils/formatters";
 import { useVerifications, useRefreshVerifications } from "../hooks/use-verifications";
 import { VerificationFilters, type VerificationFilterValues } from "./verification-filters";
 import { VerificationPagination } from "./verification-pagination";
+import { DocumentUploadModal } from "./document-upload-modal";
 import type { RiskLevel, VerificationStatus } from "@/types";
 
 export function VerificationsListShell() {
@@ -56,6 +57,7 @@ export function VerificationsListShell() {
 
   const refreshVerifications = useRefreshVerifications();
   const [isRefreshing, setIsRefreshing] = React.useState(false);
+  const [isUploadOpen, setIsUploadOpen] = React.useState(false);
 
   // URL serialization handler
   const updateUrlParams = React.useCallback(
@@ -116,22 +118,31 @@ export function VerificationsListShell() {
         title="Verification Screening Management"
         description="Operational triage queue for identity verifications, MRZ checksum validations, and forensic inspection records."
         badge={
-          <Badge variant="outline" className="text-xs font-mono" style={{ color: "var(--jp-primary)", borderColor: "var(--jp-primary-border)" }}>
+          <Badge variant="outline" className="text-xs font-mono font-bold px-2.5 py-1" style={{ color: "var(--jp-primary)", borderColor: "var(--jp-primary-border)" }}>
             {pagination?.total ? `${pagination.total} CASES IN QUEUE` : "REAL-TIME QUEUE"}
           </Badge>
         }
       >
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleRefresh}
-          disabled={isRefreshing}
-          className="gap-1.5 text-xs h-8 sm:h-9 px-3 w-full sm:w-auto justify-center"
-          aria-label="Refresh verification screening queue"
-        >
-          <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? "animate-spin" : ""}`} />
-          <span>{isRefreshing ? "Refreshing..." : "Refresh Queue"}</span>
-        </Button>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+          <Button
+            onClick={() => setIsUploadOpen(true)}
+            className="gap-2 text-sm h-10 px-4 w-full sm:w-auto justify-center font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-xs"
+          >
+            <Upload className="w-4 h-4" />
+            <span>Upload &amp; Screen Document</span>
+          </Button>
+
+          <Button
+            variant="outline"
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className="gap-2 text-sm h-10 px-4 w-full sm:w-auto justify-center font-semibold"
+            aria-label="Refresh verification screening queue"
+          >
+            <RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin" : ""}`} />
+            <span>{isRefreshing ? "Refreshing..." : "Refresh Queue"}</span>
+          </Button>
+        </div>
       </PageHeader>
 
       {/* Filter and Search Architecture */}
@@ -147,8 +158,8 @@ export function VerificationsListShell() {
         <DataTableShell
           isLoading={isLoading}
           isError={isError}
-          errorTitle="Backend Verification Service Unavailable"
-          errorMessage="Backend verification service is not connected yet. Real screening records will populate in subsequent phases."
+          errorTitle="Verification Service Unavailable"
+          errorMessage="Unable to retrieve screening records. Please verify network connectivity or retry."
           isEmpty={isEmpty}
           emptyTitle={
             isFiltered
@@ -158,14 +169,14 @@ export function VerificationsListShell() {
           emptyDescription={
             isFiltered
               ? `No records found matching query "${rawQ || rawRisk || rawStatus}". Try adjusting or resetting your filter criteria.`
-              : "When officers submit document captures from field mobile terminals, screening sessions will stream into this queue in real-time."
+              : "When officers submit document captures from checkpoint terminals, screening sessions will stream into this queue in real-time."
           }
           emptyNotice={
             isError
-              ? "Backend verification service is not connected yet. Real screening records will populate in subsequent phases."
+              ? "Unable to retrieve screening records. Please verify network connectivity or retry."
               : isFiltered
               ? undefined
-              : "Screening sessions submitted from authorized checkpoint mobile terminals will appear in real-time."
+              : "Screening sessions submitted from authorized checkpoint terminals will appear in real-time."
           }
         >
           <thead className="jp-table-thead">
@@ -225,7 +236,7 @@ export function VerificationsListShell() {
                 </td>
                 <td className="jp-table-td text-right">
                   <Link href={`/verifications/${item.id}`}>
-                    <Button variant="outline" size="sm" className="gap-1.5 text-xs h-7 px-2.5">
+                    <Button variant="outline" size="sm" className="gap-1.5 text-xs sm:text-sm h-8 px-3 font-semibold cursor-pointer">
                       <Eye className="w-3.5 h-3.5" />
                       <span>Inspect</span>
                     </Button>
@@ -246,6 +257,12 @@ export function VerificationsListShell() {
           onPageSizeChange={handlePageSizeChange}
         />
       </div>
+
+      {/* Document Upload & Live ML Risk Screening Modal */}
+      <DocumentUploadModal
+        isOpen={isUploadOpen}
+        onClose={() => setIsUploadOpen(false)}
+      />
     </div>
   );
 }

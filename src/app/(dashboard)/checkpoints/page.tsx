@@ -45,7 +45,7 @@ export default function CheckpointsPage() {
             </div>
           </div>
           <div className="jp-metric-card-value">32 Units</div>
-          <span className="jp-metric-card-subtext truncate">Enrolled Flutter Ingest Units</span>
+          <span className="jp-metric-card-subtext truncate">Active Feeder Terminals</span>
         </div>
 
         <div className="jp-metric-card">

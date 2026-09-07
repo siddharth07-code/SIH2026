@@ -81,7 +81,7 @@ describe("Verifications Queue Experience", () => {
     renderWithProviders(<VerificationsListShell />);
 
     await waitFor(() => {
-      expect(screen.getByText(/Backend verification service is not connected yet/i)).toBeInTheDocument();
+      expect(screen.getByText(/Unable to retrieve screening records/i)).toBeInTheDocument();
     });
   });
 
@@ -96,7 +96,7 @@ describe("Verifications Queue Experience", () => {
     await waitFor(() => {
       expect(screen.getByText(/No verification records available in queue/i)).toBeInTheDocument();
     });
-    expect(screen.getByText(/When officers submit document captures from field mobile terminals/i)).toBeInTheDocument();
+    expect(screen.getByText(/When officers submit document captures from checkpoint terminals/i)).toBeInTheDocument();
   });
 
   it("should display filtered-empty state when filters produce zero matches", async () => {

@@ -1,17 +1,18 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
-import { RefreshCw, Clock, FileCheck, Shield } from "lucide-react";
+import { RefreshCw, Clock, Shield, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/features/auth/hooks/use-auth";
 import { useRefreshDashboard } from "../hooks/use-dashboard-queries";
+import { DocumentUploadModal } from "@/features/verifications/components/document-upload-modal";
 
 export function DashboardHeader() {
   const { user } = useAuth();
   const refreshDashboard = useRefreshDashboard();
   const [isRefreshing, setIsRefreshing] = React.useState(false);
+  const [isUploadOpen, setIsUploadOpen] = React.useState(false);
   const [timeStr, setTimeStr] = React.useState<string>("");
 
   React.useEffect(() => {
@@ -47,46 +48,50 @@ export function DashboardHeader() {
             </h1>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
-            <Badge variant="outline" className="text-xs font-mono">
+            <Badge variant="outline" className="text-xs font-mono font-bold px-2.5 py-1">
               {user?.role ? `ROLE: ${user.role}` : "ROLE: OFFICER"}
-            </Badge>
-            <Badge variant="outline" className="text-xs flex items-center gap-1.5 font-mono" style={{ color: "var(--jp-status-low-text)", borderColor: "var(--jp-status-low-border)", backgroundColor: "var(--jp-status-low-bg)" }}>
-              <span>Live</span>
             </Badge>
           </div>
         </div>
-        <p className="jp-page-header-desc">
+        <p className="jp-page-header-desc text-sm sm:text-base">
           Review document signals, evidence, and cases that need human attention.
         </p>
       </div>
 
       <div className="jp-page-header-actions">
         {timeStr && (
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-md border border-border text-xs font-mono text-muted-foreground" style={{ backgroundColor: "var(--jp-bg-surface)" }}>
+          <div className="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-md border border-border text-xs font-mono font-medium text-muted-foreground" style={{ backgroundColor: "var(--jp-bg-surface)" }}>
             <Clock className="w-4 h-4 text-primary" />
             <span>{timeStr}</span>
           </div>
         )}
 
         <Button
+          onClick={() => setIsUploadOpen(true)}
+          className="gap-2 text-sm flex-1 sm:flex-initial justify-center font-semibold h-10 px-4 bg-primary text-primary-foreground hover:bg-primary/90 shadow-xs"
+        >
+          <Upload className="w-4 h-4" />
+          <span>Upload &amp; Screen</span>
+        </Button>
+
+        <Button
           variant="outline"
-          size="sm"
           onClick={handleRefresh}
           disabled={isRefreshing}
-          className="gap-2 text-xs flex-1 sm:flex-initial justify-center font-medium h-9 px-3.5"
+          className="gap-2 text-sm flex-1 sm:flex-initial justify-center font-semibold h-10 px-4"
           aria-label="Refresh dashboard operational queries"
         >
           <RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin" : ""}`} />
           <span>{isRefreshing ? "Refreshing..." : "Refresh"}</span>
         </Button>
-
-        <Link href="/verifications" className="flex-1 sm:flex-initial">
-          <Button variant="default" size="sm" className="gap-2 text-xs w-full justify-center font-semibold h-9 px-3.5">
-            <FileCheck className="w-4 h-4" />
-            <span>Open Queue</span>
-          </Button>
-        </Link>
       </div>
+
+      {isUploadOpen && (
+        <DocumentUploadModal
+          isOpen={isUploadOpen}
+          onClose={() => setIsUploadOpen(false)}
+        />
+      )}
     </div>
   );
 }

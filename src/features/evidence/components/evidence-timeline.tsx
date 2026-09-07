@@ -66,7 +66,7 @@ export function EvidenceTimeline({ timeline = [] }: EvidenceTimelineProps) {
           <div className="p-5 text-center space-y-1.5 border border-dashed border-border rounded-md" style={{ backgroundColor: "var(--jp-bg-root)" }}>
             <PlayCircle className="w-5 h-5 text-muted-foreground mx-auto" />
             <h4 className="text-xs font-semibold text-foreground m-0">
-              Evidence Timeline Unaudited / Offline
+              No Timeline Events Recorded
             </h4>
             <p className="text-[11px] text-muted-foreground max-w-sm mx-auto leading-relaxed m-0">
               As evidence extraction stages execute across OCR, forensics, and biometrics, chronological milestone events will stream into this audit trail.

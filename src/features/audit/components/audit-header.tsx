@@ -78,16 +78,6 @@ export function AuditHeader({ onRefresh, isRefreshing }: AuditHeaderProps) {
             <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? "animate-spin text-primary" : ""}`} />
             <span>{isRefreshing ? "Refreshing..." : "Refresh"}</span>
           </Button>
-
-          <Button
-            variant="outline"
-            size="sm"
-            disabled
-            className="text-xs h-8 opacity-50 cursor-not-allowed hidden sm:inline-flex"
-            title="Export available when audit service is connected"
-          >
-            <span>Export (Service Offline)</span>
-          </Button>
         </div>
       </div>
     </div>

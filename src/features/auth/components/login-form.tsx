@@ -16,7 +16,7 @@ import {
 
 export function LoginForm() {
   const router = useRouter();
-  const { login } = useAuth();
+  const { login, logout } = useAuth();
 
   const [formData, setFormData] = React.useState<LoginRequest>({
     badgeNumberOrEmail: "",
@@ -25,6 +25,15 @@ export function LoginForm() {
   const [fieldErrors, setFieldErrors] = React.useState<Record<string, string>>({});
   const [authError, setAuthError] = React.useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+
+  const fillCredentials = (badgeOrEmail: string) => {
+    setFormData({
+      badgeNumberOrEmail: badgeOrEmail,
+      password: "Password@123",
+    });
+    setAuthError(null);
+    setFieldErrors({});
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,7 +55,17 @@ export function LoginForm() {
     setIsSubmitting(true);
 
     try {
-      await login(result.data);
+      const authenticatedUser = await login(result.data);
+      
+      // STRICT RBAC CHECK: Only authorized security personnel may access Central Command
+      if (authenticatedUser && authenticatedUser.role === "CITIZEN") {
+        await logout();
+        setAuthError(
+          "ACCESS RESTRICTED: Central Command is strictly reserved for Security Personnel (Border Police, Army, Supervisors)."
+        );
+        return;
+      }
+
       router.push("/dashboard");
     } catch (err: unknown) {
       if (err instanceof AuthenticationError) {
@@ -55,7 +74,7 @@ export function LoginForm() {
         setAuthError("Account is inactive, suspended, or lacks active checkpoint clearance.");
       } else if (err instanceof NetworkError || (err instanceof ApiClientError && err.status === 0)) {
         setAuthError(
-          "Backend Authentication Service Unavailable. Verification sessions will reconnect once backend services are online."
+          "Backend authentication service is currently unreachable. Please verify your connection or try again."
         );
       } else if (err instanceof Error) {
         setAuthError(err.message || "An unexpected error occurred during authentication.");
@@ -182,6 +201,72 @@ export function LoginForm() {
               </>
             )}
           </Button>
+        </div>
+
+        {/* Demo Fast-Fill Authentication Accounts */}
+        <div className="pt-3 border-t border-border/40 space-y-2">
+          <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider text-center">
+            Demo Credentials (1-Click Fill)
+          </p>
+          <div className="grid grid-cols-2 gap-1.5">
+            <button
+              type="button"
+              onClick={() => fillCredentials("admin@ssb.gov.in")}
+              className="text-left p-2 rounded-md bg-secondary/40 hover:bg-secondary/70 border border-border/50 transition-colors text-[11px]"
+            >
+              <div className="font-semibold text-foreground flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block"></span>
+                Admin
+              </div>
+              <div className="text-[10px] text-muted-foreground truncate">admin@ssb.gov.in</div>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => fillCredentials("officer.sharma@ssb.gov.in")}
+              className="text-left p-2 rounded-md bg-secondary/40 hover:bg-secondary/70 border border-border/50 transition-colors text-[11px]"
+            >
+              <div className="font-semibold text-foreground flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>
+                Border Officer
+              </div>
+              <div className="text-[10px] text-muted-foreground truncate">SSB-OFF-201</div>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => fillCredentials("army.vikram@mod.gov.in")}
+              className="text-left p-2 rounded-md bg-secondary/40 hover:bg-secondary/70 border border-border/50 transition-colors text-[11px]"
+            >
+              <div className="font-semibold text-foreground flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 inline-block"></span>
+                Army Officer
+              </div>
+              <div className="text-[10px] text-muted-foreground truncate">ARMY-SEC-301</div>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => fillCredentials("supervisor@ssb.gov.in")}
+              className="text-left p-2 rounded-md bg-secondary/40 hover:bg-secondary/70 border border-border/50 transition-colors text-[11px]"
+            >
+              <div className="font-semibold text-foreground flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-purple-500 inline-block"></span>
+                Supervisor
+              </div>
+              <div className="text-[10px] text-muted-foreground truncate">SSB-SUP-101</div>
+            </button>
+          </div>
+          <p className="text-[10px] text-center text-muted-foreground">Default password for all accounts: <code className="font-mono bg-muted px-1 py-0.5 rounded">Password@123</code></p>
+        </div>
+
+        <div className="pt-2 flex flex-col items-center gap-2 text-xs text-muted-foreground">
+          <p>
+            New security personnel?{" "}
+            <a href="/signup" className="text-primary font-medium hover:underline">
+              Register officer account
+            </a>
+          </p>
         </div>
       </form>
     </div>

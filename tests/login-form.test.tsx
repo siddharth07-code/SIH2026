@@ -112,7 +112,7 @@ describe("LoginForm Component", () => {
     fireEvent.click(submitBtn);
 
     expect(
-      await screen.findByText(/Backend Authentication Service Unavailable/i)
+      await screen.findByText(/Backend authentication service is currently unreachable/i)
     ).toBeInTheDocument();
   });
 });

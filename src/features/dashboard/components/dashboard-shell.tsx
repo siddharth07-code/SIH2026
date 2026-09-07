@@ -1,18 +1,15 @@
 "use client";
 
 import * as React from "react";
-import { ShieldCheck, ShieldAlert, Radio, Activity, BarChart3 } from "lucide-react";
+import { ShieldCheck, ShieldAlert, BarChart3 } from "lucide-react";
 import { DashboardHeader } from "./dashboard-header";
 import { ScreeningOverview } from "./screening-overview";
-import { PipelineVisualizer } from "./pipeline-visualizer";
 import { AttentionQueue } from "./attention-queue";
-import { CheckpointMatrix } from "./checkpoint-matrix";
 import { VerificationActivity } from "./verification-activity";
 import { RiskDistribution } from "./risk-distribution";
 import { OperationalEvents } from "./operational-events";
-import { QuickActions } from "./quick-actions";
 
-type DashboardTab = "queue" | "checkpoints" | "pipeline" | "telemetry";
+type DashboardTab = "queue" | "telemetry";
 
 export function DashboardShell() {
   const [activeTab, setActiveTab] = React.useState<DashboardTab>("queue");
@@ -25,83 +22,46 @@ export function DashboardShell() {
       {/* 2. Critical Screening Overview Metrics (High-Signal 4-KPI Grid) */}
       <ScreeningOverview />
 
-      {/* 3. Uncluttered Operational Tab Switcher — Displays Minimum & Relevant Info */}
-      <div className="flex items-center gap-1.5 p-1 bg-subtle rounded-lg border border-border overflow-x-auto">
+      {/* 3. Operational Tab Switcher — Displays Essential Real-Time Information */}
+      <div className="flex items-center gap-2 p-1.5 bg-subtle rounded-xl border border-border overflow-x-auto">
         <button
           type="button"
           onClick={() => setActiveTab("queue")}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
+          className={`flex items-center gap-2.5 px-4.5 py-2.5 rounded-lg text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
             activeTab === "queue"
-              ? "bg-surface text-foreground shadow-xs border border-border"
+              ? "bg-surface text-foreground shadow-xs border border-border font-bold"
               : "text-muted-foreground hover:text-foreground"
           }`}
         >
-          <ShieldAlert className="w-4 h-4 text-rose-500" />
+          <ShieldAlert className="w-4.5 h-4.5 text-rose-500" />
           <span>Priority Review Queue</span>
         </button>
 
         <button
           type="button"
-          onClick={() => setActiveTab("checkpoints")}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
-            activeTab === "checkpoints"
-              ? "bg-surface text-foreground shadow-xs border border-border"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          <Radio className="w-4 h-4 text-sky-500" />
-          <span>Port Ingest Nodes</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab("pipeline")}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
-            activeTab === "pipeline"
-              ? "bg-surface text-foreground shadow-xs border border-border"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          <Activity className="w-4 h-4 text-emerald-500" />
-          <span>Pipeline Architecture</span>
-        </button>
-
-        <button
-          type="button"
           onClick={() => setActiveTab("telemetry")}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-md text-xs font-semibold transition-all cursor-pointer whitespace-nowrap ${
+          className={`flex items-center gap-2.5 px-4.5 py-2.5 rounded-lg text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
             activeTab === "telemetry"
-              ? "bg-surface text-foreground shadow-xs border border-border"
+              ? "bg-surface text-foreground shadow-xs border border-border font-bold"
               : "text-muted-foreground hover:text-foreground"
           }`}
         >
-          <BarChart3 className="w-4 h-4 text-amber-500" />
-          <span>Activity & Telemetry</span>
+          <BarChart3 className="w-4.5 h-4.5 text-primary" />
+          <span>Operational Analytics &amp; Events</span>
         </button>
       </div>
 
-      {/* 4. Tab Content Area — Keeps Primary Screen Focused and Clean */}
+      {/* 4. Tab Content Area — Direct Operational Intelligence */}
       <div className="space-y-6">
         {activeTab === "queue" && (
-          <>
-            <AttentionQueue />
-            <QuickActions />
-          </>
-        )}
-
-        {activeTab === "checkpoints" && (
-          <CheckpointMatrix />
-        )}
-
-        {activeTab === "pipeline" && (
-          <PipelineVisualizer />
+          <AttentionQueue />
         )}
 
         {activeTab === "telemetry" && (
           <div className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <VerificationActivity />
               <RiskDistribution />
+              <VerificationActivity />
             </div>
             <OperationalEvents />
           </div>

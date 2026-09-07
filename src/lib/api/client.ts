@@ -64,9 +64,10 @@ export class ApiClient {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
 
+    const isFormData = typeof FormData !== "undefined" && body instanceof FormData;
     const headers: Record<string, string> = {
       Accept: "application/json",
-      "Content-Type": "application/json",
+      ...(isFormData ? {} : { "Content-Type": "application/json" }),
       ...(customHeaders as Record<string, string>),
     };
 
@@ -88,7 +89,7 @@ export class ApiClient {
         method,
         headers,
         credentials: "include",
-        body: body !== undefined ? JSON.stringify(body) : undefined,
+        body: body !== undefined ? (isFormData ? (body as BodyInit) : JSON.stringify(body)) : undefined,
         signal: controller.signal,
         ...restOptions,
       });

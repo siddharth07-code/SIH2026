@@ -1,12 +1,19 @@
 import { apiClient, type ApiClient } from "./client";
 import { loginResponseSchema, userSchema, type LoginRequest } from "@/lib/validation/schemas";
-import type { User, LoginResponse, AuthSession } from "@/types";
+import type { User, LoginResponse, AuthSession, RegisterRequest } from "@/types";
 
 export class AuthApi {
   private readonly client: ApiClient;
 
   constructor(client: ApiClient = apiClient) {
     this.client = client;
+  }
+
+  /**
+   * Register a new user account with the central backend.
+   */
+  async register(data: RegisterRequest): Promise<LoginResponse> {
+    return this.client.post<LoginResponse>("/auth/register", data);
   }
 
   /**

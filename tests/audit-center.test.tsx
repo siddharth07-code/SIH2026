@@ -196,9 +196,9 @@ describe("Audit Center Governance UX", () => {
       renderAuditCenter();
 
       await waitFor(() => {
-        expect(screen.getByText("AUDIT SERVICE NOT CONNECTED")).toBeInTheDocument();
+        expect(screen.getByText("AUDIT LOG UNAVAILABLE")).toBeInTheDocument();
         expect(
-          screen.getByText(/The governance service is currently offline or unreachable/i)
+          screen.getByText(/Unable to reach the audit governance gateway/i)
         ).toBeInTheDocument();
       });
     });

@@ -91,4 +91,11 @@ export interface AttentionQueueItem {
   riskScore: number;
   primaryFinding: string;
   submittedAt: string;
+  scanLocation?: string;
+  scanCoordinates?: {
+    latitude: number;
+    longitude: number;
+    accuracy?: number;
+  };
+  userRole?: string;
 }

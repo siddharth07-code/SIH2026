@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { QueryProvider } from "@/providers/query-provider";
+import { WebSocketProvider } from "@/providers/websocket-provider";
 import { AuthProvider } from "@/features/auth/context/auth-context";
 import "./globals.css";
 
@@ -22,7 +23,9 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className="font-sans antialiased min-h-screen bg-background text-foreground">
         <QueryProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <WebSocketProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </WebSocketProvider>
         </QueryProvider>
       </body>
     </html>

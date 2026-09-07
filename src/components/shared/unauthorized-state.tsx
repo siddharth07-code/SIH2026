@@ -46,10 +46,15 @@ export function UnauthorizedState({
             )}
           </div>
 
-          <div className="pt-2">
-            <Link href="/dashboard">
+          <div className="pt-2 space-y-2">
+            <Link href="/login">
               <Button variant="outline" size="sm" className="gap-1.5 w-full text-xs">
                 <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Login with Authorized Credentials</span>
+              </Button>
+            </Link>
+            <Link href="/dashboard">
+              <Button variant="ghost" size="sm" className="gap-1.5 w-full text-xs text-muted-foreground">
                 <span>Return to Dashboard</span>
               </Button>
             </Link>

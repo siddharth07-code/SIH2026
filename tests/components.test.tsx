@@ -68,7 +68,7 @@ describe("Shared UI Components", () => {
         refreshUser: () => Promise.resolve(),
       };
       render(
-        <AuthContext.Provider value={mockAuth}>
+        <AuthContext.Provider value={mockAuth as any}>
           <Sidebar isOpen={true} />
         </AuthContext.Provider>
       );

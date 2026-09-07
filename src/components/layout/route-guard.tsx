@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/features/auth/hooks/use-auth";
 import { navigationConfig } from "@/config/navigation";
 import { LoadingState } from "@/components/shared/loading-state";
@@ -15,6 +15,7 @@ interface RouteGuardProps {
 export function RouteGuard({ children }: RouteGuardProps) {
   const { status, user } = useAuth();
   const pathname = usePathname();
+  const router = useRouter();
 
   // Determine if the current route has role constraints
   const matchedItem = React.useMemo(() => {
@@ -31,6 +32,16 @@ export function RouteGuard({ children }: RouteGuardProps) {
     return null;
   }, [pathname]);
 
+  const isUnauthenticated =
+    status === "UNAUTHENTICATED" ||
+    (!user && status !== "LOADING" && status !== "UNKNOWN");
+
+  React.useEffect(() => {
+    if (isUnauthenticated) {
+      router.replace?.(`/login?from=${encodeURIComponent(pathname)}`);
+    }
+  }, [isUnauthenticated, pathname, router]);
+
   if (status === "UNKNOWN" || status === "LOADING") {
     return (
       <div className="min-h-[50vh] flex items-center justify-center">
@@ -39,10 +50,20 @@ export function RouteGuard({ children }: RouteGuardProps) {
     );
   }
 
+  // If user is unauthenticated, block and display unauthorized state while redirecting
+  if (isUnauthenticated) {
+    return (
+      <UnauthorizedState
+        requiredRoles={matchedItem?.roles || ["OFFICER", "SUPERVISOR", "ADMINISTRATOR"]}
+        currentRole={null}
+      />
+    );
+  }
+
   // If route requires specific roles, check clearance
   if (matchedItem?.roles && matchedItem.roles.length > 0) {
     const userRole = user?.role as UserRole | undefined;
-    if (userRole && !matchedItem.roles.includes(userRole)) {
+    if (!userRole || !matchedItem.roles.includes(userRole)) {
       return (
         <UnauthorizedState
           requiredRoles={matchedItem.roles}

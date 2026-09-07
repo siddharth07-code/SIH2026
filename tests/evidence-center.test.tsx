@@ -255,6 +255,6 @@ describe("Evidence Center Investigation Workspace", () => {
 
     expect(screen.getByText("Document Capture Image Unavailable")).toBeInTheDocument();
     expect(screen.getByText("No Digital Manipulation Signals Logged")).toBeInTheDocument();
-    expect(screen.getByText("Evidence Timeline Unaudited / Offline")).toBeInTheDocument();
+    expect(screen.getByText("No Timeline Events Recorded")).toBeInTheDocument();
   });
 });

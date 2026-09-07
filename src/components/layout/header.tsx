@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Activity, ChevronRight, User as UserIcon, LogOut, Search } from "lucide-react";
+import { Menu, ChevronRight, User as UserIcon, LogOut, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/features/auth/hooks/use-auth";
@@ -73,16 +73,7 @@ export function Header({ onMenuClick, onOpenCommandPalette }: HeaderProps) {
           </kbd>
         </button>
 
-        {/* Threat Posture Indicator */}
-        <div className="hidden xl:flex items-center gap-2 px-3 py-1 rounded-full border border-border bg-surface text-xs font-mono text-muted-foreground font-medium">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span>POSTURE: ELEVATED SCREENING</span>
-        </div>
-
-        <div className="jp-header-status-pill">
-          <Activity className="w-4 h-4 shrink-0 text-emerald-500" />
-          <span className="font-semibold text-xs">Live</span>
-        </div>
+        {/* User / Session Area */}
 
         <div className="flex items-center gap-2 pl-2.5 border-l border-border">
           {isAuthenticated ? (
