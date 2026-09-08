@@ -127,6 +127,23 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  scale: 1;
+  transition: scale var(--jp-transition-fast), box-shadow var(--jp-transition-fast);
+}
+
+/* Scanner Portal Aligned Brand Logo */
+.jp-sidebar-brand .jp-sidebar-brand-icon,
+.jp-header-brand-icon {
+  background-color: #FAF7F2;
+  border-color: #C9A227;
+  color: #C9A227;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.jp-sidebar-brand:hover .jp-sidebar-brand-icon,
+.jp-header-brand-icon:hover {
+  scale: 1.05;
+  box-shadow: 0 4px 12px -2px rgba(201, 162, 39, 0.35);
 }
 
 .jp-sidebar-brand-title {
@@ -184,13 +201,25 @@
   font-weight: 500;
   color: var(--jp-text-secondary);
   text-decoration: none;
-  transition: all var(--jp-transition-fast);
+  translate: 0 0;
+  transition: background-color var(--jp-transition-fast), color var(--jp-transition-fast), border-color var(--jp-transition-fast), translate var(--jp-transition-fast);
   border: 1px solid transparent;
+}
+
+.jp-sidebar-item svg {
+  scale: 1;
+  transition: scale var(--jp-transition-fast), color var(--jp-transition-fast);
 }
 
 .jp-sidebar-item:hover {
   background-color: var(--jp-bg-subtle);
   color: var(--jp-text-primary);
+  translate: 3px 0;
+}
+
+.jp-sidebar-item:hover svg {
+  scale: 1.1;
+  color: var(--jp-primary);
 }
 
 .jp-sidebar-item-active {
@@ -297,4 +326,10 @@
   font-size: 0.75rem;
   font-family: var(--jp-font-mono);
   color: var(--jp-text-secondary);
+  transition: border-color var(--jp-transition-fast), background-color var(--jp-transition-fast);
+}
+
+.jp-header-status-pill:hover {
+  border-color: var(--jp-border-strong);
+  background-color: var(--jp-bg-subtle);
 }

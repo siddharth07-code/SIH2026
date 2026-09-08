@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Shield, Lock, User, Mail, Building, Award, AlertCircle, ArrowRight, Loader2 } from "lucide-react";
+import { ShieldCheck, Shield, Lock, User, Mail, Building, Award, AlertCircle, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "../hooks/use-auth";
@@ -74,7 +74,7 @@ export function SignupForm() {
     <div className="jp-auth-card">
       <div className="jp-auth-header">
         <div className="jp-auth-brand-icon">
-          <Shield className="w-5 h-5" />
+          <ShieldCheck className="w-6 h-6 text-[#C9A227]" />
         </div>
         <div className="space-y-1">
           <h2 className="jp-auth-title">

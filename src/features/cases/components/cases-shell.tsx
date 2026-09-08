@@ -254,8 +254,8 @@ export function CasesShell() {
 
       {/* 3. Uncluttered Cases Table */}
       <Card className="jp-card overflow-hidden">
-        <CardContent className="p-0 overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+        <CardContent className="p-0 overflow-auto max-h-[calc(100dvh-18rem)] overscroll-contain">
+          <table className="jp-table">
             <thead className="jp-table-thead">
               <tr>
                 <th className="jp-table-th">Case Reference</th>

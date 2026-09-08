@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Shield, Lock, User, AlertCircle, ArrowRight, Loader2, Info } from "lucide-react";
+import { ShieldCheck, Lock, User, AlertCircle, ArrowRight, Loader2, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { loginRequestSchema, type LoginRequest } from "@/lib/validation/schemas";
@@ -110,7 +110,7 @@ export function LoginForm() {
     <div className="jp-auth-card">
       <div className="jp-auth-header">
         <div className="jp-auth-brand-icon">
-          <Shield className="w-5 h-5" />
+          <ShieldCheck className="w-6 h-6 text-[#C9A227]" />
         </div>
         <div className="space-y-1">
           <div className="flex items-center justify-center gap-2">

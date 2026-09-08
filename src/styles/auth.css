@@ -39,13 +39,21 @@
   width: 2.75rem;
   height: 2.75rem;
   border-radius: var(--jp-radius-lg);
-  background-color: var(--jp-primary);
-  border: 1px solid var(--jp-primary);
-  color: var(--jp-text-inverse);
+  background-color: #FAF7F2;
+  border: 1px solid #C9A227;
+  color: #C9A227;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 0.25rem;
+  scale: 1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: scale var(--jp-transition-fast), box-shadow var(--jp-transition-fast);
+}
+
+.jp-auth-brand-icon:hover {
+  scale: 1.05;
+  box-shadow: 0 4px 12px -2px rgba(201, 162, 39, 0.35);
 }
 
 .jp-auth-title {

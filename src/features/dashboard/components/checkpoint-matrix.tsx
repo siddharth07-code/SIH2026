@@ -160,8 +160,8 @@ export function CheckpointMatrix() {
         </div>
       </CardHeader>
 
-      <CardContent className="p-0 overflow-x-auto">
-        <table className="w-full text-left border-collapse">
+      <CardContent className="p-0 overflow-auto max-h-[calc(100dvh-20rem)] overscroll-contain">
+        <table className="jp-table">
           <thead className="jp-table-thead">
             <tr>
               <th className="jp-table-th">Checkpoint Post</th>

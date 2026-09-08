@@ -186,7 +186,7 @@ export function AuditEventTable({
       </CardHeader>
 
       <CardContent className="p-0">
-        <div className="overflow-x-auto">
+        <div className="overflow-auto max-h-[calc(100dvh-20rem)] overscroll-contain">
           <table className="jp-table">
             <thead className="jp-table-thead">
               <tr>

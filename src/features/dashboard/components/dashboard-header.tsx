@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { RefreshCw, Clock, Shield } from "lucide-react";
+import { RefreshCw, Clock, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/features/auth/hooks/use-auth";
@@ -38,8 +38,8 @@ export function DashboardHeader() {
       <div className="jp-page-header-info">
         <div className="jp-page-header-title-row">
           <div className="flex items-center gap-2">
-            <div className="jp-sidebar-brand-icon">
-              <Shield className="w-5 h-5" />
+            <div className="jp-sidebar-brand-icon jp-header-brand-icon">
+              <ShieldCheck className="w-5 h-5 text-[#C9A227]" />
             </div>
             <h1 className="jp-page-header-title">
               Operational Command Center

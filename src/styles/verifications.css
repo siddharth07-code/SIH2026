@@ -31,7 +31,11 @@
   padding: 0 0.625rem;
   outline: none;
   cursor: pointer;
-  transition: border-color var(--jp-transition-fast);
+  transition: border-color var(--jp-transition-fast), background-color var(--jp-transition-fast);
+}
+
+.jp-select:hover:not(:focus):not(:disabled) {
+  border-color: var(--jp-border-strong);
 }
 
 .jp-select:focus {
@@ -67,6 +71,14 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  translate: 0 0;
+  transition: border-color var(--jp-transition-fast), box-shadow var(--jp-transition-fast), translate var(--jp-transition-fast);
+}
+
+.jp-dossier-meta-card:hover {
+  border-color: var(--jp-border-default);
+  translate: 0 -1px;
+  box-shadow: var(--jp-shadow-sm);
 }
 
 .jp-dossier-meta-label {
@@ -103,11 +115,14 @@
   display: flex;
   flex-direction: column;
   gap: 0.375rem;
-  transition: border-color var(--jp-transition-fast);
+  translate: 0 0;
+  transition: border-color var(--jp-transition-fast), box-shadow var(--jp-transition-fast), translate var(--jp-transition-fast);
 }
 
 .jp-finding-card:hover {
-  border-color: var(--jp-border-default);
+  border-color: var(--jp-border-strong);
+  translate: 0 -1px;
+  box-shadow: var(--jp-shadow-sm);
 }
 
 .jp-evidence-signal-grid {
@@ -137,6 +152,14 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 0.625rem;
+  translate: 0 0;
+  transition: border-color var(--jp-transition-fast), box-shadow var(--jp-transition-fast), translate var(--jp-transition-fast);
+}
+
+.jp-evidence-signal-card:hover {
+  border-color: var(--jp-border-strong);
+  translate: 0 -1px;
+  box-shadow: var(--jp-shadow-sm);
 }
 
 /* --------------------------------------------------------------------------

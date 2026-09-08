@@ -14,7 +14,7 @@ import {
   ShieldAlert,
   Users,
   Settings,
-  Shield,
+  ShieldCheck,
   Search,
   X,
   type LucideIcon,
@@ -79,7 +79,7 @@ export function Sidebar({ isOpen, onClose, onOpenCommandPalette }: SidebarProps)
         <div className="jp-sidebar-header">
           <Link href="/dashboard" className="jp-sidebar-brand" onClick={onClose}>
             <div className="jp-sidebar-brand-icon">
-              <Shield className="w-5 h-5" />
+              <ShieldCheck className="w-5 h-5 text-[#C9A227]" />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
